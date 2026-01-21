@@ -197,6 +197,7 @@ export class LocalAuth {
 
     if (!userData) {
       return {
+        data: { user: null, session: null },
         error: {
           message: 'Invalid login credentials',
           status: 400,
@@ -231,12 +232,13 @@ export class LocalAuth {
     await this.saveSession(user, session);
     this.notifyListeners('SIGNED_IN', session);
 
-    return { error: null };
+    return { data: { user, session }, error: null };
   }
 
   // Supabase API: signInWithPassword принимает объект { email, password, options? }
   async signInWithPassword(credentials: { email: string; password: string; options?: any }) {
-    return this.signIn(credentials.email, credentials.password);
+    const result = await this.signIn(credentials.email, credentials.password);
+    return result;
   }
 
   async signOut() {
