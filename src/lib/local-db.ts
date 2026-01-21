@@ -346,6 +346,50 @@ export class LocalTable<T> {
     return builder;
   }
 
+  async upsert(data: any, options?: { onConflict?: string }) {
+    const conflictColumn = options?.onConflict || 'id';
+    const conflictValue = data[conflictColumn];
+
+    if (!conflictValue) {
+      // Если нет значения для колонки конфликта, просто вставляем
+      return this.insert(data);
+    }
+
+    // Проверяем, существует ли запись
+    const all = await this.db.getAll(this.tableName);
+    const existing = all.find((item: any) => item[conflictColumn] === conflictValue);
+
+    const now = new Date().toISOString();
+
+    if (existing) {
+      // Обновляем существующую запись
+      const updated = {
+        ...existing,
+        ...data,
+        updated_at: now,
+      };
+      await this.db.put(this.tableName, updated);
+      return {
+        data: [updated] as T[],
+        error: null,
+      };
+    } else {
+      // Создаём новую запись
+      const id = data.id || generateUUID();
+      const record = {
+        ...data,
+        id,
+        created_at: data.created_at || now,
+        updated_at: now,
+      };
+      await this.db.put(this.tableName, record);
+      return {
+        data: [record] as T[],
+        error: null,
+      };
+    }
+  }
+
   eq(column: string, value: any): LocalQueryBuilder<T> {
     return new LocalQueryBuilder<T>(this.tableName, this.db, { column, operator: 'eq', value });
   }
@@ -360,7 +404,7 @@ class LocalQueryBuilder<T> {
   private orderBy?: { column: string; ascending: boolean };
   private limitValue?: number;
   private updateData?: any;
-  private isDelete = false;
+  public isDelete = false;
   private isSingle = false;
   private selectOptions?: { count?: 'exact' | 'estimated' | 'planned'; head?: boolean };
 
