@@ -12,7 +12,6 @@ import parentMaleAvatar from "@/assets/friendly-and-clean-face-of-an-adult-perso
 import childFemaleAvatar from "@/assets/friendly-and-clean-face-of-a-white-girl-7-yo--soft.png";
 import childMaleAvatar from "@/assets/friendly-and-clean-face-of-a-white-boy-7-yo--soft- (1).png";
 import { getProfiles, deleteProfile, calculateAge } from "@/lib/profileStorage";
-import { useCurrentProfile } from "@/contexts/ProfileContext";
 import { useAuth } from "@/contexts/AuthContext";
 import type { Database } from "@/lib/supabase";
 type Profile = Database['public']['Tables']['profiles']['Row'];
@@ -34,7 +33,6 @@ export default function FamilyMembers() {
   const location = useLocation();
   const queryClient = useQueryClient();
   const { user } = useAuth();
-  const { setCurrentProfileId, setCurrentProfile } = useCurrentProfile();
   const [members, setMembers] = useState<Profile[]>([]);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -100,7 +98,7 @@ export default function FamilyMembers() {
       <Header />
       
       <div className="container mx-auto max-w-2xl px-4 py-12">
-        <StepIndicator currentStep={3} totalSteps={4} label="ПРОФИЛЬ СЕМЬИ" />
+        <StepIndicator currentStep={3} totalSteps={3} label="ПРОФИЛЬ СЕМЬИ" />
         
         <div className="space-y-8">
           <div className="text-center">
@@ -208,35 +206,10 @@ export default function FamilyMembers() {
                 <Button
                   type="button"
                   size="lg"
-                  onClick={() => {
-                    // Находим первого ребенка для перехода к worry tags
-                    logger.log('Members list:', members);
-                    logger.log('Members types:', members.map(m => ({ 
-                      id: m.id, 
-                      name: m.first_name, 
-                      type: m.type,
-                      dob: m.dob 
-                    })));
-                    
-                    const children = members.filter(m => m.type === 'child');
-                    const firstChild = children[0];
-                    
-                    if (firstChild) {
-                      logger.log('Found child:', firstChild);
-                      setCurrentProfileId(firstChild.id);
-                      setCurrentProfile(firstChild);
-                      navigate(`/worries/${firstChild.id}`);
-                    } else {
-                      logger.log('No child found. Available members:', members);
-                      const memberTypes = members.map(m => `${m.first_name} (${m.type})`).join(', ');
-                      toast.error(
-                        `Не найден ребенок в семье. Текущие члены семьи: ${memberTypes || 'нет'}. Пожалуйста, добавьте ребенка.`
-                      );
-                    }
-                  }}
+                  onClick={() => navigate("/cabinet")}
                   className="h-14 flex-1 text-base font-medium"
                 >
-                  Далее
+                  Завершить
                 </Button>
               </>
             )}
