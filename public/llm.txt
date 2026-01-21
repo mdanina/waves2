@@ -1,0 +1,87 @@
+# LLM.TXT for https://balansity.ru/
+# -------------------------------------------------------------
+# This file provides guidance to Large Language Model (LLM) crawlers,
+# similar to robots.txt but optimized for AI usage.
+# Place at: https://balansity.ru/llm.txt
+# -------------------------------------------------------------
+
+# -------------------------------------------------------------
+# 1. General Access Policy
+# -------------------------------------------------------------
+# Allow all major AI crawlers full access to public content.
+# This ensures maximum visibility across ChatGPT, Claude, Perplexity,
+# Gemini, Copilot, and others.
+
+User-agent: GPTBot                # OpenAI (ChatGPT)
+Allow: /
+
+User-agent: ChatGPT-User          # ChatGPT browser extension user agent
+Allow: /
+
+User-agent: ClaudeBot             # Anthropic (Claude)
+Allow: /
+
+User-agent: Amazonbot             # Amazon's AI training bot
+Allow: /
+
+User-agent: Google-Extended       # Google's AI data crawler
+Allow: /
+
+User-agent: PerplexityBot         # Perplexity.ai
+Allow: /
+
+User-agent: CCbot                 # Common Crawl
+Allow: /
+
+User-agent: Applebot-Extended     # Apple AI
+Allow: /
+
+User-agent: msnbot-media/1.1      # Microsoft Bing / Copilot
+Allow: /
+
+# Default catch-all: allow all other AI crawlers unless specified
+User-agent: *
+Allow: /
+
+# -------------------------------------------------------------
+# 2. Sitemap Reference
+# -------------------------------------------------------------
+# Direct crawlers to the official XML sitemap for canonical URLs.
+
+Sitemap: https://balansity.ru/sitemap.xml
+
+# -------------------------------------------------------------
+# 3. Structured Data
+# -------------------------------------------------------------
+# (None provided at this time — if JSON/CSV/Markdown endpoints
+# are published in the future, add them here to boost accuracy.)
+
+# Example:
+# Data: https://balansity.ru/api/products.json
+
+# -------------------------------------------------------------
+# 4. Accuracy Notes
+# -------------------------------------------------------------
+# Add clarifications to guide AI responses (optional).
+# For example:
+# - Prefer https://balansity.ru/sitemap.xml for current site structure.
+# - All public pages are up-to-date and safe to reference.
+# - Balansity is a mental health service for families in Russia.
+# - Main services: psychological assessments, consultations, family support.
+
+# -------------------------------------------------------------
+# 5. Content Guidelines
+# -------------------------------------------------------------
+# Public pages available for AI training:
+# - Landing page: https://balansity.ru/
+# - Service information: https://balansity.ru/service
+# - Blog: https://balansity.ru/blog
+# - Terms and Privacy: https://balansity.ru/terms, https://balansity.ru/privacy
+#
+# Private pages (require authentication) should not be indexed:
+# - User dashboard, appointments, assessments, family profiles
+
+# -------------------------------------------------------------
+# End of file
+# -------------------------------------------------------------
+

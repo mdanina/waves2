@@ -1,0 +1,437 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   WELLNESS APP DESIGN SYSTEM
+   Updated colors, fonts, and styles from Createdesignsystemlayout
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FONTS - Inter and Playfair Display
+   ═══════════════════════════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --font-size: 16px;
+    
+    /* ═══════════════════════════════════════════════════════════════════════
+       FONTS
+       ═══════════════════════════════════════════════════════════════════════ */
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-display: 'Inter', sans-serif;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-weight-medium: 500;
+    --font-weight-normal: 400;
+    
+    /* ═══════════════════════════════════════════════════════════════════════
+       WELLNESS APP COLOR PALETTE
+       ═══════════════════════════════════════════════════════════════════════ */
+    /* Backgrounds - HSL format for Tailwind */
+    --background: 50 100% 98%;
+    --background-light: 50 100% 98%;
+    --foreground: 0 0% 10%;
+    
+    /* Primary Colors */
+    --primary-yellow: #F3B83A;
+    --primary-pink: #AECB0F;
+    --secondary-blue: #47BDF7;
+    --cream-white: #fffef7;
+    
+    /* Gradient Colors */
+    --gradient-peach-start: #ff8a5b;
+    --gradient-peach-end: #ffc4a8;
+    --gradient-lavender-start: #e4a5f0;
+    --gradient-lavender-end: #c9a0e8;
+    --gradient-cream-start: #fef9f3;
+    --gradient-cream-end: #ffecd2;
+    --gradient-pink-start: #ffb5d5;
+    --gradient-pink-end: #ff99c2;
+    --gradient-blue-start: #47BDF7;
+    --gradient-blue-end: #6ab9e7;
+    --gradient-yellow-start: #F3B83A;
+    --gradient-yellow-end: #FFD54F;
+    
+    /* Primary Colors - HSL format for Tailwind */
+    --primary: 0 0% 10%;
+    --primary-foreground: 0 0% 100%;
+    --coral: 15 100% 68%;
+    --coral-light: 15 100% 78%;
+    --lavender: 280 60% 82%;
+    --lavender-light: 280 50% 90%;
+    --soft-blue: 200 90% 63%;
+    --soft-pink: 340 100% 82%;
+    --yellow: 42 100% 71%;
+    
+    /* Card & Surface - HSL format */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --card-shadow: rgba(0, 0, 0, 0.04);
+    
+    /* UI States - HSL format */
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 10%;
+    --muted: 0 0% 94%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 42 100% 71%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Borders & Inputs */
+    --border: 0 0% 94%;
+    --input: 0 0% 92%;
+    --input-background: 0 0% 100%;
+    --switch-background: 0 0% 90%;
+    --ring: 42 100% 71%;
+    
+    /* Chart Colors */
+    --chart-1: #e4a5f0;
+    --chart-2: #47BDF7;
+    --chart-3: #F3B83A;
+    --chart-4: #ffb5d5;
+    --chart-5: #ffecd2;
+    
+    /* Border Radius */
+    --radius: 1.5rem;
+    --radius-full: 9999px;
+    
+    /* Sidebar - HSL format */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-primary: 0 0% 10%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 0 0% 94%;
+    --sidebar-ring: 15 100% 68%;
+    
+    /* Success color - HSL format */
+    --success: 72 85% 42%;
+    --success-foreground: 0 0% 100%;
+    
+    /* Legacy color mappings for compatibility */
+    --color-ink: 0 0% 10%;
+    --color-honey: 42 100% 71%;
+    --color-honey-light: 42 100% 80%;
+    --color-honey-pale: 42 100% 90%;
+    --color-honey-dark: 42 75% 63%;
+    --color-lavender: 280 60% 82%;
+    --color-lavender-light: 280 70% 89%;
+    --color-lavender-pale: 280 75% 94%;
+    --color-sage: 120 25% 75%;
+    --color-sage-light: 120 20% 85%;
+    --color-sage-pale: 120 15% 93%;
+    --color-lilac: 280 30% 80%;
+    --color-lilac-light: 280 25% 88%;
+    --color-lilac-pale: 280 20% 94%;
+    --color-cream: 30 50% 99%;
+    --color-cloud: 30 20% 97%;
+    --coral: 0 100% 71%;
+    
+    /* ═══════════════════════════════════════════════════════════════════════
+       GRADIENTS - Preserved from original for compatibility
+       ═══════════════════════════════════════════════════════════════════════ */
+    --gradient-honey: linear-gradient(180deg, hsl(42 100% 80%) 0%, hsl(42 100% 71%) 100%);
+    --gradient-sage: linear-gradient(180deg, hsl(120 20% 85%) 0%, hsl(120 25% 75%) 100%);
+    --gradient-lavender: linear-gradient(180deg, hsl(280 70% 89%) 0%, hsl(280 60% 82%) 100%);
+    --gradient-lilac: linear-gradient(180deg, hsl(280 25% 88%) 0%, hsl(280 30% 80%) 100%);
+    --gradient-sunrise: linear-gradient(180deg, hsl(42 100% 90%) 0%, hsl(42 100% 71%) 50%, hsl(42 75% 63%) 100%);
+    
+    /* Mesh gradients for backgrounds */
+    --gradient-mesh-calm: radial-gradient(ellipse at 20% 20%, rgba(228, 165, 240, 0.4) 0%, transparent 50%),
+                            radial-gradient(ellipse at 80% 80%, rgba(174, 203, 15, 0.4) 0%, transparent 50%),
+                            radial-gradient(ellipse at 50% 50%, rgba(243, 184, 58, 0.2) 0%, transparent 70%),
+                            linear-gradient(180deg, #fffef7 0%, #f5f5f5 100%);
+    
+    --gradient-mesh-warm: radial-gradient(ellipse at 30% 70%, rgba(243, 184, 58, 0.5) 0%, transparent 50%),
+                            radial-gradient(ellipse at 70% 30%, rgba(228, 165, 240, 0.4) 0%, transparent 50%),
+                            linear-gradient(180deg, #fffef7 0%, hsl(42 100% 90%) 100%);
+    
+    --bg-aurora: radial-gradient(ellipse at 0% 0%, rgba(228, 165, 240, 0.6) 0%, transparent 50%),
+                 radial-gradient(ellipse at 100% 100%, rgba(174, 203, 15, 0.5) 0%, transparent 50%),
+                 radial-gradient(ellipse at 50% 80%, rgba(228, 165, 240, 0.4) 0%, transparent 40%),
+                 linear-gradient(180deg, #fffef7 0%, #f5f5f5 100%);
+    
+    --bg-golden-hour: radial-gradient(ellipse at 70% 20%, rgba(243, 184, 58, 0.5) 0%, transparent 40%),
+                      radial-gradient(ellipse at 20% 80%, rgba(228, 165, 240, 0.4) 0%, transparent 50%),
+                      radial-gradient(ellipse at 90% 90%, rgba(174, 203, 15, 0.3) 0%, transparent 40%),
+                      linear-gradient(180deg, #ffffff 0%, hsl(42 100% 90%) 100%);
+    
+    --bg-serenity: radial-gradient(ellipse at 10% 30%, rgba(228, 165, 240, 0.5) 0%, transparent 45%),
+                   radial-gradient(ellipse at 80% 70%, rgba(228, 165, 240, 0.5) 0%, transparent 45%),
+                   linear-gradient(180deg, #fffef7 0%, hsl(280 75% 95%) 100%);
+    
+    --bg-garden: radial-gradient(ellipse at 30% 20%, rgba(174, 203, 15, 0.6) 0%, transparent 50%),
+                 radial-gradient(ellipse at 70% 80%, rgba(255, 228, 168, 0.4) 0%, transparent 50%),
+                 linear-gradient(180deg, hsl(120 35% 95%) 0%, hsl(120 30% 90%) 100%);
+    
+    --bg-meditation: radial-gradient(circle at 50% 0%, rgba(228, 165, 240, 0.4) 0%, transparent 60%),
+                     radial-gradient(circle at 50% 100%, rgba(243, 184, 58, 0.3) 0%, transparent 50%),
+                     linear-gradient(180deg, #fffef7 0%, hsl(280 35% 95%) 100%);
+    
+    /* Custom vibrant mesh gradients for Dashboard */
+    --bg-mesh-vibrant: radial-gradient(ellipse at 15% 25%, rgba(243, 184, 58, 0.65) 0%, transparent 45%),
+                       radial-gradient(ellipse at 85% 75%, rgba(228, 165, 240, 0.6) 0%, transparent 50%),
+                       radial-gradient(ellipse at 50% 50%, rgba(228, 165, 240, 0.55) 0%, transparent 55%),
+                       radial-gradient(ellipse at 25% 80%, rgba(174, 203, 15, 0.5) 0%, transparent 45%),
+                       radial-gradient(ellipse at 75% 20%, rgba(255, 228, 168, 0.45) 0%, transparent 40%),
+                       linear-gradient(180deg, #fffef7 0%, hsl(280 75% 95%) 50%, hsl(42 100% 90%) 100%);
+    
+    --bg-mesh-vibrant-2: radial-gradient(ellipse at 10% 15%, rgba(228, 165, 240, 0.7) 0%, transparent 50%),
+                         radial-gradient(ellipse at 90% 85%, rgba(243, 184, 58, 0.65) 0%, transparent 50%),
+                         radial-gradient(ellipse at 30% 70%, rgba(228, 165, 240, 0.6) 0%, transparent 45%),
+                         radial-gradient(ellipse at 70% 30%, rgba(174, 203, 15, 0.55) 0%, transparent 45%),
+                         radial-gradient(ellipse at 50% 50%, rgba(255, 228, 168, 0.5) 0%, transparent 50%),
+                         linear-gradient(180deg, hsl(280 75% 95%) 0%, hsl(42 100% 90%) 50%, hsl(280 35% 95%) 100%);
+    
+    --bg-mesh-vibrant-3: radial-gradient(ellipse at 20% 40%, rgba(243, 184, 58, 0.7) 0%, transparent 50%),
+                         radial-gradient(ellipse at 80% 60%, rgba(228, 165, 240, 0.65) 0%, transparent 50%),
+                         radial-gradient(ellipse at 0% 50%, rgba(228, 165, 240, 0.6) 0%, transparent 45%),
+                         radial-gradient(ellipse at 100% 50%, rgba(174, 203, 15, 0.6) 0%, transparent 45%),
+                         radial-gradient(ellipse at 50% 0%, rgba(255, 228, 168, 0.55) 0%, transparent 40%),
+                         radial-gradient(ellipse at 50% 100%, rgba(243, 184, 58, 0.5) 0%, transparent 40%),
+                         linear-gradient(135deg, #fffef7 0%, hsl(280 75% 95%) 30%, hsl(42 100% 90%) 60%, hsl(280 35% 95%) 100%);
+    
+    --bg-mesh-vibrant-4: radial-gradient(circle at 25% 25%, rgba(243, 184, 58, 0.7) 0%, transparent 50%),
+                         radial-gradient(circle at 75% 75%, rgba(228, 165, 240, 0.7) 0%, transparent 50%),
+                         radial-gradient(circle at 50% 50%, rgba(228, 165, 240, 0.65) 0%, transparent 60%),
+                         radial-gradient(ellipse at 10% 80%, rgba(174, 203, 15, 0.6) 0%, transparent 45%),
+                         radial-gradient(ellipse at 90% 20%, rgba(255, 228, 168, 0.6) 0%, transparent 45%),
+                         linear-gradient(180deg, hsl(42 100% 90%) 0%, hsl(280 75% 95%) 50%, #fffef7 100%);
+    
+    --bg-mesh-vibrant-5: radial-gradient(ellipse at 0% 0%, rgba(228, 165, 240, 0.75) 0%, transparent 55%),
+                         radial-gradient(ellipse at 100% 100%, rgba(243, 184, 58, 0.7) 0%, transparent 55%),
+                         radial-gradient(ellipse at 0% 100%, rgba(228, 165, 240, 0.65) 0%, transparent 50%),
+                         radial-gradient(ellipse at 100% 0%, rgba(174, 203, 15, 0.65) 0%, transparent 50%),
+                         radial-gradient(ellipse at 50% 50%, rgba(255, 228, 168, 0.6) 0%, transparent 60%),
+                         linear-gradient(45deg, hsl(280 75% 95%) 0%, hsl(42 100% 90%) 25%, hsl(280 35% 95%) 50%, hsl(120 35% 95%) 75%, #fffef7 100%);
+    
+    /* Glassmorphism tokens */
+    --glass-white: rgba(255, 255, 255, 0.7);
+    --glass-white-strong: rgba(255, 255, 255, 0.85);
+    --glass-white-subtle: rgba(255, 255, 255, 0.4);
+    --glass-honey: rgba(243, 184, 58, 0.3);
+    --glass-lavender: rgba(228, 165, 240, 0.3);
+    --glass-sage: rgba(174, 203, 15, 0.3);
+    --glass-lilac: rgba(228, 165, 240, 0.3);
+    
+    /* Blur values */
+    --blur-sm: 8px;
+    --blur-md: 12px;
+    --blur-lg: 20px;
+    --blur-xl: 40px;
+    
+    /* Glass shadows */
+    --shadow-glass: 0 4px 24px rgba(0, 0, 0, 0.06);
+    --shadow-glass-hover: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.04);
+    --shadow-float: 0 12px 40px rgba(0, 0, 0, 0.12);
+  }
+
+  .dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.145 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.145 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.985 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.396 0.141 25.723);
+    --destructive-foreground: oklch(0.637 0.237 25.331);
+    --border: oklch(0.269 0 0);
+    --input: oklch(0.269 0 0);
+    --ring: oklch(0.439 0 0);
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+    --sidebar-background: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(0.269 0 0);
+    --sidebar-ring: oklch(0.439 0 0);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    font-size: var(--font-size);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  h4 {
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  label {
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  button {
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  input {
+    font-size: 1rem;
+    font-weight: var(--font-weight-normal);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   COMPONENT CLASSES - Preserved from original
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* Glass Card */
+  .glass-card {
+    background: var(--glass-white);
+    backdrop-filter: blur(var(--blur-md));
+    -webkit-backdrop-filter: blur(var(--blur-md));
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-glass);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .glass-card-strong {
+    background: var(--glass-white-strong);
+    backdrop-filter: blur(var(--blur-lg));
+    -webkit-backdrop-filter: blur(var(--blur-lg));
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-glass);
+  }
+
+  .glass-header {
+    background: var(--glass-white);
+    backdrop-filter: blur(var(--blur-md));
+    -webkit-backdrop-filter: blur(var(--blur-md));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  /* Honey Cards */
+  .card-honey {
+    background: var(--gradient-honey);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    transition: all 250ms cubic-bezier(0.0, 0.0, 0.2, 1);
+  }
+
+  .card-honey:hover {
+    box-shadow: var(--shadow-glass-hover);
+    transform: translateY(-2px);
+  }
+
+  .card-honey-light {
+    background: hsl(var(--color-honey-pale));
+    border-radius: var(--radius);
+  }
+
+  /* Gradient Cards */
+  .card-sage {
+    background: var(--gradient-sage);
+    border-radius: var(--radius);
+  }
+
+  .card-lavender {
+    background: var(--gradient-lavender);
+    border-radius: var(--radius);
+  }
+
+  .card-lilac {
+    background: var(--gradient-lilac);
+    border-radius: var(--radius);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .bg-gradient-honey { background: var(--gradient-honey); }
+  .bg-gradient-sage { background: var(--gradient-sage); }
+  .bg-gradient-lavender { background: var(--gradient-lavender); }
+  .bg-gradient-lilac { background: var(--gradient-lilac); }
+  .bg-gradient-sunrise { background: var(--gradient-sunrise); }
+  .bg-gradient-mesh { background: var(--gradient-mesh-calm); }
+  .bg-gradient-mesh-warm { background: var(--gradient-mesh-warm); }
+  .bg-aurora { background: var(--bg-aurora); }
+  .bg-golden-hour { background: var(--bg-golden-hour); }
+  .bg-serenity { background: var(--bg-serenity); }
+  .bg-garden { background: var(--bg-garden); }
+  .bg-meditation { background: var(--bg-meditation); }
+
+  .shadow-glass { box-shadow: var(--shadow-glass); }
+  .shadow-soft { box-shadow: var(--shadow-soft); }
+  .shadow-float { box-shadow: var(--shadow-float); }
+
+  .blur-glass {
+    backdrop-filter: blur(var(--blur-md));
+    -webkit-backdrop-filter: blur(var(--blur-md));
+  }
+
+  .blur-glass-lg {
+    backdrop-filter: blur(var(--blur-lg));
+    -webkit-backdrop-filter: blur(var(--blur-lg));
+  }
+}
