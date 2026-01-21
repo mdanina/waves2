@@ -28,7 +28,7 @@ export default function Welcome() {
         <div className="space-y-8">
           <div className="text-center">
             <h1 className="mb-4 text-4xl font-bold text-foreground">
-              Добро пожаловать в Balansity!
+              Добро пожаловать в Waves!
             </h1>
             <p className="text-lg text-muted-foreground">
               Сделайте первый шаг к здоровой семье.

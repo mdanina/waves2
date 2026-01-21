@@ -88,7 +88,7 @@ export default function ComingSoon() {
 
             <p className="text-center text-xs text-muted-foreground">
               Нажимая "Присоединиться к списку ожидания", вы соглашаетесь получать маркетинговые и/или
-              транзакционные письма от Balansity. Ознакомьтесь с нашими{" "}
+              транзакционные письма от Waves. Ознакомьтесь с нашими{" "}
               <a href="#" className="underline">
                 Условиями использования
               </a>{" "}

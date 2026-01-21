@@ -42,7 +42,7 @@ export const LandingHeader = ({ variant = "default" }: LandingHeaderProps) => {
     { label: "Наши услуги", href: "/#services" },
     { label: "Что мы лечим", href: "/#conditions" },
     { label: "Наши результаты", href: "/#results" },
-    { label: "Почему Balansity", href: "/#why" },
+    { label: "Почему Waves", href: "/#why" },
     { label: "Наша экспертиза", href: "/#about" },
   ];
 
@@ -63,7 +63,7 @@ export const LandingHeader = ({ variant = "default" }: LandingHeaderProps) => {
         <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
-            <img src={logo} alt="Balansity" className="h-6 sm:h-7 md:h-8 w-auto" />
+            <img src={logo} alt="Waves" className="h-6 sm:h-7 md:h-8 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}

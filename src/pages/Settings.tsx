@@ -316,7 +316,7 @@ export default function Settings() {
       >
         <div className="container mx-auto flex items-center justify-center">
           <Link to="/cabinet">
-            <img src={logo} alt="Balansity" className="h-12 w-auto cursor-pointer" />
+            <img src={logo} alt="Waves" className="h-12 w-auto cursor-pointer" />
           </Link>
         </div>
       </header>
@@ -452,7 +452,7 @@ export default function Settings() {
                   Установить приложение
                 </CardTitle>
                 <CardDescription>
-                  Добавьте Balansity на главный экран для быстрого доступа
+                  Добавьте Waves на главный экран для быстрого доступа
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">

@@ -14,13 +14,13 @@ export const TestimonialSection = () => {
         
         <blockquote className="space-y-6">
           <p className="text-lg leading-relaxed">
-            "Balansity изменил жизнь моей семьи. Все, с кем я общалась, были очень
+            "Waves изменил жизнь моей семьи. Все, с кем я общалась, были очень
             профессиональными, отзывчивыми и добрыми. Оба моих ребенка смогли получить
             качественную психологическую помощь, не выходя из дома, и у них обоих все
             отлично."
           </p>
           <footer className="text-sm opacity-90">
-            -Мама, участница программы Balansity
+            -Мама, участница программы Waves
           </footer>
         </blockquote>
       </div>

@@ -27,7 +27,7 @@ const PrivacyNotice = () => {
           <section className="space-y-4">
             <h2 className="text-xl font-semibold text-foreground">Кто мы</h2>
             <p className="text-foreground/80">
-              ООО «Балансити» — оператор платформы Balansity для оценки ментального здоровья детей и их семей. Мы являемся оператором персональных данных и несем ответственность за их защиту.
+              ООО «Waves» — оператор платформы Waves для оценки ментального здоровья детей и их семей. Мы являемся оператором персональных данных и несем ответственность за их защиту.
             </p>
           </section>
 
@@ -118,7 +118,7 @@ const PrivacyNotice = () => {
               По вопросам конфиденциальности:
             </p>
             <ul className="list-none text-foreground/80 space-y-1">
-              <li>Email: privacy@balansity.ru</li>
+              <li>Email: privacy@waves.ru</li>
               <li>Телефон: +7 (495) 123-45-67</li>
             </ul>
           </section>

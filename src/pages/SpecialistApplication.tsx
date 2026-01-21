@@ -8,10 +8,10 @@ export default function SpecialistApplication() {
   return (
     <>
       <Helmet>
-        <title>Стать специалистом Balansity | Balansity</title>
+        <title>Стать специалистом Waves | Waves</title>
         <meta
           name="description"
-          content="Присоединяйтесь к команде профессионалов платформы Balansity. Заполните заявку и станьте частью нашей команды психологов."
+          content="Присоединяйтесь к команде профессионалов платформы Waves. Заполните заявку и станьте частью нашей команды психологов."
         />
       </Helmet>
 
@@ -30,7 +30,7 @@ export default function SpecialistApplication() {
           {/* Заголовок */}
           <div className="mb-8 text-center">
             <h1 className="text-3xl md:text-4xl font-bold text-ink mb-2">
-              Стать специалистом Balansity
+              Стать специалистом Waves
             </h1>
             <p className="text-lg text-ink/70">
               Присоединяйтесь к команде профессионалов платформы

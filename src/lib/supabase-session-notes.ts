@@ -1,6 +1,6 @@
 /**
  * API для работы с заметками сессий
- * Перенесено из PsiPilot для Balansity
+ * Перенесено из PsiPilot для Waves
  */
 
 import { supabase } from './supabase';

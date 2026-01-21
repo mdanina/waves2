@@ -1,6 +1,6 @@
 {
-  "name": "Balansity",
-  "short_name": "Balansity",
+  "name": "Waves",
+  "short_name": "Waves",
   "description": "Напоминания о сессиях и быстрое общение со специалистами",
   "start_url": "/cabinet",
   "display": "standalone",

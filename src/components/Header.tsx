@@ -26,7 +26,7 @@ export const Header = () => {
       <div className="container mx-auto px-4 py-2">
         <div className="flex items-center justify-center">
           <Link to="/cabinet" className="cursor-pointer">
-            <img src={logo} alt="Balansity" className="h-8 w-auto" />
+            <img src={logo} alt="Waves" className="h-8 w-auto" />
           </Link>
         </div>
       </div>

@@ -556,7 +556,7 @@ export default function Dashboard() {
         }}
       >
         <div className="container mx-auto relative flex items-center justify-center">
-          <img src={logo} alt="Balansity" className="h-12 w-auto" />
+          <img src={logo} alt="Waves" className="h-12 w-auto" />
           
           {user && (
             <div className="absolute right-0">
@@ -1192,7 +1192,7 @@ export default function Dashboard() {
             <div className="flex flex-col items-center text-center justify-center flex-1">
               <img
                 src={consultationIllustration}
-                alt="Balansity Portal"
+                alt="Waves Portal"
                 className={`mb-6 h-40 w-auto object-contain transition-transform pointer-events-none ${
                   hasAnyCompletedCheckup ? 'group-hover:scale-110' : ''
                 }`}

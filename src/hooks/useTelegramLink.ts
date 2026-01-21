@@ -89,7 +89,7 @@ export function useTelegramLink() {
         const token: LinkToken = {
           token: tokenData.token,
           expiresAt: new Date(tokenData.expires_at),
-          botUsername: tokenData.bot_username || 'balansity_notification_bot',
+          botUsername: tokenData.bot_username || 'waves_notification_bot',
         };
         setLinkToken(token);
         return token;

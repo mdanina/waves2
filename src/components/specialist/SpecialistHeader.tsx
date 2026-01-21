@@ -189,7 +189,7 @@ export function SpecialistHeader() {
                   <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
                     <span className="text-white font-bold text-sm">B</span>
                   </div>
-                  <span>Balansity</span>
+                  <span>Waves</span>
                 </SheetTitle>
               </SheetHeader>
               <ScrollArea className="h-[calc(100vh-5rem)]">
@@ -264,7 +264,7 @@ export function SpecialistHeader() {
             <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
               <span className="text-white font-bold text-sm">B</span>
             </div>
-            <span className="font-semibold text-lg hidden sm:inline">Balansity</span>
+            <span className="font-semibold text-lg hidden sm:inline">Waves</span>
             <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full hidden sm:inline">
               Специалист
             </span>

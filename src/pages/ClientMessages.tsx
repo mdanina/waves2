@@ -997,7 +997,7 @@ export default function ClientMessages() {
             onClick={() => navigate('/cabinet')}
             className="cursor-pointer"
           >
-            <img src="/logo.png" alt="Balansity" className="h-12 w-auto" />
+            <img src="/logo.png" alt="Waves" className="h-12 w-auto" />
           </button>
           {totalUnread > 0 && (
             <Badge variant="secondary" className="absolute right-0 bg-honey text-ink font-light hover:bg-honey">

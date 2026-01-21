@@ -97,7 +97,7 @@ export default function SpecialistLogin() {
           <div className="mt-6 text-center text-sm text-muted-foreground">
             <p>
               Проблемы со входом?{' '}
-              <a href="mailto:support@balansity.ru" className="text-primary hover:underline">
+              <a href="mailto:support@waves.ru" className="text-primary hover:underline">
                 Обратитесь в поддержку
               </a>
             </p>

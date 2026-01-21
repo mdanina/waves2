@@ -77,7 +77,7 @@ export default function Blog() {
               <div className="blog-hero-card grid gap-8 md:grid-cols-[minmax(0,1.7fr)_minmax(0,1.3fr)] items-center">
                 <div className="relative z-10 space-y-4">
                   <div className="blog-hero-pill text-xs font-medium text-[hsl(var(--color-ink))]/70">
-                    <span>Журнал Balansity</span>
+                    <span>Журнал Waves</span>
                     <span className="h-1 w-1 rounded-full bg-white/70" />
                     <span>для тех, кто тащит на себе всё</span>
                   </div>

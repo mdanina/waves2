@@ -1,6 +1,6 @@
 /**
  * Компонент для записи аудио на сессии
- * Перенесено из PsiPilot для Balansity
+ * Перенесено из PsiPilot для Waves
  */
 
 import { useState, useEffect, useCallback } from 'react';
