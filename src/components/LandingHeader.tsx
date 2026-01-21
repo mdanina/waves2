@@ -57,7 +57,7 @@ export const LandingHeader = ({ variant = "default" }: LandingHeaderProps) => {
           "sticky top-0 z-50 w-full backdrop-blur",
           isBlog
             ? "border-b border-[#20212b] bg-[#111118]/95"
-            : "border-b border-[rgba(0,0,0,0.06)] bg-[#fffef7]/95 supports-[backdrop-filter]:bg-[#fffef7]/60",
+            : "border-b border-border bg-background/95 supports-[backdrop-filter]:bg-background/60",
         )}
       >
         <div className="container mx-auto px-4">
