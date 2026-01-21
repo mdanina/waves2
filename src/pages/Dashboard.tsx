@@ -1,8 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import consultationIllustration from "@/assets/friendly-and-clean-vector-style-illustration-of-a-.png";
 import checkupIllustration from "@/assets/minimalistic-and-friendly-vector-style-illustratio (1).png";
-// import logo from "@/assets/noroot (2).png";
-const logo = "/logo.png"; // Новый логотип из public
 import parentFemaleAvatar from "@/assets/friendly-and-clean-face-of-an-adult-person--gender.png";
 import parentMaleAvatar from "@/assets/friendly-and-clean-face-of-an-adult-person--gender (1).png";
 import childFemaleAvatar from "@/assets/friendly-and-clean-face-of-a-white-girl-7-yo--soft.png";
@@ -53,14 +51,6 @@ import {
 import { logger } from "@/lib/logger";
 import { getPendingRating, PendingRating } from "@/lib/supabase-ratings";
 import { getUnreadCount, subscribeToMessages } from "@/lib/supabase-messages";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Database } from "@/lib/supabase";
@@ -77,7 +67,7 @@ const INTRO_VIDEO_URL = "https://www.youtube.com/embed/dQw4w9WgXcQ";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const { setCurrentProfileId, setCurrentProfile } = useCurrentProfile();
   const cancelAppointment = useCancelAppointment();
   const queryClient = useQueryClient();
@@ -279,10 +269,6 @@ export default function Dashboard() {
     }
   };
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate("/");
-  };
 
   const handleDeleteMember = async (memberId: string) => {
     try {
@@ -540,89 +526,15 @@ export default function Dashboard() {
 
   return (
     <div 
-      className="min-h-screen bg-background"
+      className="w-full"
       style={{
         background: 'var(--bg-mesh-vibrant-2)',
-        backgroundAttachment: 'fixed'
+        backgroundAttachment: 'fixed',
+        minHeight: '100vh'
       }}
     >
-      {/* Header */}
-      <header 
-        className="sticky top-0 z-50 border-b border-[#1a1a1a]/10 px-6 py-4"
-        style={{
-          background: 'linear-gradient(108deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.25) 100%)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)'
-        }}
-      >
-        <div className="container mx-auto relative flex items-center justify-center">
-          <img src={logo} alt="Waves" className="h-12 w-auto" />
-          
-          {user && (
-            <div className="absolute right-0">
-              <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="relative h-14 w-14 rounded-full p-0 hover:bg-accent focus:ring-2 focus:ring-ring"
-                  aria-label="Меню профиля"
-                >
-                  <Avatar className="h-14 w-14 border-2 border-transparent hover:border-primary transition-colors">
-                    <div 
-                      className="flex h-full w-full items-center justify-center bg-primary hover:bg-primary/90 transition-colors"
-                      style={{
-                        boxShadow: '0 0 30px rgba(255, 209, 118, 0.8), 0 0 60px rgba(255, 209, 118, 0.5), 0 0 90px rgba(255, 209, 118, 0.3)'
-                      }}
-                    >
-                      <User className="h-16 w-16 text-primary-foreground" />
-                    </div>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 z-50" align="end">
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">Профиль</p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                      {typeof user.email === 'string' ? user.email : ''}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={() => navigate("/cabinet/messages")}>
-                  <HelpCircle className="mr-2 h-4 w-4" />
-                  <span className="flex-1">Есть вопросы? Напишите нам</span>
-                  {unreadMessages > 0 && (
-                    <Badge className="ml-2 hover:bg-primary" variant="default">{unreadMessages}</Badge>
-                  )}
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => navigate("/worries", { state: { from: 'cabinet' } })}>
-                  <Tag className="mr-2 h-4 w-4" />
-                  <span>Темы для обращения</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => navigate("/cabinet/settings")}>
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Настройки</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => navigate("/checkup-history")}>
-                  <History className="mr-2 h-4 w-4" />
-                  <span>История чекапов</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={handleSignOut}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Выйти</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          )}
-        </div>
-      </header>
-
       {/* Main Content */}
-        <div className="container mx-auto max-w-5xl px-4 sm:px-6 py-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         {/* Отображение ошибок загрузки */}
         {(profilesError || appointmentsError) && (
           <div className="mb-6 rounded-lg border border-destructive bg-destructive/10 p-4">

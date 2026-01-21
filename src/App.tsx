@@ -14,6 +14,7 @@ import { AdminProtectedRoute } from "@/components/admin/AdminProtectedRoute";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { SpecialistProtectedRoute } from "@/components/specialist/SpecialistProtectedRoute";
 import { SpecialistLayout } from "@/components/specialist/SpecialistLayout";
+import { ClientLayout } from "@/components/client/ClientLayout";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { RouteTracker } from "@/components/RouteTracker";
 import { PWAInstallController } from "@/hooks/usePWAInstall";
@@ -196,7 +197,73 @@ const App = () => (
                       <Route path="specialist-applications" element={<SpecialistApplicationsManagement />} />
                     </Route>
                     
-                    {/* Защищенные маршруты (требуют авторизации) */}
+                    {/* Защищенные маршруты с Layout (требуют авторизации) */}
+                    <Route
+                      path="/cabinet/*"
+                      element={
+                        <ProtectedRoute>
+                          <ClientLayout />
+                        </ProtectedRoute>
+                      }
+                    >
+                      <Route index element={<Dashboard />} />
+                      <Route path="messages" element={<ClientMessages />} />
+                      <Route path="settings" element={<Settings />} />
+                    </Route>
+                    <Route
+                      path="/appointments/*"
+                      element={
+                        <ProtectedRoute>
+                          <ClientLayout />
+                        </ProtectedRoute>
+                      }
+                    >
+                      <Route index element={<Appointments />} />
+                      <Route path="booking" element={<AppointmentBooking />} />
+                      <Route path="confirmation" element={<AppointmentConfirmation />} />
+                    </Route>
+                    <Route
+                      path="/checkup-history"
+                      element={
+                        <ProtectedRoute>
+                          <ClientLayout />
+                        </ProtectedRoute>
+                      }
+                    >
+                      <Route index element={<CheckupHistory />} />
+                    </Route>
+                    <Route
+                      path="/packages"
+                      element={
+                        <ProtectedRoute>
+                          <ClientLayout />
+                        </ProtectedRoute>
+                      }
+                    >
+                      <Route index element={<Packages />} />
+                    </Route>
+                    <Route
+                      path="/payment"
+                      element={
+                        <ProtectedRoute>
+                          <ClientLayout />
+                        </ProtectedRoute>
+                      }
+                    >
+                      <Route index element={<Payment />} />
+                    </Route>
+                    <Route
+                      path="/worries/:profileId?"
+                      element={
+                        <ProtectedRoute>
+                          <ClientLayout />
+                        </ProtectedRoute>
+                      }
+                    >
+                      <Route index element={<Worries />} />
+                    </Route>
+
+                    {/* Защищенные маршруты без Layout (для страниц без сайдбара) */}
                     <Route path="/success" element={<ProtectedRoute><Success /></ProtectedRoute>} />
                     <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                     <Route path="/region" element={<ProtectedRoute><RegionSelect /></ProtectedRoute>} />
@@ -204,7 +271,6 @@ const App = () => (
                     <Route path="/family-members" element={<ProtectedRoute><FamilyMembers /></ProtectedRoute>} />
                     <Route path="/add-family-member" element={<ProtectedRoute><AddFamilyMember /></ProtectedRoute>} />
                     <Route path="/edit-family-member/:id" element={<ProtectedRoute><EditFamilyMember /></ProtectedRoute>} />
-                    <Route path="/worries/:profileId?" element={<ProtectedRoute><Worries /></ProtectedRoute>} />
                     <Route path="/checkup-intro/:profileId?" element={<ProtectedRoute><CheckupIntro /></ProtectedRoute>} />
                     <Route path="/checkup" element={<ProtectedRoute><Checkup /></ProtectedRoute>} />
                     <Route path="/checkup-questions/:profileId?" element={<ProtectedRoute><CheckupQuestions /></ProtectedRoute>} />
@@ -215,17 +281,6 @@ const App = () => (
                     <Route path="/family-questions/:profileId?" element={<ProtectedRoute><FamilyQuestions /></ProtectedRoute>} />
                     <Route path="/checkup-results" element={<ProtectedRoute><CheckupResults /></ProtectedRoute>} />
                     <Route path="/results-report/:profileId?" element={<ProtectedRoute><ResultsReportNew /></ProtectedRoute>} />
-                    <Route path="/checkup-history" element={<ProtectedRoute><CheckupHistory /></ProtectedRoute>} />
-                    <Route path="/cabinet" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                    <Route path="/cabinet/messages" element={<ProtectedRoute><ClientMessages /></ProtectedRoute>} />
-                    <Route path="/cabinet/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-                    
-                    {/* Консультации и оплата */}
-                    <Route path="/appointments" element={<ProtectedRoute><Appointments /></ProtectedRoute>} />
-                    <Route path="/appointments/booking" element={<ProtectedRoute><AppointmentBooking /></ProtectedRoute>} />
-                    <Route path="/appointments/confirmation" element={<ProtectedRoute><AppointmentConfirmation /></ProtectedRoute>} />
-                    <Route path="/packages" element={<ProtectedRoute><Packages /></ProtectedRoute>} />
-                    <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
 
                     {/* Маршруты специалиста */}
                     <Route path="/specialist/login" element={<SpecialistLogin />} />
