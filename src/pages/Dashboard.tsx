@@ -585,7 +585,7 @@ export default function Dashboard() {
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium leading-none">Профиль</p>
                     <p className="text-xs leading-none text-muted-foreground">
-                      {user.email}
+                      {typeof user.email === 'string' ? user.email : ''}
                     </p>
                   </div>
                 </DropdownMenuLabel>
