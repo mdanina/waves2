@@ -318,20 +318,10 @@ export class LocalTable<T> {
     return new LocalQueryBuilder<T>(this.tableName, this.db);
   }
 
-  async insert(data: any) {
-    const id = data.id || generateUUID();
-    const now = new Date().toISOString();
-    const record = {
-      ...data,
-      id,
-      created_at: data.created_at || now,
-      updated_at: now,
-    };
-    await this.db.put(this.tableName, record);
-    return {
-      data: [record] as T[],
-      error: null,
-    };
+  insert(data: any): LocalQueryBuilder<T> {
+    const builder = new LocalQueryBuilder<T>(this.tableName, this.db);
+    builder.setInsertData(data);
+    return builder;
   }
 
   update(updates: any): LocalQueryBuilder<T> {
@@ -404,6 +394,7 @@ class LocalQueryBuilder<T> {
   private orderBy?: { column: string; ascending: boolean };
   private limitValue?: number;
   private updateData?: any;
+  private insertData?: any;
   public isDelete = false;
   private isSingle = false;
   private selectOptions?: { count?: 'exact' | 'estimated' | 'planned'; head?: boolean };
@@ -422,6 +413,9 @@ class LocalQueryBuilder<T> {
   // Делаем объект thenable (Promise-like), чтобы можно было await
   then(onFulfilled?: (value: any) => any, onRejected?: (reason: any) => any): Promise<any> {
     // Определяем, какой метод выполнить на основе состояния
+    if (this.insertData) {
+      return this.executeInsert().then(onFulfilled, onRejected);
+    }
     if (this.updateData) {
       return this.update().then(onFulfilled, onRejected);
     }
@@ -433,6 +427,11 @@ class LocalQueryBuilder<T> {
 
   setUpdateData(updates: any) {
     this.updateData = updates;
+    return this;
+  }
+
+  setInsertData(data: any) {
+    this.insertData = data;
     return this;
   }
 
@@ -495,8 +494,8 @@ class LocalQueryBuilder<T> {
   }
 
   select(columns?: string, options?: { count?: 'exact' | 'estimated' | 'planned'; head?: boolean }): LocalQueryBuilder<T> | Promise<any> {
-    // Если это вызов после update/delete, просто устанавливаем флаг для возврата данных
-    if (this.updateData || this.isDelete) {
+    // Если это вызов после insert/update/delete, просто устанавливаем флаг для возврата данных
+    if (this.insertData || this.updateData || this.isDelete) {
       this.shouldReturnData = true;
       this.selectOptions = options;
       return this;
@@ -596,7 +595,15 @@ class LocalQueryBuilder<T> {
     };
   }
 
-  async insert(data: any) {
+  private async executeInsert() {
+    const data = this.insertData;
+    if (!data) {
+      return {
+        data: null,
+        error: { message: 'No insert data provided', code: 'PGRST202' },
+      };
+    }
+
     const id = data.id || generateUUID();
     const now = new Date().toISOString();
     const record = {
@@ -606,6 +613,15 @@ class LocalQueryBuilder<T> {
       updated_at: now,
     };
     await this.db.put(this.tableName, record);
+
+    // Если был вызван .select().single(), возвращаем один объект
+    if (this.shouldReturnData && this.isSingle) {
+      return {
+        data: record as T,
+        error: null,
+      };
+    }
+
     return {
       data: [record] as T[],
       error: null,
