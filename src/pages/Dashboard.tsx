@@ -590,27 +590,27 @@ export default function Dashboard() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate("/cabinet/messages")}>
+                <DropdownMenuItem onSelect={() => navigate("/cabinet/messages")}>
                   <HelpCircle className="mr-2 h-4 w-4" />
                   <span className="flex-1">Есть вопросы? Напишите нам</span>
                   {unreadMessages > 0 && (
                     <Badge className="ml-2 hover:bg-primary" variant="default">{unreadMessages}</Badge>
                   )}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate("/worries", { state: { from: 'cabinet' } })}>
+                <DropdownMenuItem onSelect={() => navigate("/worries", { state: { from: 'cabinet' } })}>
                   <Tag className="mr-2 h-4 w-4" />
                   <span>Темы для обращения</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate("/cabinet/settings")}>
+                <DropdownMenuItem onSelect={() => navigate("/cabinet/settings")}>
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Настройки</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate("/checkup-history")}>
+                <DropdownMenuItem onSelect={() => navigate("/checkup-history")}>
                   <History className="mr-2 h-4 w-4" />
                   <span>История чекапов</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut}>
+                <DropdownMenuItem onSelect={handleSignOut}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Выйти</span>
                 </DropdownMenuItem>

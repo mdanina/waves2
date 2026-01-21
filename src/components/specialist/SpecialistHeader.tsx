@@ -370,16 +370,16 @@ export function SpecialistHeader() {
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>Мой аккаунт</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate('/specialist/profile')}>
+              <DropdownMenuItem onSelect={() => navigate('/specialist/profile')}>
                 <User className="mr-2 h-4 w-4" />
                 Профиль
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/specialist/settings')}>
+              <DropdownMenuItem onSelect={() => navigate('/specialist/settings')}>
                 <Settings className="mr-2 h-4 w-4" />
                 Настройки
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleSignOut} className="text-red-600">
+              <DropdownMenuItem onSelect={handleSignOut} className="text-red-600">
                 <LogOut className="mr-2 h-4 w-4" />
                 Выйти
               </DropdownMenuItem>
