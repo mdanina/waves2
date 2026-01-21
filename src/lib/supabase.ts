@@ -55,10 +55,29 @@ function createAsyncProxy() {
         return undefined;
       }
 
-      // Если это свойство (например, auth, from), возвращаем прокси
+      // Если это свойство (например, auth, from, channel), возвращаем прокси
       if (typeof prop === 'string') {
-        return new Proxy(() => {}, {
+        // Если экземпляр уже инициализирован, возвращаем значение синхронно
+        if (supabaseInstance) {
+          const instance = supabaseInstance;
+          if (instance && typeof instance[prop] === 'function') {
+            // Возвращаем функцию, которая вызывает метод напрямую
+            return (...args: any[]) => instance[prop](...args);
+          }
+          if (instance && instance[prop]) {
+            // Если это объект (например, auth), возвращаем его напрямую
+            return instance[prop];
+          }
+        }
+
+        // Если не инициализирован, возвращаем прокси для свойства (например, auth)
+        // Этот прокси будет ждать инициализации при доступе к вложенным свойствам/методам
+        return new Proxy({} as any, {
           get: (target, subProp: string | symbol) => {
+            if (subProp === 'then' || subProp === 'catch' || subProp === 'finally') {
+              return undefined;
+            }
+            
             // Возвращаем функцию, которая будет вызвана асинхронно
             return async (...args: any[]) => {
               if (!supabaseInstance && initPromise) {
@@ -75,23 +94,12 @@ function createAsyncProxy() {
                 }
                 return value[subProp];
               }
-              return undefined;
+              // Если метод не найден, возвращаем ошибку вместо undefined
+              throw new Error(`Method ${String(subProp)} not found on ${String(prop)}`);
             };
           },
           apply: async (target, thisArg, args) => {
-            if (!supabaseInstance && initPromise) {
-              supabaseInstance = await initPromise;
-            } else if (!supabaseInstance) {
-              supabaseInstance = await initializeSupabase();
-            }
-
-            const instance = supabaseInstance;
-            if (instance && typeof instance[prop] === 'function') {
-              return instance[prop](...args);
-            }
-            if (instance && instance[prop]) {
-              return instance[prop];
-            }
+            // Это не должно вызываться для свойств, только для функций
             return undefined;
           },
         });

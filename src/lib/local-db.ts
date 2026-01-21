@@ -123,7 +123,10 @@ export class LocalAuth {
     this.currentSession = session;
   }
 
-  async signUp(email: string, password: string) {
+  // Supabase API: signUp принимает объект { email, password, options? }
+  async signUp(credentials: { email: string; password: string; options?: any }) {
+    const { email, password } = credentials;
+    
     // Проверяем, существует ли пользователь
     const db = await getDB();
     const allUsers = await db.getAll('users');
@@ -231,6 +234,11 @@ export class LocalAuth {
     return { error: null };
   }
 
+  // Supabase API: signInWithPassword принимает объект { email, password, options? }
+  async signInWithPassword(credentials: { email: string; password: string; options?: any }) {
+    return this.signIn(credentials.email, credentials.password);
+  }
+
   async signOut() {
     await this.saveSession(null, null);
     this.notifyListeners('SIGNED_OUT', null);
@@ -285,12 +293,12 @@ export class LocalAuth {
     });
   }
 
-  resetPasswordForEmail(email: string) {
+  resetPasswordForEmail(email: string, options?: { redirectTo?: string }) {
     // Эмуляция - просто возвращаем успех
     return Promise.resolve({ error: null });
   }
 
-  updateUser(updates: { password?: string }) {
+  updateUser(updates: { password?: string; email?: string; data?: any }) {
     // Эмуляция - просто возвращаем успех
     return Promise.resolve({ data: { user: this.currentUser }, error: null });
   }
@@ -303,12 +311,9 @@ export class LocalTable<T> {
     private db: IDBPDatabase<LocalDBSchema>
   ) {}
 
-  async select(columns?: string) {
-    const all = await this.db.getAll(this.tableName);
-    return {
-      data: all as T[],
-      error: null,
-    };
+  // select() должен возвращать query builder, а не выполнять запрос сразу
+  select(columns?: string): LocalQueryBuilder<T> {
+    return new LocalQueryBuilder<T>(this.tableName, this.db);
   }
 
   async insert(data: any) {
@@ -327,45 +332,35 @@ export class LocalTable<T> {
     };
   }
 
-  async update(id: string, updates: any) {
-    const existing = await this.db.get(this.tableName, id);
-    if (!existing) {
-      return {
-        data: null,
-        error: { message: 'Record not found', code: 'PGRST116' },
-      };
-    }
-    const updated = {
-      ...existing,
-      ...updates,
-      updated_at: new Date().toISOString(),
-    };
-    await this.db.put(this.tableName, updated);
-    return {
-      data: [updated] as T[],
-      error: null,
-    };
+  update(updates: any): LocalQueryBuilder<T> {
+    const builder = new LocalQueryBuilder<T>(this.tableName, this.db);
+    builder.setUpdateData(updates);
+    return builder;
   }
 
-  async delete(id: string) {
-    await this.db.delete(this.tableName, id);
-    return {
-      data: null,
-      error: null,
-    };
+  delete(): LocalQueryBuilder<T> {
+    const builder = new LocalQueryBuilder<T>(this.tableName, this.db);
+    builder.isDelete = true;
+    return builder;
   }
 
-  eq(column: string, value: any) {
+  eq(column: string, value: any): LocalQueryBuilder<T> {
     return new LocalQueryBuilder<T>(this.tableName, this.db, { column, operator: 'eq', value });
   }
 
-  filter(column: string, operator: string, value: any) {
+  filter(column: string, operator: string, value: any): LocalQueryBuilder<T> {
     return new LocalQueryBuilder<T>(this.tableName, this.db, { column, operator, value });
   }
 }
 
 class LocalQueryBuilder<T> {
   private filters: Array<{ column: string; operator: string; value: any }> = [];
+  private orderBy?: { column: string; ascending: boolean };
+  private limitValue?: number;
+  private updateData?: any;
+  private isDelete = false;
+  private isSingle = false;
+  private selectOptions?: { count?: 'exact' | 'estimated' | 'planned'; head?: boolean };
 
   constructor(
     private tableName: keyof LocalDBSchema,
@@ -377,16 +372,94 @@ class LocalQueryBuilder<T> {
     }
   }
 
-  eq(column: string, value: any) {
+  // Делаем объект thenable (Promise-like), чтобы можно было await
+  then(onFulfilled?: (value: any) => any, onRejected?: (reason: any) => any): Promise<any> {
+    // Определяем, какой метод выполнить на основе состояния
+    if (this.updateData) {
+      return this.update().then(onFulfilled, onRejected);
+    }
+    if (this.isDelete) {
+      return this.delete().then(onFulfilled, onRejected);
+    }
+    return this.select().then(onFulfilled, onRejected);
+  }
+
+  setUpdateData(updates: any) {
+    this.updateData = updates;
+    return this;
+  }
+
+  eq(column: string, value: any): LocalQueryBuilder<T> {
     this.filters.push({ column, operator: 'eq', value });
     return this;
   }
 
-  async select(columns?: string) {
+  neq(column: string, value: any): LocalQueryBuilder<T> {
+    this.filters.push({ column, operator: 'neq', value });
+    return this;
+  }
+
+  in(column: string, values: any[]): LocalQueryBuilder<T> {
+    this.filters.push({ column, operator: 'in', value: values });
+    return this;
+  }
+
+  gte(column: string, value: any): LocalQueryBuilder<T> {
+    this.filters.push({ column, operator: 'gte', value });
+    return this;
+  }
+
+  lte(column: string, value: any): LocalQueryBuilder<T> {
+    this.filters.push({ column, operator: 'lte', value });
+    return this;
+  }
+
+  gt(column: string, value: any): LocalQueryBuilder<T> {
+    this.filters.push({ column, operator: 'gt', value });
+    return this;
+  }
+
+  lt(column: string, value: any): LocalQueryBuilder<T> {
+    this.filters.push({ column, operator: 'lt', value });
+    return this;
+  }
+
+  order(column: string, options?: { ascending?: boolean; nullsFirst?: boolean }): LocalQueryBuilder<T> {
+    this.orderBy = { column, ascending: options?.ascending !== false };
+    return this;
+  }
+
+  limit(count: number): LocalQueryBuilder<T> {
+    this.limitValue = count;
+    return this;
+  }
+
+  single(): LocalQueryBuilder<T> {
+    this.isSingle = true;
+    return this;
+  }
+
+  or(conditions: string): LocalQueryBuilder<T> {
+    // Парсим условия вида "and(col1.eq.val1,col2.eq.val2),and(col3.eq.val3,col4.eq.val4)"
+    // Пока упрощённая реализация - просто добавляем как отдельные фильтры
+    // Для полной поддержки нужен более сложный парсер
+    this.filters.push({ column: '__or__', operator: 'or', value: conditions });
+    return this;
+  }
+
+  async select(columns?: string, options?: { count?: 'exact' | 'estimated' | 'planned'; head?: boolean }) {
+    this.selectOptions = options;
     const all = await this.db.getAll(this.tableName);
     let filtered = all;
 
+    // Применяем фильтры
     for (const filter of this.filters) {
+      if (filter.operator === 'or') {
+        // Упрощённая обработка OR - в реальности нужен парсер
+        // Пока пропускаем
+        continue;
+      }
+      
       filtered = filtered.filter((item: any) => {
         const itemValue = item[filter.column];
         switch (filter.operator) {
@@ -396,10 +469,66 @@ class LocalQueryBuilder<T> {
             return itemValue !== filter.value;
           case 'in':
             return Array.isArray(filter.value) && filter.value.includes(itemValue);
+          case 'gte':
+            return itemValue >= filter.value;
+          case 'lte':
+            return itemValue <= filter.value;
+          case 'gt':
+            return itemValue > filter.value;
+          case 'lt':
+            return itemValue < filter.value;
           default:
             return true;
         }
       });
+    }
+
+    // Применяем сортировку
+    if (this.orderBy) {
+      filtered.sort((a: any, b: any) => {
+        const aVal = a[this.orderBy!.column];
+        const bVal = b[this.orderBy!.column];
+        if (aVal === bVal) return 0;
+        const comparison = aVal < bVal ? -1 : 1;
+        return this.orderBy!.ascending ? comparison : -comparison;
+      });
+    }
+
+    // Применяем лимит
+    if (this.limitValue !== undefined) {
+      filtered = filtered.slice(0, this.limitValue);
+    }
+
+    // Если head: true, возвращаем только count без data
+    if (this.selectOptions?.head) {
+      return {
+        data: null,
+        count: filtered.length,
+        error: null,
+      };
+    }
+
+    // Если single(), возвращаем один элемент
+    if (this.isSingle) {
+      if (filtered.length === 0) {
+        return {
+          data: null,
+          error: { message: 'No rows found', code: 'PGRST116' },
+        };
+      }
+      return {
+        data: filtered[0] as T,
+        error: null,
+      };
+    }
+
+    // Если count: 'exact', добавляем count в результат
+    if (this.selectOptions?.count === 'exact') {
+      return {
+        data: filtered as T[],
+        count: filtered.length,
+        error: null,
+      };
     }
 
     return {
@@ -424,16 +553,37 @@ class LocalQueryBuilder<T> {
     };
   }
 
-  async update(updates: any) {
+  async update(updates?: any) {
+    const updateData = updates || this.updateData;
+    if (!updateData) {
+      return {
+        data: null,
+        error: { message: 'No update data provided', code: 'PGRST202' },
+      };
+    }
+
     const all = await this.db.getAll(this.tableName);
     let filtered = all;
 
+    // Применяем фильтры
     for (const filter of this.filters) {
       filtered = filtered.filter((item: any) => {
         const itemValue = item[filter.column];
         switch (filter.operator) {
           case 'eq':
             return itemValue === filter.value;
+          case 'neq':
+            return itemValue !== filter.value;
+          case 'in':
+            return Array.isArray(filter.value) && filter.value.includes(itemValue);
+          case 'gte':
+            return itemValue >= filter.value;
+          case 'lte':
+            return itemValue <= filter.value;
+          case 'gt':
+            return itemValue > filter.value;
+          case 'lt':
+            return itemValue < filter.value;
           default:
             return true;
         }
@@ -442,7 +592,7 @@ class LocalQueryBuilder<T> {
 
     const updated = filtered.map((item: any) => ({
       ...item,
-      ...updates,
+      ...updateData,
       updated_at: new Date().toISOString(),
     }));
 
@@ -455,11 +605,77 @@ class LocalQueryBuilder<T> {
       error: null,
     };
   }
+
+  async delete() {
+    const all = await this.db.getAll(this.tableName);
+    let filtered = all;
+
+    // Применяем фильтры
+    for (const filter of this.filters) {
+      filtered = filtered.filter((item: any) => {
+        const itemValue = item[filter.column];
+        switch (filter.operator) {
+          case 'eq':
+            return itemValue === filter.value;
+          case 'neq':
+            return itemValue !== filter.value;
+          case 'in':
+            return Array.isArray(filter.value) && filter.value.includes(itemValue);
+          case 'gte':
+            return itemValue >= filter.value;
+          case 'lte':
+            return itemValue <= filter.value;
+          case 'gt':
+            return itemValue > filter.value;
+          case 'lt':
+            return itemValue < filter.value;
+          default:
+            return true;
+        }
+      });
+    }
+
+    for (const item of filtered) {
+      await this.db.delete(this.tableName, (item as any).id);
+    }
+
+    return {
+      data: null,
+      error: null,
+    };
+  }
+}
+
+// Эмуляция Realtime Channel для локальной БД
+class LocalChannel {
+  private channelName: string;
+  private listeners: Array<{ eventType: string; callback: (payload: any) => void }> = [];
+
+  constructor(channelName: string) {
+    this.channelName = channelName;
+  }
+
+  on(eventType: string, config: any, callback: (payload: any) => void): LocalChannel {
+    // В локальной БД realtime не поддерживается, просто сохраняем listener
+    this.listeners.push({ eventType, callback });
+    return this;
+  }
+
+  subscribe(): { unsubscribe: () => void } {
+    // В локальной БД realtime не поддерживается, возвращаем no-op unsubscribe
+    return {
+      unsubscribe: () => {
+        // No-op: очищаем listeners
+        this.listeners = [];
+      },
+    };
+  }
 }
 
 // Главный класс эмуляции Supabase
 export class LocalSupabase {
   auth: LocalAuth;
+  private channels: Map<string, LocalChannel> = new Map();
 
   constructor() {
     this.auth = new LocalAuth();
@@ -470,6 +686,25 @@ export class LocalSupabase {
       throw new Error('Database not initialized. Call initLocalDB() first.');
     }
     return new LocalTable<T>(table, dbInstance);
+  }
+
+  // Эмуляция Realtime Channel
+  channel(channelName: string): LocalChannel {
+    if (!this.channels.has(channelName)) {
+      this.channels.set(channelName, new LocalChannel(channelName));
+    }
+    return this.channels.get(channelName)!;
+  }
+
+  // Удаление канала
+  removeChannel(channel: LocalChannel): void {
+    // Находим и удаляем канал из Map
+    for (const [name, ch] of this.channels.entries()) {
+      if (ch === channel) {
+        this.channels.delete(name);
+        break;
+      }
+    }
   }
 
   // Эмуляция RPC функций
