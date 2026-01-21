@@ -344,7 +344,7 @@ export function SpecialistApplicationForm({ alwaysExpanded = false }: Specialist
           className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-honey-pale/50 transition-colors"
         >
           <div>
-            <h3 className="text-lg font-semibold text-ink">Стать специалистом Balansity</h3>
+            <h3 className="text-lg font-semibold text-ink">Стать специалистом Waves</h3>
             <p className="text-sm text-ink/70 mt-1">
               Присоединяйтесь к команде профессионалов платформы
             </p>

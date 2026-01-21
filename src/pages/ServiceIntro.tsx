@@ -14,7 +14,7 @@ export default function ServiceIntro() {
       <div className="flex items-center justify-center bg-background p-8">
         <div className="w-full max-w-2xl space-y-12">
           <div className="flex items-center gap-3">
-            <img src={logo} alt="Balansity" className="h-10 w-auto" />
+            <img src={logo} alt="Waves" className="h-10 w-auto" />
           </div>
 
           <div>
@@ -22,7 +22,7 @@ export default function ServiceIntro() {
               Получите необходимую помощь, сделав три простых шага
             </h1>
             <p className="text-xl text-muted-foreground">
-              Мы вместе с вами на всем пути. Balansity здесь, чтобы предоставить вашему ребенку и семье комплексный, персонализированный подход к психическому здоровью, независимо
+              Мы вместе с вами на всем пути. Waves здесь, чтобы предоставить вашему ребенку и семье комплексный, персонализированный подход к психическому здоровью, независимо
               от того, на каком этапе вы находитесь.
             </p>
           </div>

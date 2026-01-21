@@ -130,7 +130,7 @@ export function FamilySection({ parentProfile, partnerProfile, familyAssessment,
                         {familyResults.family_stress.status === 'concerning' ? (
                           <ul className="list-inside space-y-3 text-foreground">
                             <li>
-                              <strong>Обратитесь за профессиональной помощью.</strong> Семейная терапия или консультация специалиста поможет найти выход из сложной ситуации. В Balansity мы можем помочь.
+                              <strong>Обратитесь за профессиональной помощью.</strong> Семейная терапия или консультация специалиста поможет найти выход из сложной ситуации. В Waves мы можем помочь.
                             </li>
                             <li>
                               <strong>Определите источники стресса.</strong> Постарайтесь понять, какие факторы создают наибольшее напряжение, и подумайте, что можно изменить.
@@ -220,7 +220,7 @@ export function FamilySection({ parentProfile, partnerProfile, familyAssessment,
                         {familyResults.partner_relationship.status === 'concerning' ? (
                           <ul className="list-inside space-y-3 text-foreground">
                             <li>
-                              <strong>Рассмотрите парную терапию.</strong> Работа со специалистом помогает разобраться в проблемах и найти пути их решения. В Balansity мы можем помочь подобрать терапевта.
+                              <strong>Рассмотрите парную терапию.</strong> Работа со специалистом помогает разобраться в проблемах и найти пути их решения. В Waves мы можем помочь подобрать терапевта.
                             </li>
                             <li>
                               <strong>Защитите детей от конфликтов.</strong> Старайтесь не выяснять отношения при детях и не вовлекать их в разногласия между взрослыми.
@@ -310,7 +310,7 @@ export function FamilySection({ parentProfile, partnerProfile, familyAssessment,
                         {familyResults.coparenting.status === 'concerning' ? (
                           <ul className="list-inside space-y-3 text-foreground">
                             <li>
-                              <strong>Обратитесь за помощью.</strong> Семейная терапия или консультация по совместному воспитанию может помочь найти общий подход. В Balansity мы можем помочь.
+                              <strong>Обратитесь за помощью.</strong> Семейная терапия или консультация по совместному воспитанию может помочь найти общий подход. В Waves мы можем помочь.
                             </li>
                             <li>
                               <strong>Не критикуйте партнера при ребенке.</strong> Разногласия обсуждайте наедине, а перед ребенком поддерживайте единую позицию.

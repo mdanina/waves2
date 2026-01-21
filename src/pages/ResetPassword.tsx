@@ -245,7 +245,7 @@ export default function ResetPassword() {
           <div className="w-full max-w-md space-y-8">
             <div className="text-center">
               <div className="flex items-center justify-center gap-3 mb-6">
-                <Link to="/"><img src={logo} alt="Balansity" className="h-10 w-auto" /></Link>
+                <Link to="/"><img src={logo} alt="Waves" className="h-10 w-auto" /></Link>
               </div>
               <div className="flex items-center justify-center gap-2">
                 <Loader2 className="h-5 w-5 animate-spin text-primary" />
@@ -265,7 +265,7 @@ export default function ResetPassword() {
           <div className="w-full max-w-md space-y-8">
             <div className="text-center">
               <div className="flex items-center justify-center gap-3 mb-6">
-                <Link to="/"><img src={logo} alt="Balansity" className="h-10 w-auto" /></Link>
+                <Link to="/"><img src={logo} alt="Waves" className="h-10 w-auto" /></Link>
               </div>
               <h1 className="text-3xl font-bold text-foreground">Ошибка</h1>
             </div>
@@ -305,7 +305,7 @@ export default function ResetPassword() {
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-6">
-              <Link to="/"><img src={logo} alt="Balansity" className="h-10 w-auto" /></Link>
+              <Link to="/"><img src={logo} alt="Waves" className="h-10 w-auto" /></Link>
             </div>
             <h1 className="text-3xl font-bold text-foreground">Новый пароль</h1>
             <p className="mt-2 text-muted-foreground">

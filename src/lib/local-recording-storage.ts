@@ -1,6 +1,6 @@
 /**
  * Локальное хранилище аудиозаписей в IndexedDB
- * Перенесено из PsiPilot для Balansity
+ * Перенесено из PsiPilot для Waves
  *
  * Обеспечивает:
  * - Сохранение записей локально до загрузки на сервер
@@ -11,8 +11,8 @@
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 import { logger } from './logger';
 
-// Имя базы данных для Balansity
-const DB_NAME = 'balansity-recordings';
+// Имя базы данных для Waves
+const DB_NAME = 'waves-recordings';
 const DB_VERSION = 1;
 
 // Статусы локальной записи

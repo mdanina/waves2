@@ -17,7 +17,7 @@ interface BlogBreadcrumbsProps {
  * Поддерживает SEO для Яндекса (Microdata) и Google (JSON-LD)
  */
 export function BlogBreadcrumbs({ items, currentTitle, currentUrl }: BlogBreadcrumbsProps) {
-  const baseUrl = "https://balansity.ru";
+  const baseUrl = "https://waves.ru";
 
   // Полный список элементов для JSON-LD
   const jsonLdItems = [

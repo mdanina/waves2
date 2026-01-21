@@ -1,5 +1,5 @@
 /**
- * Balansity Service Worker
+ * Waves Service Worker
  * Minimal implementation focused on Push Notifications
  * No aggressive caching to avoid update issues
  */
@@ -27,11 +27,11 @@ self.addEventListener('push', (event) => {
   console.log('[SW] Push received');
 
   let data = {
-    title: 'Balansity',
+    title: 'Waves',
     body: 'У вас новое уведомление',
     icon: '/icons/icon-192x192.png',
     badge: '/icons/icon-96x96.png',
-    tag: 'balansity-notification',
+    tag: 'waves-notification',
     data: {}
   };
 
@@ -55,7 +55,7 @@ self.addEventListener('push', (event) => {
     body: data.body,
     icon: data.icon || '/icons/icon-192x192.png',
     badge: data.badge || '/icons/icon-96x96.png',
-    tag: data.tag || 'balansity-notification',
+    tag: data.tag || 'waves-notification',
     data: data.data,
     vibrate: [200, 100, 200],
     requireInteraction: data.requireInteraction || false,

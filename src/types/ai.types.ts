@@ -1,6 +1,6 @@
 /**
  * Типы для AI-анализа терапевтических сессий
- * Адаптировано из PsiPilot для Balansity
+ * Адаптировано из PsiPilot для Waves
  */
 
 export interface NoteBlockTemplate {

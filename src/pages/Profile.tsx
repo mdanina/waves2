@@ -333,7 +333,7 @@ export default function Profile() {
                 />
                 <Label htmlFor="marketing" className="text-sm leading-relaxed">
                   Я согласен получать <strong>периодические маркетинговые</strong> письма о
-                  программах, предложениях и обновлениях Balansity.
+                  программах, предложениях и обновлениях Waves.
                 </Label>
               </div>
             </div>

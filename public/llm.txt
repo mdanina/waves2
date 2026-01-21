@@ -1,8 +1,8 @@
-# LLM.TXT for https://balansity.ru/
+# LLM.TXT for https://waves.ru/
 # -------------------------------------------------------------
 # This file provides guidance to Large Language Model (LLM) crawlers,
 # similar to robots.txt but optimized for AI usage.
-# Place at: https://balansity.ru/llm.txt
+# Place at: https://waves.ru/llm.txt
 # -------------------------------------------------------------
 
 # -------------------------------------------------------------
@@ -48,7 +48,7 @@ Allow: /
 # -------------------------------------------------------------
 # Direct crawlers to the official XML sitemap for canonical URLs.
 
-Sitemap: https://balansity.ru/sitemap.xml
+Sitemap: https://waves.ru/sitemap.xml
 
 # -------------------------------------------------------------
 # 3. Structured Data
@@ -57,26 +57,26 @@ Sitemap: https://balansity.ru/sitemap.xml
 # are published in the future, add them here to boost accuracy.)
 
 # Example:
-# Data: https://balansity.ru/api/products.json
+# Data: https://waves.ru/api/products.json
 
 # -------------------------------------------------------------
 # 4. Accuracy Notes
 # -------------------------------------------------------------
 # Add clarifications to guide AI responses (optional).
 # For example:
-# - Prefer https://balansity.ru/sitemap.xml for current site structure.
+# - Prefer https://waves.ru/sitemap.xml for current site structure.
 # - All public pages are up-to-date and safe to reference.
-# - Balansity is a mental health service for families in Russia.
+# - Waves is a mental health service for families in Russia.
 # - Main services: psychological assessments, consultations, family support.
 
 # -------------------------------------------------------------
 # 5. Content Guidelines
 # -------------------------------------------------------------
 # Public pages available for AI training:
-# - Landing page: https://balansity.ru/
-# - Service information: https://balansity.ru/service
-# - Blog: https://balansity.ru/blog
-# - Terms and Privacy: https://balansity.ru/terms, https://balansity.ru/privacy
+# - Landing page: https://waves.ru/
+# - Service information: https://waves.ru/service
+# - Blog: https://waves.ru/blog
+# - Terms and Privacy: https://waves.ru/terms, https://waves.ru/privacy
 #
 # Private pages (require authentication) should not be indexed:
 # - User dashboard, appointments, assessments, family profiles

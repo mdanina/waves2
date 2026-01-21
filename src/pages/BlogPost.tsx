@@ -81,15 +81,15 @@ export default function BlogPost() {
             <>
               {/* SEO: Мета-теги и JSON-LD в head */}
               <Helmet>
-                <title>{post.title} | Блог Balansity</title>
+                <title>{post.title} | Блог Waves</title>
                 <meta name="description" content={post.subtitle || post.title} />
-                <link rel="canonical" href={`https://balansity.ru/blog/${post.slug}`} />
+                <link rel="canonical" href={`https://waves.ru/blog/${post.slug}`} />
 
                 {/* Open Graph */}
                 <meta property="og:type" content="article" />
                 <meta property="og:title" content={post.title} />
                 <meta property="og:description" content={post.subtitle || post.title} />
-                <meta property="og:url" content={`https://balansity.ru/blog/${post.slug}`} />
+                <meta property="og:url" content={`https://waves.ru/blog/${post.slug}`} />
                 {post.cover_image_url && <meta property="og:image" content={post.cover_image_url} />}
                 <meta property="article:published_time" content={post.published_at} />
                 {post.updated_at && <meta property="article:modified_time" content={post.updated_at} />}
@@ -111,7 +111,7 @@ export default function BlogPost() {
                     ...(post.cover_image_url && { image: post.cover_image_url }),
                     datePublished: post.published_at,
                     dateModified: post.updated_at || post.published_at,
-                    url: `https://balansity.ru/blog/${post.slug}`,
+                    url: `https://waves.ru/blog/${post.slug}`,
                     ...(post.author_name && {
                       author: {
                         "@type": "Person",
@@ -120,17 +120,17 @@ export default function BlogPost() {
                     }),
                     publisher: {
                       "@type": "Organization",
-                      name: "Balansity",
-                      url: "https://balansity.ru",
+                      name: "Waves",
+                      url: "https://waves.ru",
                       logo: {
                         "@type": "ImageObject",
-                        url: "https://balansity.ru/logo.png",
+                        url: "https://waves.ru/logo.png",
                       },
                     },
                     ...(post.category && { articleSection: post.category }),
                     mainEntityOfPage: {
                       "@type": "WebPage",
-                      "@id": `https://balansity.ru/blog/${post.slug}`,
+                      "@id": `https://waves.ru/blog/${post.slug}`,
                     },
                   })}
                 </script>

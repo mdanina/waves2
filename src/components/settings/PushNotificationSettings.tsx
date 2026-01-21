@@ -53,7 +53,7 @@ export function PushNotificationSettings() {
             <AlertDescription>
               <p className="font-medium mb-2">Установите приложение на iPhone</p>
               <p className="text-sm text-muted-foreground mb-3">
-                Чтобы получать push-уведомления на iOS, сначала добавьте Balansity на главный экран:
+                Чтобы получать push-уведомления на iOS, сначала добавьте Waves на главный экран:
               </p>
               <ol className="text-sm text-muted-foreground list-decimal list-inside space-y-1">
                 <li>Нажмите кнопку «Поделиться» внизу Safari</li>
@@ -185,7 +185,7 @@ export function PushNotificationSettings() {
         {/* iOS hint about PWA */}
         {isIOSDevice && isPWAInstalled && !isSubscribed && (
           <p className="text-xs text-muted-foreground">
-            Вы используете Balansity как приложение. Включите уведомления, чтобы получать оповещения.
+            Вы используете Waves как приложение. Включите уведомления, чтобы получать оповещения.
           </p>
         )}
       </CardContent>

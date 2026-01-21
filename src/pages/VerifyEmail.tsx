@@ -235,7 +235,7 @@ export default function VerifyEmail() {
             <div className="text-center">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <Link to="/">
-                  <img src={logo} alt="Balansity" className="h-10 w-auto" />
+                  <img src={logo} alt="Waves" className="h-10 w-auto" />
                 </Link>
               </div>
               <div className="flex flex-col items-center gap-4">
@@ -258,7 +258,7 @@ export default function VerifyEmail() {
             <div className="text-center">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <Link to="/">
-                  <img src={logo} alt="Balansity" className="h-10 w-auto" />
+                  <img src={logo} alt="Waves" className="h-10 w-auto" />
                 </Link>
               </div>
               <div className="flex flex-col items-center gap-4">
@@ -282,7 +282,7 @@ export default function VerifyEmail() {
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-6">
               <Link to="/">
-                <img src={logo} alt="Balansity" className="h-10 w-auto" />
+                <img src={logo} alt="Waves" className="h-10 w-auto" />
               </Link>
             </div>
 
