@@ -30,7 +30,7 @@ export function LoadingSpinner({
   return (
     <div className={cn('flex items-center justify-center', className)}>
       <div className={cn(
-        'rounded-full border-gray-200 animate-spin',
+        'rounded-full border-muted animate-spin',
         sizes[size],
         gradients[gradient]
       )} />

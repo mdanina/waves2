@@ -42,18 +42,18 @@ export function RadioGroup({
               'w-6 h-6 rounded-full border-2 transition-all duration-200',
               'flex items-center justify-center',
               value === option.value
-                ? 'border-[#ff8a65] bg-gradient-to-br from-[#ff8a65]/10 to-[#ff8a65]/5'
-                : 'border-gray-300 bg-white group-hover:border-[#ff8a65]/50'
+                ? 'border-coral bg-gradient-to-br from-coral/10 to-coral/5'
+                : 'border-muted bg-white group-hover:border-coral/50'
             )}>
               {value === option.value && (
-                <div className="w-3 h-3 rounded-full bg-gradient-to-br from-[#ff8a65] to-[#ff6f4a]" />
+                <div className="w-3 h-3 rounded-full bg-gradient-to-br from-coral to-coral-light" />
               )}
             </div>
           </div>
           <div className="flex-1">
             <div className="text-sm font-medium">{option.label}</div>
             {option.description && (
-              <div className="text-xs text-gray-500 mt-0.5">{option.description}</div>
+              <div className="text-xs text-muted-foreground mt-0.5">{option.description}</div>
             )}
           </div>
         </label>

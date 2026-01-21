@@ -69,16 +69,16 @@ export function Modal({
       )}>
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between p-6 border-b border-gray-100">
+          <div className="flex items-center justify-between p-6 border-b border-border">
             {title && (
               <h2 className="text-xl font-medium">{title}</h2>
             )}
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="ml-auto p-2 rounded-full hover:bg-gray-100 transition-colors"
+                className="ml-auto p-2 rounded-full hover:bg-cloud transition-colors"
               >
-                <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>

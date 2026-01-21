@@ -54,14 +54,14 @@ export function Tooltip({
       {isVisible && (
         <div className={cn(
           'absolute z-50 px-3 py-2 text-sm text-white',
-          'bg-gray-900 rounded-xl shadow-lg whitespace-nowrap',
+          'bg-ink rounded-xl shadow-lg whitespace-nowrap',
           'animate-in fade-in zoom-in-95 duration-150',
           positions[position],
           className
         )}>
           {content}
           <div className={cn(
-            'absolute w-0 h-0 border-4 border-gray-900',
+            'absolute w-0 h-0 border-4 border-ink',
             arrows[position]
           )} />
         </div>

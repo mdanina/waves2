@@ -26,7 +26,7 @@ export function Input({
     <div className="w-full">
       <div className="relative">
         {icon && (
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
             {icon}
           </div>
         )}
@@ -45,7 +45,7 @@ export function Input({
             'w-full px-4 py-3 rounded-2xl border-2 transition-all duration-200',
             'bg-white/80 backdrop-blur-sm',
             'focus:outline-none',
-            isFocused ? 'border-[#F3B83A] shadow-lg shadow-[#F3B83A]/20' : 'border-gray-200',
+            isFocused ? 'border-honey shadow-lg shadow-honey/20' : 'border-muted',
             error && 'border-red-300',
             icon && 'pl-12',
             label && 'pt-6 pb-3',
@@ -58,8 +58,8 @@ export function Input({
               'absolute left-4 transition-all duration-200 pointer-events-none',
               icon && 'left-12',
               isFocused || hasValue
-                ? 'top-1.5 text-xs text-gray-500'
-                : 'top-1/2 -translate-y-1/2 text-gray-400'
+                ? 'top-1.5 text-xs text-muted-foreground'
+                : 'top-1/2 -translate-y-1/2 text-muted-foreground'
             )}
           >
             {label}

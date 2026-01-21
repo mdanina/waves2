@@ -57,8 +57,8 @@ export function Toggle({
           sizeConfig.track,
           'rounded-full transition-all duration-300',
           isChecked
-            ? 'bg-gradient-to-r from-[#F3B83A] to-[#FFD54F] shadow-md shadow-[#F3B83A]/30'
-            : 'bg-gray-200'
+            ? 'bg-gradient-to-r from-honey to-honey-light shadow-md shadow-honey/30'
+            : 'bg-muted'
         )}>
           <div className={cn(
             sizeConfig.thumb,

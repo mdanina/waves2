@@ -56,7 +56,7 @@ export function VerticalSlider({
       {/* Slider */}
       <div className="relative h-[300px] w-3">
         {/* Track */}
-        <div className="absolute w-full h-full bg-gradient-to-b from-gray-100 to-gray-200 rounded-full overflow-hidden shadow-inner">
+        <div className="absolute w-full h-full bg-gradient-to-b from-cloud to-muted rounded-full overflow-hidden shadow-inner">
           {/* Fill with gradient */}
           <div
             className="absolute bottom-0 w-full rounded-full transition-all duration-200"

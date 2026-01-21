@@ -23,11 +23,11 @@ export function ProgressBar({
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
 
   const gradients = {
-    coral: 'from-[#ff8a65] to-[#ff6f4a]',
-    lavender: 'from-[#b8a0d6] to-[#9b7ec4]',
-    blue: 'from-[#47BDF7] to-[#6ab9e7]',
-    pink: 'from-[#ffb5c5] to-[#ff9fb3]',
-    yellow: 'from-[#F3B83A] to-[#FFD54F]',
+    coral: 'from-coral to-coral-light',
+    lavender: 'from-lavender to-lavender-light',
+    blue: 'from-soft-blue to-soft-blue/80',
+    pink: 'from-soft-pink to-soft-pink/80',
+    yellow: 'from-honey to-honey-light',
   };
 
   const sizes = {
@@ -40,12 +40,12 @@ export function ProgressBar({
     <div className={cn('w-full', className)}>
       {(showLabel || label) && (
         <div className="flex justify-between items-center mb-2">
-          {label && <span className="text-sm text-gray-600">{label}</span>}
+          {label && <span className="text-sm text-muted-foreground">{label}</span>}
           {showLabel && <span className="text-sm font-medium">{Math.round(percentage)}%</span>}
         </div>
       )}
       <div className={cn(
-        'w-full bg-gray-200 rounded-full overflow-hidden',
+        'w-full bg-muted rounded-full overflow-hidden',
         sizes[size]
       )}>
         <div

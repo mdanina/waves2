@@ -131,7 +131,7 @@ function StepText({ children, className = '' }: { children: React.ReactNode; cla
   return (
     <p 
       ref={textRef}
-      className={`break-words leading-relaxed ${className || 'text-gray-700 pt-1'}`}
+      className={`break-words leading-relaxed ${className || 'text-foreground/80 pt-1'}`}
       style={{ fontSize: `${fontSize}px` }}
     >
       {children}
@@ -188,7 +188,7 @@ function ItalicText({ children, className = '' }: { children: React.ReactNode; c
   return (
     <p 
       ref={textRef}
-      className={`text-gray-500 italic break-words leading-relaxed ${className}`}
+      className={`text-muted-foreground italic break-words leading-relaxed ${className}`}
       style={{ fontSize: `${fontSize}px` }}
     >
       {children}
@@ -227,10 +227,10 @@ export function WelcomeFlowScreen({ step, childName = 'ребёнка', parentNa
             <SerifHeading size="2xl" className="mb-3 text-3xl sm:text-4xl md:text-5xl">
               Привет, {parentName || 'родитель'}!
             </SerifHeading>
-            <p className="text-gray-600 mb-1.5">
+            <p className="text-muted-foreground mb-1.5">
               Вы на пути к тому, чтобы помочь {childName ? toDativeCase(childName) : 'вашему ребёнку'}
             </p>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Waves — это научно доказанный метод тренировки внимания
             </p>
           </>
@@ -245,22 +245,22 @@ export function WelcomeFlowScreen({ step, childName = 'ребёнка', parentNa
                 <div className="w-8 h-8 rounded-full bg-[#1a1a1a] text-white flex items-center justify-center flex-shrink-0 text-sm font-semibold">
                   1
                 </div>
-                <p className="text-gray-700 pt-1">Наденьте Flex4 на {childName ? toAccusativeCase(childName) : 'ребёнка'}</p>
+                <p className="text-foreground/80 pt-1">Наденьте Flex4 на {childName ? toAccusativeCase(childName) : 'ребёнка'}</p>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-full bg-[#1a1a1a] text-white flex items-center justify-center flex-shrink-0 text-sm font-semibold">
                   2
                 </div>
-                <p className="text-gray-700 pt-1">Тренируйтесь 15-20 минут в день</p>
+                <p className="text-foreground/80 pt-1">Тренируйтесь 15-20 минут в день</p>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-full bg-[#1a1a1a] text-white flex items-center justify-center flex-shrink-0 text-sm font-semibold">
                   3
                 </div>
-                <p className="text-gray-700 pt-1">Мозг учится концентрироваться</p>
+                <p className="text-foreground/80 pt-1">Мозг учится концентрироваться</p>
               </div>
             </div>
-            <p className="text-gray-500 italic mb-6">
+            <p className="text-muted-foreground italic mb-6">
               Регулярность важнее интенсивности
             </p>
           </>
@@ -274,26 +274,26 @@ export function WelcomeFlowScreen({ step, childName = 'ребёнка', parentNa
               <div className="flex items-start gap-2">
                 <span className="text-xl">📅</span>
                 <div>
-                  <p className="font-semibold text-gray-900">Неделя 1-2:</p>
-                  <p className="text-gray-600">{childName || 'Имя ребенка'} привыкает к тренировкам</p>
+                  <p className="font-semibold text-foreground">Неделя 1-2:</p>
+                  <p className="text-muted-foreground">{childName || 'Имя ребенка'} привыкает к тренировкам</p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
                 <span className="text-xl">📅</span>
                 <div>
-                  <p className="font-semibold text-gray-900">Неделя 3-4:</p>
-                  <p className="text-gray-600">Первые улучшения в концентрации</p>
+                  <p className="font-semibold text-foreground">Неделя 3-4:</p>
+                  <p className="text-muted-foreground">Первые улучшения в концентрации</p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
                 <span className="text-xl">📅</span>
                 <div>
-                  <p className="font-semibold text-gray-900">Неделя 5-8:</p>
-                  <p className="text-gray-600">Устойчивый результат</p>
+                  <p className="font-semibold text-foreground">Неделя 5-8:</p>
+                  <p className="text-muted-foreground">Устойчивый результат</p>
                 </div>
               </div>
             </div>
-            <p className="text-gray-500 mb-6">
+            <p className="text-muted-foreground mb-6">
               Ключ к успеху — тренировки 4-5 раз в неделю
             </p>
           </>

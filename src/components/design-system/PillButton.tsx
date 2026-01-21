@@ -15,8 +15,8 @@ interface PillButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
 
 const variantClasses = {
   primary: 'bg-[#1a1a1a] text-white hover:bg-[#2a2a2a]',
-  secondary: 'bg-white text-[#1a1a1a] hover:bg-gray-50 shadow-[0_2px_10px_rgba(0,0,0,0.08)]',
-  coral: 'bg-[#ff8a65] text-white hover:bg-[#ff9775]',
+  secondary: 'bg-white text-ink hover:bg-cloud shadow-[0_2px_10px_rgba(0,0,0,0.08)]',
+  coral: 'bg-coral text-white hover:bg-coral-light',
   yellow: 'bg-[#F3B83A] text-white hover:bg-[#FFD54F] shadow-md',
   outline: 'bg-transparent border-2 border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white',
   black: 'bg-[#1a1a1a] text-white hover:bg-[#2a2a2a] shadow-sm',

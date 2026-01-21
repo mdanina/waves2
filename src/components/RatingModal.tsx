@@ -158,7 +158,7 @@ export default function RatingModal({
                   className={`h-10 w-10 transition-colors ${
                     star <= displayRating
                       ? 'fill-yellow-400 text-yellow-400'
-                      : 'fill-none text-gray-300'
+                      : 'fill-none text-muted-foreground/50'
                   }`}
                 />
               </button>

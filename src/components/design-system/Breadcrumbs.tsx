@@ -19,7 +19,7 @@ export function Breadcrumbs({
   className 
 }: BreadcrumbsProps) {
   const defaultSeparator = (
-    <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <svg className="w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
     </svg>
   );
@@ -34,23 +34,23 @@ export function Breadcrumbs({
             </span>
           )}
           {index === items.length - 1 ? (
-            <span className="text-gray-900 font-medium">{item.label}</span>
+            <span className="text-foreground font-medium">{item.label}</span>
           ) : item.onClick ? (
             <button
               onClick={item.onClick}
-              className="text-gray-500 hover:text-[#ff8a65] transition-colors"
+              className="text-muted-foreground hover:text-coral transition-colors"
             >
               {item.label}
             </button>
           ) : item.href ? (
             <a
               href={item.href}
-              className="text-gray-500 hover:text-[#ff8a65] transition-colors"
+              className="text-muted-foreground hover:text-coral transition-colors"
             >
               {item.label}
             </a>
           ) : (
-            <span className="text-gray-500">{item.label}</span>
+            <span className="text-muted-foreground">{item.label}</span>
           )}
         </div>
       ))}

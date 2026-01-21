@@ -50,8 +50,8 @@ export function Pagination({
         className={cn(
           'px-3 py-2 rounded-xl font-medium text-sm transition-all duration-200',
           currentPage === 1
-            ? 'text-gray-400 cursor-not-allowed'
-            : 'text-gray-700 hover:bg-gray-100'
+            ? 'text-muted-foreground cursor-not-allowed'
+            : 'text-foreground hover:bg-cloud'
         )}
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -68,10 +68,10 @@ export function Pagination({
           className={cn(
             'min-w-[40px] h-10 rounded-xl font-medium text-sm transition-all duration-200',
             page === currentPage
-              ? 'bg-gradient-to-r from-[#ff8a65] to-[#ff6f4a] text-white shadow-md'
+              ? 'bg-gradient-to-r from-coral to-coral-light text-white shadow-md'
               : page === '...'
-                ? 'cursor-default text-gray-400'
-                : 'text-gray-700 hover:bg-gray-100'
+                ? 'cursor-default text-muted-foreground'
+                : 'text-foreground hover:bg-cloud'
           )}
         >
           {page}
@@ -85,8 +85,8 @@ export function Pagination({
         className={cn(
           'px-3 py-2 rounded-xl font-medium text-sm transition-all duration-200',
           currentPage === totalPages
-            ? 'text-gray-400 cursor-not-allowed'
-            : 'text-gray-700 hover:bg-gray-100'
+            ? 'text-muted-foreground cursor-not-allowed'
+            : 'text-foreground hover:bg-cloud'
         )}
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

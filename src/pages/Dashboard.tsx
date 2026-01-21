@@ -1092,7 +1092,7 @@ export default function Dashboard() {
               className={`group relative overflow-hidden border-2 p-8 shadow-md transition-all flex flex-col ${
                 canStartCheckup.allowed
                   ? 'cursor-pointer border-soft-pink/30 bg-gradient-to-br from-soft-pink/10 to-white hover:shadow-xl hover:border-soft-pink/50 hover:scale-[1.02] active:scale-[0.98]'
-                  : 'cursor-not-allowed border-gray-300 bg-gradient-to-br from-gray-50 to-white opacity-75'
+                  : 'cursor-not-allowed border-muted bg-gradient-to-br from-cloud to-white opacity-75'
               }`}
               style={{ height: '100%', minHeight: '340px' }}
               onClick={(e) => {
@@ -1172,7 +1172,7 @@ export default function Dashboard() {
             className={`group relative overflow-hidden border-2 p-8 shadow-md transition-all flex flex-col ${
               hasAnyCompletedCheckup
                 ? 'cursor-pointer bg-gradient-to-br from-accent/10 to-white hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]'
-                : 'cursor-not-allowed border-gray-300 bg-gradient-to-br from-gray-50 to-white opacity-75'
+                : 'cursor-not-allowed border-muted bg-gradient-to-br from-cloud to-white opacity-75'
             }`}
             style={{ height: '100%', minHeight: '340px' }}
             onClick={() => hasAnyCompletedCheckup && navigate("/appointments")}

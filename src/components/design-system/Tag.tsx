@@ -17,11 +17,11 @@ export function Tag({
   className
 }: TagProps) {
   const gradients = {
-    coral: 'from-[#ff8a65]/20 to-[#ff6f4a]/10 text-[#ff8a65] border-[#ff8a65]/30',
-    lavender: 'from-[#b8a0d6]/20 to-[#9b7ec4]/10 text-[#b8a0d6] border-[#b8a0d6]/30',
-    blue: 'from-[#a8d8ea]/20 to-[#8bc9e0]/10 text-[#a8d8ea] border-[#a8d8ea]/30',
-    pink: 'from-[#ffb5c5]/20 to-[#ff9fb3]/10 text-[#ffb5c5] border-[#ffb5c5]/30',
-    gray: 'from-gray-100 to-gray-50 text-gray-700 border-gray-300',
+    coral: 'from-coral/20 to-coral/10 text-coral border-coral/30',
+    lavender: 'from-lavender/20 to-lavender/10 text-lavender border-lavender/30',
+    blue: 'from-soft-blue/20 to-soft-blue/10 text-soft-blue border-soft-blue/30',
+    pink: 'from-soft-pink/20 to-soft-pink/10 text-soft-pink border-soft-pink/30',
+    gray: 'from-cloud to-cream text-muted-foreground border-muted',
   };
 
   const sizes = {

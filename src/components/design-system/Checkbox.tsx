@@ -33,9 +33,9 @@ export function Checkbox({
         <div className={cn(
           'w-6 h-6 rounded-lg border-2 transition-all duration-200',
           'flex items-center justify-center',
-          checked 
-            ? 'bg-gradient-to-br from-[#ff8a65] to-[#ff6f4a] border-[#ff8a65] shadow-md shadow-[#ff8a65]/30' 
-            : 'bg-white border-gray-300'
+          checked
+            ? 'bg-gradient-to-br from-coral to-coral-light border-coral shadow-md shadow-coral/30'
+            : 'bg-white border-muted'
         )}>
           {checked && (
             <svg 

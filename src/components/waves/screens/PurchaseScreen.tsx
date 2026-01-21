@@ -73,10 +73,10 @@ export function PurchaseScreen({ onPurchase, onBack }: PurchaseScreenProps) {
             <SerifHeading size="2xl" className="mb-2 text-3xl sm:text-4xl md:text-5xl">
               Начните тренировки с Flex4
             </SerifHeading>
-            <p className="text-gray-600 mb-1">
+            <p className="text-muted-foreground mb-1">
               Научно доказанный метод улучшения концентрации
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               Выберите пакет и начните путь к лучшему вниманию уже сегодня
             </p>
           </div>
@@ -122,8 +122,8 @@ export function PurchaseScreen({ onPurchase, onBack }: PurchaseScreenProps) {
             ))}
           </div>
 
-          <div className="text-center text-sm text-gray-500 space-y-1">
-            <p className="font-medium text-gray-700">💳 Безопасная оплата через CloudPayments</p>
+          <div className="text-center text-sm text-muted-foreground space-y-1">
+            <p className="font-medium text-foreground">💳 Безопасная оплата через CloudPayments</p>
             <p>✅ Рассрочка без переплаты • 🔒 Гарантия возврата средств</p>
           </div>
         </div>

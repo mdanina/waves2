@@ -49,7 +49,7 @@ export function PostTrainingCheckoutScreen({
 
         {/* Настроение */}
         <div className="mb-4 sm:mb-6 md:mb-8">
-          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Настроение</h2>
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-3 sm:mb-4">Настроение</h2>
           <div className="grid grid-cols-5 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
             {moodOptions.map((option) => {
               const isSelected = mood === option.value;
@@ -85,7 +85,7 @@ export function PostTrainingCheckoutScreen({
 
         {/* Концентрация */}
         <div className="mb-4 sm:mb-6 md:mb-8">
-          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Концентрация</h2>
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-3 sm:mb-4">Концентрация</h2>
           <div className="grid grid-cols-5 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
             {concentrationLevels.map((level) => {
               const isSelected = concentration === level.value;
@@ -121,10 +121,10 @@ export function PostTrainingCheckoutScreen({
 
         {/* Понравилась тренировка */}
         <div className="mb-4 sm:mb-6 md:mb-8">
-          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Понравилась тренировка?</h2>
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-3 sm:mb-4">Понравилась тренировка?</h2>
           <div className="relative py-4 sm:py-5 md:py-6">
             {/* Slider track */}
-            <div className="relative h-2 w-full bg-gradient-to-r from-gray-100 to-gray-200 rounded-full overflow-visible shadow-inner">
+            <div className="relative h-2 w-full bg-gradient-to-r from-cloud to-muted rounded-full overflow-visible shadow-inner">
               {/* Fill */}
               <div
                 className="absolute left-0 top-0 h-full rounded-full transition-all duration-200"
