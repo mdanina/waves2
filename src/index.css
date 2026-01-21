@@ -16,30 +16,29 @@
   :root {
     --font-size: 16px;
     
-    /* ═══════════════════════════════════════════════════════════════════════
-       FONTS
-       ═══════════════════════════════════════════════════════════════════════ */
+    /* Typography - text sizes for base styles */
+    --text-2xl: 1.5rem;
+    --text-xl: 1.25rem;
+    --text-lg: 1.125rem;
+    --text-base: 1rem;
+    
+    /* Typography */
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-display: 'Inter', sans-serif;
     --font-serif: 'Playfair Display', Georgia, serif;
     --font-weight-medium: 500;
     --font-weight-normal: 400;
     
-    /* ═══════════════════════════════════════════════════════════════════════
-       WELLNESS APP COLOR PALETTE
-       ═══════════════════════════════════════════════════════════════════════ */
-    /* Backgrounds - HSL format for Tailwind */
-    --background: 50 100% 98%;
-    --background-light: 50 100% 98%;
-    --foreground: 0 0% 10%;
+    /* Wellness App Color Palette - Updated to match reference */
+    --background: #fffef7;
+    --foreground: #1a1a1a;
     
-    /* Primary Colors */
+    /* Primary Colors from Reference */
     --primary-yellow: #F3B83A;
     --primary-pink: #AECB0F;
     --secondary-blue: #47BDF7;
     --cream-white: #fffef7;
     
-    /* Gradient Colors */
+    /* Gradient Colors - Updated to match reference */
     --gradient-peach-start: #ff8a5b;
     --gradient-peach-end: #ffc4a8;
     --gradient-lavender-start: #e4a5f0;
@@ -53,40 +52,40 @@
     --gradient-yellow-start: #F3B83A;
     --gradient-yellow-end: #FFD54F;
     
-    /* Primary Colors - HSL format for Tailwind */
-    --primary: 0 0% 10%;
-    --primary-foreground: 0 0% 100%;
-    --coral: 15 100% 68%;
-    --coral-light: 15 100% 78%;
-    --lavender: 280 60% 82%;
-    --lavender-light: 280 50% 90%;
-    --soft-blue: 200 90% 63%;
-    --soft-pink: 340 100% 82%;
-    --yellow: 42 100% 71%;
+    /* Primary Colors - Updated */
+    --primary: #1a1a1a;
+    --primary-foreground: #ffffff;
+    --coral: #ff8a5b;
+    --coral-light: #ffb299;
+    --lavender: #e4a5f0;
+    --lavender-light: #f0d5f7;
+    --soft-blue: #47BDF7;
+    --soft-pink: #ffb5d5;
+    --yellow: #F3B83A;
     
-    /* Card & Surface - HSL format */
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
+    /* Card & Surface */
+    --card: #ffffff;
+    --card-foreground: #1a1a1a;
     --card-shadow: rgba(0, 0, 0, 0.04);
     
-    /* UI States - HSL format */
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 10%;
-    --muted: 0 0% 94%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 42 100% 71%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    /* UI States */
+    --popover: #ffffff;
+    --popover-foreground: #1a1a1a;
+    --secondary: #f5f5f5;
+    --secondary-foreground: #1a1a1a;
+    --muted: #f0f0f0;
+    --muted-foreground: #6b7280;
+    --accent: #F3B83A;
+    --accent-foreground: #ffffff;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
     
     /* Borders & Inputs */
-    --border: 0 0% 94%;
-    --input: 0 0% 92%;
-    --input-background: 0 0% 100%;
-    --switch-background: 0 0% 90%;
-    --ring: 42 100% 71%;
+    --border: rgba(0, 0, 0, 0.06);
+    --input: rgba(0, 0, 0, 0.08);
+    --input-background: #ffffff;
+    --switch-background: #e5e7eb;
+    --ring: rgba(243, 184, 58, 0.2);
     
     /* Chart Colors */
     --chart-1: #e4a5f0;
@@ -99,21 +98,21 @@
     --radius: 1.5rem;
     --radius-full: 9999px;
     
-    /* Sidebar - HSL format */
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 10%;
-    --sidebar-primary: 0 0% 10%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 96%;
-    --sidebar-accent-foreground: 0 0% 10%;
-    --sidebar-border: 0 0% 94%;
-    --sidebar-ring: 15 100% 68%;
+    /* Sidebar */
+    --sidebar: #ffffff;
+    --sidebar-foreground: #1a1a1a;
+    --sidebar-primary: #1a1a1a;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #f5f5f5;
+    --sidebar-accent-foreground: #1a1a1a;
+    --sidebar-border: rgba(0, 0, 0, 0.06);
+    --sidebar-ring: rgba(255, 138, 91, 0.2);
     
-    /* Success color - HSL format */
-    --success: 72 85% 42%;
-    --success-foreground: 0 0% 100%;
+    /* Success color */
+    --success: #AECB0F;
+    --success-foreground: #ffffff;
     
-    /* Legacy color mappings for compatibility */
+    /* Legacy color mappings for compatibility - HSL format for Tailwind */
     --color-ink: 0 0% 10%;
     --color-honey: 42 100% 71%;
     --color-honey-light: 42 100% 80%;
@@ -130,7 +129,9 @@
     --color-lilac-pale: 280 20% 94%;
     --color-cream: 30 50% 99%;
     --color-cloud: 30 20% 97%;
-    --coral: 0 100% 71%;
+    
+    /* Backgrounds - HSL format for Tailwind compatibility */
+    --background-light: 50 100% 98%;
     
     /* ═══════════════════════════════════════════════════════════════════════
        GRADIENTS - Preserved from original for compatibility
@@ -252,12 +253,14 @@
     --border: oklch(0.269 0 0);
     --input: oklch(0.269 0 0);
     --ring: oklch(0.439 0 0);
+    --font-weight-medium: 500;
+    --font-weight-normal: 400;
     --chart-1: oklch(0.488 0.243 264.376);
     --chart-2: oklch(0.696 0.17 162.48);
     --chart-3: oklch(0.769 0.188 70.08);
     --chart-4: oklch(0.627 0.265 303.9);
     --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar-background: oklch(0.205 0 0);
+    --sidebar: oklch(0.205 0 0);
     --sidebar-foreground: oklch(0.985 0 0);
     --sidebar-primary: oklch(0.488 0.243 264.376);
     --sidebar-primary-foreground: oklch(0.985 0 0);
@@ -266,67 +269,118 @@
     --sidebar-border: oklch(0.269 0 0);
     --sidebar-ring: oklch(0.439 0 0);
   }
+
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-input-background: var(--input-background);
+    --color-switch-background: var(--switch-background);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+  }
 }
 
 @layer base {
   * {
     @apply border-border;
   }
-
-  html {
-    font-family: var(--font-sans);
-    font-size: var(--font-size);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  
+  *:focus-visible {
+    outline-color: var(--ring);
+    outline-offset: 2px;
   }
 
   body {
-    @apply bg-background text-foreground;
-    font-family: var(--font-sans);
-    font-weight: 400;
-    min-height: 100vh;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
+  /**
+  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
+  * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
+  */
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  h1 {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xl);
     font-weight: var(--font-weight-medium);
     line-height: 1.5;
   }
-  
-  h1 {
-    font-size: 1.5rem;
-    font-weight: var(--font-weight-medium);
-  }
 
   h2 {
-    font-size: 1.25rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-xl);
     font-weight: var(--font-weight-medium);
+    line-height: 1.5;
   }
 
   h3 {
-    font-size: 1.125rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-lg);
     font-weight: var(--font-weight-medium);
+    line-height: 1.5;
   }
 
   h4 {
-    font-size: 1rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
     font-weight: var(--font-weight-medium);
+    line-height: 1.5;
   }
 
   label {
-    font-size: 1rem;
+    font-size: var(--text-base);
     font-weight: var(--font-weight-medium);
+    line-height: 1.5;
   }
 
   button {
-    font-size: 1rem;
+    font-size: var(--text-base);
     font-weight: var(--font-weight-medium);
+    line-height: 1.5;
   }
 
   input {
-    font-size: 1rem;
+    font-size: var(--text-base);
     font-weight: var(--font-weight-normal);
+    line-height: 1.5;
   }
 }
 

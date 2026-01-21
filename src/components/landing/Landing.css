@@ -2,22 +2,22 @@
 /* Все классы с префиксом landing- для предотвращения конфликтов */
 
 :root {
-  /* Landing-specific colors */
-  --landing-dark-blue: hsl(203, 60%, 15%); /* #0f2b3d */
-  --landing-cream: hsl(30, 14%, 96%); /* #f5f3f0 */
-  --landing-peach: hsl(35, 100%, 85%); /* #FFDDAA */
-  --landing-gold: hsl(45, 100%, 60%); /* золотисто-желтый */
-  --landing-light-blue: hsl(188, 30%, 85%); /* светлый голубой */
-  --landing-yellow: hsl(45, 100%, 65%); /* желтый для кнопок */
-  --landing-light-blue-outline: hsl(188, 30%, 70%); /* для пунктирных линий */
+  /* Landing-specific colors - Updated to match Createdesignsystemlayout */
+  --landing-dark-blue: #1a1a1a; /* Updated to match design system */
+  --landing-cream: #fffef7; /* Updated to match design system background */
+  --landing-peach: #ff8a5b; /* Updated to match coral color */
+  --landing-gold: #F3B83A; /* Updated to match primary yellow */
+  --landing-light-blue: #47BDF7; /* Updated to match secondary blue */
+  --landing-yellow: #F3B83A; /* Updated to match primary yellow */
+  --landing-light-blue-outline: #47BDF7; /* Updated to match secondary blue */
   
   /* Expert section gradient - используем градиент из Dashboard */
   --bg-expert: var(--bg-mesh-vibrant-2);
 }
 
-/* Top Banner */
+/* Top Banner - Updated to match Createdesignsystemlayout */
 .landing-top-banner {
-  background-color: var(--landing-dark-blue);
+  background-color: #1a1a1a;
   color: white;
   padding: 0.75rem 0;
   text-align: center;
@@ -34,9 +34,9 @@
   opacity: 0.8;
 }
 
-/* Hero Section */
+/* Hero Section - Updated to match Createdesignsystemlayout */
 .landing-hero-top {
-  background-color: var(--landing-cream);
+  background-color: #fffef7;
   position: relative;
   padding: 4rem 0 0;
   overflow: hidden;
@@ -53,15 +53,15 @@
 }
 
 .landing-hero-bottom {
-  background-color: var(--landing-dark-blue);
+  background-color: #1a1a1a;
   color: white;
   padding: 6rem 0 4rem;
   position: relative;
 }
 
-/* New Hero Section Styles */
+/* New Hero Section Styles - Updated to match Createdesignsystemlayout */
 .landing-hero-new {
-  background-color: var(--landing-cream);
+  background-color: #fffef7;
   position: relative;
   overflow: hidden;
 }
@@ -144,52 +144,60 @@
   object-fit: contain;
 }
 
-/* CTA Buttons */
+/* CTA Buttons - Updated to match Createdesignsystemlayout */
 .landing-cta-primary {
-  background-color: var(--landing-yellow);
-  color: var(--landing-dark-blue);
+  background-color: #1a1a1a;
+  color: white;
   border: none;
-  font-weight: 600;
+  font-weight: 500;
+  border-radius: 9999px;
+  transition: all 200ms;
 }
 
 .landing-cta-primary:hover {
-  background-color: hsl(45, 100%, 60%);
-  color: var(--landing-dark-blue);
+  background-color: #2a2a2a;
+  color: white;
 }
 
 .landing-cta-secondary {
   background-color: transparent;
-  color: white;
-  border: 2px solid white;
+  color: #1a1a1a;
+  border: 2px solid #1a1a1a;
+  border-radius: 9999px;
+  transition: all 200ms;
 }
 
 .landing-cta-secondary:hover {
-  background-color: white;
-  color: var(--landing-dark-blue);
+  background-color: #1a1a1a;
+  color: white;
 }
 
-/* New CTA Buttons for light background */
+/* New CTA Buttons for light background - Updated to match Createdesignsystemlayout */
 .landing-cta-primary-new {
-  background-color: var(--landing-dark-blue);
+  background-color: #1a1a1a;
   color: white;
   border: none;
-  font-weight: 600;
+  font-weight: 500;
+  border-radius: 9999px;
+  transition: all 200ms;
 }
 
 .landing-cta-primary-new:hover {
-  background-color: hsl(203, 60%, 12%);
+  background-color: #2a2a2a;
   color: white;
 }
 
 .landing-cta-secondary-new {
   background-color: transparent;
-  color: var(--landing-dark-blue);
-  border: 2px solid var(--landing-dark-blue);
-  font-weight: 600;
+  color: #1a1a1a;
+  border: 2px solid #1a1a1a;
+  font-weight: 500;
+  border-radius: 9999px;
+  transition: all 200ms;
 }
 
 .landing-cta-secondary-new:hover {
-  background-color: var(--landing-dark-blue);
+  background-color: #1a1a1a;
   color: white;
 }
 
@@ -216,19 +224,21 @@
   }
 }
 
-/* What We Treat Tags */
+/* What We Treat Tags - Updated to match Createdesignsystemlayout */
 .landing-condition-tag {
-  background: hsl(var(--color-honey));
+  background: #F3B83A;
   border-radius: 2rem;
   padding: 0.875rem 1.5rem;
-  color: hsl(var(--color-ink));
-  font-weight: 600;
+  color: #1a1a1a;
+  font-weight: 500;
   border: none;
   display: inline-block;
   cursor: pointer;
+  transition: all 200ms;
 }
 
 .landing-condition-tag:hover {
+  background: #FFD54F;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -351,8 +361,8 @@
   background: white;
   padding: 1.5rem 2rem;
   border-radius: 2.5rem 2.5rem 1.5rem 0.5rem;
-  color: var(--landing-dark-blue);
-  font-weight: 600;
+  color: #1a1a1a;
+  font-weight: 500;
   font-size: 1.25rem;
   z-index: 10;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -396,7 +406,7 @@
 }
 
 .landing-expertise-left {
-  background-color: var(--landing-dark-blue);
+  background-color: #1a1a1a;
   color: white;
   min-height: 100%;
 }
@@ -411,9 +421,9 @@
 }
 
 .landing-expertise-title {
-  color: var(--landing-gold);
+  color: #F3B83A;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 1rem;
@@ -478,9 +488,9 @@
   }
 }
 
-/* Awards Section */
+/* Awards Section - Updated to match Createdesignsystemlayout */
 .landing-awards-section {
-  background-color: var(--landing-dark-blue);
+  background-color: #1a1a1a;
   color: white;
   padding: 3rem 0;
 }

@@ -5,6 +5,7 @@ import { LandingFooter } from "@/components/LandingFooter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { SerifHeading } from "@/components/ui/serif-heading";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { ResultIcon } from "@/components/landing/ResultIcon";
@@ -341,7 +342,7 @@ export default function Landing() {
     <div 
       className="flex min-h-screen flex-col"
       style={{
-        background: 'var(--bg-serenity)',
+        background: '#fffef7',
         backgroundAttachment: 'fixed'
       }}
     >
@@ -349,16 +350,16 @@ export default function Landing() {
       
       <main>
         {/* Hero Section */}
-        <section id="hero" className="landing-hero-new bg-golden-hour py-12 md:py-16">
+        <section id="hero" className="landing-hero-new py-12 md:py-16" style={{ background: '#fffef7' }}>
           <div className="px-4 md:grid md:grid-cols-[1fr_minmax(0,1280px)_1fr] relative z-10">
             <div className="max-w-7xl mx-auto md:col-start-2">
               <div className="grid gap-12 md:grid-cols-2 items-center">
               {/* Left side - Text content */}
               <div className="pl-12 md:pl-20 lg:pl-28 pr-8 md:pr-16 lg:pr-24">
-                <h1 className="mb-6 text-4xl font-bold leading-tight text-foreground md:text-5xl lg:text-6xl">
+                <SerifHeading size="4xl" className="mb-6 text-4xl md:text-5xl lg:text-6xl">
                   Психологическое благополучие для{" "}
                   <span className="text-4xl md:text-5xl lg:text-6xl text-honey">детей и всей семьи</span>
-                </h1>
+                </SerifHeading>
                 <p className="mb-8 text-lg text-muted-foreground md:text-xl">
                   Семьи чувствуют себя лучше, когда работают вместе — так же должна работать и их поддержка.
                 </p>
@@ -367,7 +368,7 @@ export default function Landing() {
                     size="lg"
                     variant="default"
                     onClick={() => navigate("/service")}
-                    className="h-14 px-8"
+                    className="h-14 px-8 bg-[#1a1a1a] text-white hover:bg-[#2a2a2a] shadow-[0_2px_10px_rgba(0,0,0,0.08)]"
                   >
                     Получить поддержку
                   </Button>
@@ -375,7 +376,7 @@ export default function Landing() {
                     size="lg"
                     variant="outline"
                     onClick={() => navigate("/service")}
-                    className="h-14 px-8 border-0"
+                    className="h-14 px-8 bg-transparent border-2 border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white"
                   >
                     Пройти оценку
                   </Button>

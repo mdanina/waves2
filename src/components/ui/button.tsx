@@ -5,20 +5,26 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-base font-extrabold ring-offset-background transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-[0.97]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-base font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-[0.95]",
   {
     variants: {
       variant: {
-        // Primary - Dark pill (Ink background)
-        default: "bg-ink text-white hover:bg-[#2a1010] shadow-soft",
-        // Secondary - White/Glass pill
-        secondary: "bg-white text-ink hover:shadow-glass shadow-soft",
-        // Honey - Primary action color
+        // Primary - Dark pill (#1a1a1a background) - from source project
+        default: "bg-[#1a1a1a] text-white hover:bg-[#2a2a2a] shadow-[0_2px_10px_rgba(0,0,0,0.08)]",
+        // Secondary - White/Glass pill - from source project
+        secondary: "bg-white text-[#1a1a1a] hover:bg-gray-50 shadow-[0_2px_10px_rgba(0,0,0,0.08)]",
+        // Coral - from source project
+        coral: "bg-[#ff8a65] text-white hover:bg-[#ff9775]",
+        // Yellow - from source project
+        yellow: "bg-[#F3B83A] text-white hover:bg-[#FFD54F] shadow-md",
+        // Honey - Primary action color (legacy compatibility)
         honey: "bg-honey text-ink hover:bg-honey-dark shadow-soft",
+        // Black - from source project
+        black: "bg-[#1a1a1a] text-white hover:bg-[#2a2a2a] shadow-sm",
+        // Outline - from source project
+        outline: "bg-transparent border-2 border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white",
         // Ghost
         ghost: "hover:bg-cloud/50 text-ink",
-        // Outline
-        outline: "border border-border bg-background hover:bg-cloud hover:text-ink",
         // Destructive
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         // Link

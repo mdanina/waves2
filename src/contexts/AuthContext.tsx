@@ -142,9 +142,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     // Слушаем изменения авторизации
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, newSession) => {
+    const authStateChangeResult = supabase.auth.onAuthStateChange((event, newSession) => {
       if (!mounted) return;
       
       logger.log('Auth state changed:', event, newSession?.user?.email);
@@ -173,12 +171,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     });
 
+    const subscription = authStateChangeResult?.data?.subscription;
+
     return () => {
       mounted = false;
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
-      subscription.unsubscribe();
+      if (subscription) {
+        subscription.unsubscribe();
+      }
     };
   }, []);
 
