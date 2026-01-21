@@ -8,14 +8,19 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: "border-[#ff8a65]/30 from-[#ff8a65]/20 to-[#ff6f4a]/10 text-[#ff8a65]",
-        secondary: "border-gray-300 from-gray-100 to-gray-50 text-gray-700",
-        destructive: "border-red-300 from-red-50 to-red-100/50 text-red-900",
-        outline: "text-[#1a1a1a] border-gray-200 bg-white/80",
-        coral: "border-[#ff8a65]/30 from-[#ff8a65]/20 to-[#ff6f4a]/10 text-[#ff8a65]",
-        lavender: "border-[#b8a0d6]/30 from-[#b8a0d6]/20 to-[#9b7ec4]/10 text-[#b8a0d6]",
-        blue: "border-[#a8d8ea]/30 from-[#a8d8ea]/20 to-[#8bc9e0]/10 text-[#a8d8ea]",
-        pink: "border-[#ffb5c5]/30 from-[#ffb5c5]/20 to-[#ff9fb3]/10 text-[#ffb5c5]",
+        // coral из дизайн-системы: #ff8a5b
+        default: "border-coral/30 from-coral/20 to-coral/10 text-coral",
+        secondary: "border-muted from-cloud to-cream text-muted-foreground",
+        destructive: "border-destructive/30 from-destructive/10 to-destructive/5 text-destructive",
+        outline: "text-ink border-border bg-white/80",
+        // coral из дизайн-системы: #ff8a5b
+        coral: "border-coral/30 from-coral/20 to-coral/10 text-coral",
+        // lavender из дизайн-системы: #e4a5f0
+        lavender: "border-lavender/30 from-lavender/20 to-lavender/10 text-lavender",
+        // soft-blue из дизайн-системы: #47BDF7
+        blue: "border-soft-blue/30 from-soft-blue/20 to-soft-blue/10 text-soft-blue",
+        // soft-pink из дизайн-системы: #ffb5d5
+        pink: "border-soft-pink/30 from-soft-pink/20 to-soft-pink/10 text-soft-pink",
       },
     },
     defaultVariants: {

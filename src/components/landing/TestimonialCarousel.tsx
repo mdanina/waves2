@@ -44,7 +44,7 @@ export const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testim
       <Button
         variant="ghost"
         size="icon"
-        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 rounded-full bg-white shadow-lg hover:bg-gray-100"
+        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 rounded-full bg-white shadow-lg hover:bg-cloud"
         onClick={prev}
         aria-label="Предыдущие отзывы"
       >
@@ -76,7 +76,7 @@ export const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testim
       <Button
         variant="ghost"
         size="icon"
-        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 rounded-full bg-white shadow-lg hover:bg-gray-100"
+        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 rounded-full bg-white shadow-lg hover:bg-cloud"
         onClick={next}
         aria-label="Следующие отзывы"
       >
