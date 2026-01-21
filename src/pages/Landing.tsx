@@ -690,7 +690,7 @@ export default function Landing() {
             <div className="max-w-7xl mx-auto md:col-start-2">
             <div className="mb-12 text-left max-w-6xl pl-8 md:pl-16 lg:pl-24">
               <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-foreground">
-                ПОЧЕМУ BALANSITY
+                ПОЧЕМУ WAVES
               </h2>
               <h3 className="mb-4 text-4xl font-bold leading-tight text-foreground md:text-5xl">
                 Что делает Waves особенным
