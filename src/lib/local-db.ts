@@ -407,6 +407,7 @@ class LocalQueryBuilder<T> {
   public isDelete = false;
   private isSingle = false;
   private selectOptions?: { count?: 'exact' | 'estimated' | 'planned'; head?: boolean };
+  private shouldReturnData = false;
 
   constructor(
     private tableName: keyof LocalDBSchema,
@@ -493,7 +494,19 @@ class LocalQueryBuilder<T> {
     return this;
   }
 
-  async select(columns?: string, options?: { count?: 'exact' | 'estimated' | 'planned'; head?: boolean }) {
+  select(columns?: string, options?: { count?: 'exact' | 'estimated' | 'planned'; head?: boolean }): LocalQueryBuilder<T> | Promise<any> {
+    // Если это вызов после update/delete, просто устанавливаем флаг для возврата данных
+    if (this.updateData || this.isDelete) {
+      this.shouldReturnData = true;
+      this.selectOptions = options;
+      return this;
+    }
+
+    // Иначе выполняем обычный select запрос
+    return this.executeSelect(columns, options);
+  }
+
+  private async executeSelect(columns?: string, options?: { count?: 'exact' | 'estimated' | 'planned'; head?: boolean }) {
     this.selectOptions = options;
     const all = await this.db.getAll(this.tableName);
     let filtered = all;
@@ -644,6 +657,20 @@ class LocalQueryBuilder<T> {
 
     for (const item of updated) {
       await this.db.put(this.tableName, item);
+    }
+
+    // Если был вызван .select().single(), возвращаем один объект
+    if (this.shouldReturnData && this.isSingle) {
+      if (updated.length === 0) {
+        return {
+          data: null,
+          error: { message: 'No rows found', code: 'PGRST116' },
+        };
+      }
+      return {
+        data: updated[0] as T,
+        error: null,
+      };
     }
 
     return {
