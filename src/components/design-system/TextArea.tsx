@@ -43,14 +43,14 @@ export function TextArea({
             'w-full px-4 py-3 rounded-2xl border-2 transition-all duration-200',
             'bg-white/80 backdrop-blur-sm resize-none',
             'focus:outline-none',
-            isFocused ? 'border-[#ff8a65] shadow-lg shadow-[#ff8a65]/20' : 'border-gray-200',
+            isFocused ? 'border-coral shadow-lg shadow-coral/20' : 'border-muted',
             error && 'border-red-300',
             label && 'pt-6',
             className
           )}
         />
         {label && (
-          <label className="absolute left-4 top-3 text-xs text-gray-500">
+          <label className="absolute left-4 top-3 text-xs text-muted-foreground">
             {label}
           </label>
         )}
@@ -58,7 +58,7 @@ export function TextArea({
       <div className="flex justify-between mt-1 ml-4 text-sm">
         {error && <p className="text-red-500">{error}</p>}
         {showCount && maxLength && (
-          <p className="text-gray-400 ml-auto">
+          <p className="text-muted-foreground ml-auto">
             {charCount}/{maxLength}
           </p>
         )}

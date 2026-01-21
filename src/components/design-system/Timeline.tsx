@@ -38,16 +38,16 @@ export function Timeline({ items, className }: TimelineProps) {
               )}
             </div>
             {index < items.length - 1 && (
-              <div className="w-0.5 h-full min-h-[40px] bg-gradient-to-b from-gray-300 to-transparent mt-2" />
+              <div className="w-0.5 h-full min-h-[40px] bg-gradient-to-b from-muted to-transparent mt-2" />
             )}
           </div>
 
           {/* Content */}
           <div className="flex-1 pb-6">
-            <div className="text-xs text-gray-500 mb-1">{item.time}</div>
+            <div className="text-xs text-muted-foreground mb-1">{item.time}</div>
             <h4 className="font-medium mb-1">{item.title}</h4>
             {item.description && (
-              <p className="text-sm text-gray-600">{item.description}</p>
+              <p className="text-sm text-muted-foreground">{item.description}</p>
             )}
           </div>
         </div>

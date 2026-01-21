@@ -28,7 +28,7 @@ export function DeviceConnectedScreen({
         {onClose ? (
           <button
             onClick={onClose}
-            className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 text-muted-foreground hover:text-foreground hover:bg-cloud rounded-full transition-colors"
             title="Закрыть"
           >
             <X className="w-6 h-6" />
@@ -38,7 +38,7 @@ export function DeviceConnectedScreen({
         {onHome && (
           <button
             onClick={onHome}
-            className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors flex items-center gap-2"
+            className="p-2 text-muted-foreground hover:text-foreground hover:bg-cloud rounded-full transition-colors flex items-center gap-2"
             title="На главный экран"
           >
             <Home className="w-6 h-6" />
@@ -57,11 +57,11 @@ export function DeviceConnectedScreen({
 
           <WellnessCard className="mb-6 text-left">
             <div className="mb-2">
-              <p className="text-sm text-gray-600">Серийный номер</p>
-              <p className="font-semibold text-gray-900">{deviceId}</p>
+              <p className="text-sm text-muted-foreground">Серийный номер</p>
+              <p className="font-semibold text-foreground">{deviceId}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Заряд</p>
+              <p className="text-sm text-muted-foreground">Заряд</p>
               <div className="flex items-center gap-2 mt-1">
                 <div className="flex-1 bg-[#1a1a1a]/10 rounded-full h-2">
                   <div
@@ -90,7 +90,7 @@ export function DeviceConnectedScreen({
           {onHome && (
             <button
               onClick={onHome}
-              className="w-full flex items-center justify-center gap-2 text-gray-600 hover:text-gray-900 py-2 text-sm"
+              className="w-full flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground py-2 text-sm"
             >
               <Home className="w-4 h-4" />
               <span>На главный экран</span>

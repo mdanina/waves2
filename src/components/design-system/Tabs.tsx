@@ -28,7 +28,7 @@ export function Tabs({
       {/* Tab Navigation */}
       <div className={cn(
         'flex gap-2',
-        variant === 'underline' ? 'border-b-2 border-gray-200' : ''
+        variant === 'underline' ? 'border-b-2 border-muted' : ''
       )}>
         {tabs.map((tab) => (
           <button
@@ -41,11 +41,11 @@ export function Tabs({
               variant === 'underline' && 'border-b-2 -mb-0.5',
               activeTab === tab.id
                 ? variant === 'pills'
-                  ? 'bg-gradient-to-r from-[#ff8a65] to-[#ff6f4a] text-white shadow-md'
-                  : 'border-[#ff8a65] text-[#ff8a65]'
+                  ? 'bg-gradient-to-r from-coral to-coral-light text-white shadow-md'
+                  : 'border-coral text-coral'
                 : variant === 'pills'
-                  ? 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                  ? 'bg-cloud text-muted-foreground hover:bg-muted'
+                  : 'border-transparent text-muted-foreground hover:text-foreground'
             )}
           >
             {tab.icon}

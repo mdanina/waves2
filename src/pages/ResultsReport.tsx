@@ -183,10 +183,10 @@ export default function ResultsReport() {
             </div>
 
             {/* Navigation Arrows */}
-            <button className="absolute left-0 top-1/2 -translate-x-4 -translate-y-1/2 rounded-full bg-white p-2 shadow-lg hover:bg-gray-50">
+            <button className="absolute left-0 top-1/2 -translate-x-4 -translate-y-1/2 rounded-full bg-white p-2 shadow-lg hover:bg-cloud">
               <ChevronLeft className="h-5 w-5" />
             </button>
-            <button className="absolute right-0 top-1/2 translate-x-4 -translate-y-1/2 rounded-full bg-white p-2 shadow-lg hover:bg-gray-50">
+            <button className="absolute right-0 top-1/2 translate-x-4 -translate-y-1/2 rounded-full bg-white p-2 shadow-lg hover:bg-cloud">
               <ChevronRight className="h-5 w-5" />
             </button>
           </div>

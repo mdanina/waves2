@@ -38,8 +38,8 @@ export function DropdownSelector({ options, defaultValue, onChange, className }:
                 key={option}
                 onClick={() => handleSelect(option)}
                 className={cn(
-                  'w-full px-4 py-3 text-sm text-left hover:bg-gray-50 transition-colors',
-                  selected === option && 'bg-gray-50 font-medium'
+                  'w-full px-4 py-3 text-sm text-left hover:bg-cloud transition-colors',
+                  selected === option && 'bg-cloud font-medium'
                 )}
               >
                 {option}

@@ -46,7 +46,7 @@ export function CheckInScreen({ childName = 'ребёнок', onContinue, onBack
 
         {/* Секция Эмоции */}
         <div className="mb-6 sm:mb-8">
-          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Эмоции</h2>
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-3 sm:mb-4">Эмоции</h2>
           <div className="grid grid-cols-5 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
             {emotions.map((emotion) => {
               const isSelected = selectedEmotion === emotion.value;
@@ -88,7 +88,7 @@ export function CheckInScreen({ childName = 'ребёнок', onContinue, onBack
 
         {/* Секция Концентрация */}
         <div className="mb-6 sm:mb-8">
-          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Концентрация</h2>
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-3 sm:mb-4">Концентрация</h2>
           <div className="grid grid-cols-5 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
             {concentrationLevels.map((level) => {
               const isSelected = concentration === level.value;

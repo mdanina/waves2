@@ -49,7 +49,7 @@ export function Popover({
       </div>
       {isOpen && (
         <div className={cn(
-          'absolute z-50 bg-white rounded-2xl shadow-2xl border border-gray-200',
+          'absolute z-50 bg-white rounded-2xl shadow-2xl border border-border',
           'animate-in fade-in zoom-in-95 duration-150',
           positions[position],
           className

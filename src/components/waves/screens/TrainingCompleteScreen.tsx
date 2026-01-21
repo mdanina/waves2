@@ -182,7 +182,7 @@ export function TrainingCompleteScreen({
           <div className="mb-4 sm:mb-5 md:mb-6">
             <StreakBadge days={streak} />
             {streak >= 4 && (
-              <p className="text-xs sm:text-sm md:text-base text-gray-600 mt-2">
+              <p className="text-xs sm:text-sm md:text-base text-muted-foreground mt-2">
                 Завтра будет {streak + 1}!
               </p>
             )}

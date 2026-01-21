@@ -23,7 +23,7 @@ export function BottomNavigation({ items, defaultValue, onChange, className }: B
   };
 
   return (
-    <div className={cn('fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100', className)}>
+    <div className={cn('fixed bottom-0 left-0 right-0 bg-white border-t border-border', className)}>
       <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-around">
         {items.map((item) => {
           const isActive = selected === item.value;
@@ -36,7 +36,7 @@ export function BottomNavigation({ items, defaultValue, onChange, className }: B
               <div
                 className={cn(
                   'w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200',
-                  isActive ? 'bg-[#1a1a1a] text-white scale-110' : 'text-gray-400 hover:text-gray-600'
+                  isActive ? 'bg-ink text-white scale-110' : 'text-muted-foreground hover:text-foreground'
                 )}
               >
                 {item.icon}
@@ -44,7 +44,7 @@ export function BottomNavigation({ items, defaultValue, onChange, className }: B
               <span
                 className={cn(
                   'text-xs transition-all duration-200',
-                  isActive ? 'text-[#1a1a1a] font-medium' : 'text-gray-400'
+                  isActive ? 'text-ink font-medium' : 'text-muted-foreground'
                 )}
               >
                 {item.label}

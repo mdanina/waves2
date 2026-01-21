@@ -88,19 +88,19 @@ export function SettingsScreen({
         {/* Выбор пользователя */}
         <WellnessCard className="mb-4 sm:mb-6">
           <div className="mb-3">
-            <p className="text-sm sm:text-base font-semibold text-gray-900 mb-2 sm:mb-3">Сменить пользователя</p>
+            <p className="text-sm sm:text-base font-semibold text-foreground mb-2 sm:mb-3">Сменить пользователя</p>
             <div className="relative" ref={profileDropdownRef}>
               <button
                 onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                className="w-full flex items-center justify-between p-3 bg-white rounded-lg hover:bg-gray-50 border border-[#1a1a1a]/10"
+                className="w-full flex items-center justify-between p-3 bg-white rounded-lg hover:bg-cloud border border-[#1a1a1a]/10"
               >
                 <div className="flex items-center gap-2 sm:gap-3">
-                  <User className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
-                  <span className="text-sm sm:text-base text-gray-900">
+                  <User className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
+                  <span className="text-sm sm:text-base text-foreground">
                     {currentProfile?.name || 'Выберите пользователя'}
                   </span>
                 </div>
-                <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 text-gray-400 transition-transform ${isProfileDropdownOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground/70 transition-transform ${isProfileDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
               
               {isProfileDropdownOpen && (
@@ -112,15 +112,15 @@ export function SettingsScreen({
                         onProfileChange(profile.id);
                         setIsProfileDropdownOpen(false);
                       }}
-                      className={`w-full flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors ${
+                      className={`w-full flex items-center gap-3 p-3 hover:bg-cloud transition-colors ${
                         currentProfile?.id === profile.id ? 'bg-[#a8d8ea]/10' : ''
                       }`}
                     >
-                      <User className={`w-4 h-4 sm:w-5 sm:h-5 ${currentProfile?.id === profile.id ? 'text-[#a8d8ea]' : 'text-gray-600'}`} />
+                      <User className={`w-4 h-4 sm:w-5 sm:h-5 ${currentProfile?.id === profile.id ? 'text-[#a8d8ea]' : 'text-muted-foreground'}`} />
                       <div className="flex-1 text-left">
-                        <p className="text-sm sm:text-base text-gray-900 font-medium">{profile.name}</p>
+                        <p className="text-sm sm:text-base text-foreground font-medium">{profile.name}</p>
                         {profile.age && (
-                          <p className="text-xs sm:text-sm text-gray-500">{profile.age} лет</p>
+                          <p className="text-xs sm:text-sm text-muted-foreground">{profile.age} лет</p>
                         )}
                       </div>
                       {currentProfile?.id === profile.id && (
@@ -146,33 +146,33 @@ export function SettingsScreen({
         {/* Выбор устройства */}
         <WellnessCard className="mb-6">
           <div className="mb-3">
-            <p className="text-sm sm:text-base font-semibold text-gray-900 mb-2 sm:mb-3">Выбрать устройство</p>
+            <p className="text-sm sm:text-base font-semibold text-foreground mb-2 sm:mb-3">Выбрать устройство</p>
             <div className="relative" ref={deviceDropdownRef}>
               <button
                 onClick={() => allDevices.length > 0 && setIsDeviceDropdownOpen(!isDeviceDropdownOpen)}
                 disabled={allDevices.length === 0}
-                className="w-full flex items-center justify-between p-3 bg-white rounded-lg hover:bg-gray-50 border border-[#1a1a1a]/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-between p-3 bg-white rounded-lg hover:bg-cloud border border-[#1a1a1a]/10 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <div className="flex items-center gap-2 sm:gap-3">
-                  <Radio className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+                  <Radio className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
                   {currentDevice ? (
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-3 h-3 sm:w-4 sm:h-4 text-[#a8d8ea]" />
-                      <span className="text-sm sm:text-base text-gray-900">
+                      <span className="text-sm sm:text-base text-foreground">
                         {currentDevice.id}
                       </span>
                       {currentDevice.batteryLevel !== undefined && (
-                        <span className="text-xs sm:text-sm text-gray-500">
+                        <span className="text-xs sm:text-sm text-muted-foreground">
                           ({currentDevice.batteryLevel}%)
                         </span>
                       )}
                     </div>
                   ) : (
-                    <span className="text-sm sm:text-base text-gray-900">Выберите устройство</span>
+                    <span className="text-sm sm:text-base text-foreground">Выберите устройство</span>
                   )}
                 </div>
                 {allDevices.length > 0 && (
-                  <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 text-gray-400 transition-transform ${isDeviceDropdownOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground/70 transition-transform ${isDeviceDropdownOpen ? 'rotate-180' : ''}`} />
                 )}
               </button>
               
@@ -185,7 +185,7 @@ export function SettingsScreen({
                         onDeviceChange?.(device.id);
                         setIsDeviceDropdownOpen(false);
                       }}
-                      className={`w-full flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors ${
+                      className={`w-full flex items-center gap-3 p-3 hover:bg-cloud transition-colors ${
                         currentDevice?.id === device.id ? 'bg-[#a8d8ea]/10' : ''
                       }`}
                     >
@@ -193,14 +193,14 @@ export function SettingsScreen({
                         {currentDevice?.id === device.id ? (
                           <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#a8d8ea]" />
                         ) : (
-                          <Radio className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+                          <Radio className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
                         )}
                       </div>
                       <div className="flex-1 text-left">
-                        <p className="text-sm sm:text-base text-gray-900 font-medium">{device.id}</p>
-                        <p className="text-xs sm:text-sm text-gray-500">{device.name}</p>
+                        <p className="text-sm sm:text-base text-foreground font-medium">{device.id}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground">{device.name}</p>
                         {device.batteryLevel !== undefined && (
-                          <p className="text-xs sm:text-sm text-gray-400">{device.batteryLevel}% заряда</p>
+                          <p className="text-xs sm:text-sm text-muted-foreground/70">{device.batteryLevel}% заряда</p>
                         )}
                       </div>
                       {currentDevice?.id === device.id && (
@@ -268,7 +268,7 @@ export function SettingsScreen({
           <WellnessCard className="space-y-1">
             <button
               onClick={onProfileClick}
-              className="w-full flex items-center justify-between p-3 sm:p-4 hover:bg-gray-50 rounded-xl transition-colors"
+              className="w-full flex items-center justify-between p-3 sm:p-4 hover:bg-cloud rounded-xl transition-colors"
             >
               <div className="flex items-center gap-2 sm:gap-3">
                 <User className="w-4 h-4 sm:w-5 sm:h-5 text-[#a8d8ea]" />
@@ -276,7 +276,7 @@ export function SettingsScreen({
               </div>
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#1a1a1a]/40" />
             </button>
-            <button className="w-full flex items-center justify-between p-3 sm:p-4 hover:bg-gray-50 rounded-xl transition-colors">
+            <button className="w-full flex items-center justify-between p-3 sm:p-4 hover:bg-cloud rounded-xl transition-colors">
               <div className="flex items-center gap-2 sm:gap-3">
                 <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-[#ffb5c5]" />
                 <span className="text-sm sm:text-base text-[#1a1a1a]">Безопасность</span>
@@ -292,8 +292,8 @@ export function SettingsScreen({
           <WellnessCard className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 sm:gap-3">
-                <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
-                <span className="text-sm sm:text-base text-gray-900">Push-уведомления</span>
+                <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
+                <span className="text-sm sm:text-base text-foreground">Push-уведомления</span>
               </div>
               <Toggle checked={notifications} onChange={setNotifications} />
             </div>

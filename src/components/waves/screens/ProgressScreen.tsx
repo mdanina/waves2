@@ -54,15 +54,15 @@ export function ProgressScreen({ userName, onBack, sessions, onSessionClick }: P
         <div className="grid grid-cols-2 gap-4 mb-6">
           <WellnessCard gradient="lavender" className="p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Calendar className="w-5 h-5 text-gray-600" />
-              <p className="text-xs sm:text-sm md:text-base text-gray-600">Тренировок</p>
+              <Calendar className="w-5 h-5 text-muted-foreground" />
+              <p className="text-xs sm:text-sm md:text-base text-muted-foreground">Тренировок</p>
             </div>
             <p className="text-xl sm:text-2xl md:text-3xl font-bold text-[#1a1a1a]">{sessionsCompleted}</p>
           </WellnessCard>
           <WellnessCard gradient="pink" className="p-4">
             <div className="flex items-center gap-2 mb-2">
-              <TrendingUp className="w-5 h-5 text-gray-600" />
-              <p className="text-xs sm:text-sm md:text-base text-gray-600">Минут</p>
+              <TrendingUp className="w-5 h-5 text-muted-foreground" />
+              <p className="text-xs sm:text-sm md:text-base text-muted-foreground">Минут</p>
             </div>
             <p className="text-xl sm:text-2xl md:text-3xl font-bold text-[#1a1a1a]">{totalMinutes}</p>
           </WellnessCard>
