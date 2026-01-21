@@ -5,6 +5,24 @@ import { openDB, DBSchema, IDBPDatabase } from 'idb';
 import type { User, Session, AuthError } from '@supabase/supabase-js';
 import type { Database } from './supabase';
 
+// Интерфейс для сообщений (локальная БД)
+interface LocalMessage {
+  id: string;
+  sender_id: string;
+  recipient_id: string;
+  content: string;
+  is_read: boolean;
+  read_at: string | null;
+  created_at: string;
+  updated_at: string;
+  attachment_url?: string | null;
+  attachment_name?: string | null;
+  attachment_type?: string | null;
+  attachment_size?: number | null;
+  is_support_message?: boolean;
+  actual_sender_id?: string | null;
+}
+
 // Схема базы данных IndexedDB
 interface LocalDBSchema extends DBSchema {
   users: {
@@ -31,6 +49,10 @@ interface LocalDBSchema extends DBSchema {
     key: string;
     value: Database['public']['Tables']['payments']['Row'];
   };
+  messages: {
+    key: string;
+    value: LocalMessage;
+  };
   auth: {
     key: string;
     value: {
@@ -48,7 +70,7 @@ export async function initLocalDB(): Promise<IDBPDatabase<LocalDBSchema>> {
     return dbInstance;
   }
 
-  dbInstance = await openDB<LocalDBSchema>('waves2-db', 1, {
+  dbInstance = await openDB<LocalDBSchema>('waves2-db', 2, {
     upgrade(db) {
       // Создаем хранилища
       if (!db.objectStoreNames.contains('users')) {
@@ -69,6 +91,9 @@ export async function initLocalDB(): Promise<IDBPDatabase<LocalDBSchema>> {
       }
       if (!db.objectStoreNames.contains('payments')) {
         db.createObjectStore('payments', { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains('messages')) {
+        db.createObjectStore('messages', { keyPath: 'id' });
       }
       if (!db.objectStoreNames.contains('auth')) {
         db.createObjectStore('auth', { keyPath: 'key' });
