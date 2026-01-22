@@ -984,142 +984,145 @@ export default function Dashboard() {
           </div>
         )}
 
-        <div className="mb-12 grid gap-6 md:grid-cols-2 md:items-stretch">
-          {/* Левая колонка: Шаг 1 + уведомление */}
-          <div className="flex flex-col gap-4 h-full">
-            {/* Шаг 1: Психологический чекап семьи */}
-            <WellnessCard 
-              className={`group relative overflow-hidden p-8 transition-all flex flex-col ${
-                canStartCheckup.allowed
-                  ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98]'
-                  : 'cursor-not-allowed opacity-75'
-              }`}
-              gradient={canStartCheckup.allowed ? 'pink' : undefined}
-              hover={canStartCheckup.allowed}
-              style={{ height: '100%', minHeight: '340px' }}
-              onClick={(e) => {
-                if (!canStartCheckup.allowed) {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  return;
-                }
-                e.preventDefault();
-                e.stopPropagation();
-                handleCheckupClick();
-              }}
-              role="button"
-              tabIndex={canStartCheckup.allowed ? 0 : -1}
-              onKeyDown={(e) => {
-                if (!canStartCheckup.allowed) return;
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleCheckupClick();
-                }
-              }}
-            >
-              {/* Желтый круг с номером шага 1 */}
-              <div className="absolute top-4 right-4 w-12 h-12 rounded-full bg-honey flex items-center justify-center shadow-soft pointer-events-none z-10">
-                <span className="text-ink font-light text-xl">1</span>
-              </div>
-              <div 
-                className="flex flex-col items-center text-center justify-center flex-1"
+        {/* Временно скрыто */}
+        {false && (
+          <div className="mb-12 grid gap-6 md:grid-cols-2 md:items-stretch">
+            {/* Левая колонка: Шаг 1 + уведомление */}
+            <div className="flex flex-col gap-4 h-full">
+              {/* Шаг 1: Психологический чекап семьи */}
+              <WellnessCard 
+                className={`group relative overflow-hidden p-8 transition-all flex flex-col ${
+                  canStartCheckup.allowed
+                    ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98]'
+                    : 'cursor-not-allowed opacity-75'
+                }`}
+                gradient={canStartCheckup.allowed ? 'pink' : undefined}
+                hover={canStartCheckup.allowed}
+                style={{ height: '100%', minHeight: '340px' }}
                 onClick={(e) => {
                   if (!canStartCheckup.allowed) {
+                    e.preventDefault();
                     e.stopPropagation();
                     return;
                   }
+                  e.preventDefault();
                   e.stopPropagation();
                   handleCheckupClick();
                 }}
+                role="button"
+                tabIndex={canStartCheckup.allowed ? 0 : -1}
+                onKeyDown={(e) => {
+                  if (!canStartCheckup.allowed) return;
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleCheckupClick();
+                  }
+                }}
               >
-                <img 
-                  src={checkupIllustration} 
-                  alt="Проверка психического здоровья семьи" 
+                {/* Желтый круг с номером шага 1 */}
+                <div className="absolute top-4 right-4 w-12 h-12 rounded-full bg-honey flex items-center justify-center shadow-soft pointer-events-none z-10">
+                  <span className="text-ink font-light text-xl">1</span>
+                </div>
+                <div 
+                  className="flex flex-col items-center text-center justify-center flex-1"
+                  onClick={(e) => {
+                    if (!canStartCheckup.allowed) {
+                      e.stopPropagation();
+                      return;
+                    }
+                    e.stopPropagation();
+                    handleCheckupClick();
+                  }}
+                >
+                  <img 
+                    src={checkupIllustration} 
+                    alt="Проверка психического здоровья семьи" 
+                    className={`mb-6 h-40 w-auto object-contain transition-transform pointer-events-none ${
+                      canStartCheckup.allowed ? 'group-hover:scale-110' : ''
+                    }`}
+                  />
+                  <SerifHeading size="lg" className={`mb-2 transition-colors pointer-events-none ${
+                    canStartCheckup.allowed ? 'group-hover:text-coral' : 'text-muted-foreground'
+                  }`}>
+                    Пройти чекап
+                  </SerifHeading>
+                  {canStartCheckup.allowed && canStartCheckup.reason === 'active_checkup_exists' && (
+                    <p className={`text-lg font-medium pointer-events-none ${
+                      canStartCheckup.allowed ? 'text-muted-foreground' : 'text-muted-foreground/70'
+                    }`}>
+                      Продолжить проверку
+                    </p>
+                  )}
+                  {/* Предупреждение о повторном прохождении чекапа внутри карточки */}
+                  {!canStartCheckup.allowed && canStartCheckup.reason === 'too_soon' && (
+                    <div className="mt-4 flex justify-center">
+                      <Badge variant="secondary" className="bg-muted text-muted-foreground border border-border/50 px-4 py-2 rounded-full font-light hover:bg-muted">
+                        <Calendar className="h-3.5 w-3.5 mr-2" />
+                        {canStartCheckup.daysRemaining 
+                          ? `Повторно можно пройти через ${canStartCheckup.daysRemaining} ${canStartCheckup.daysRemaining === 1 ? 'день' : canStartCheckup.daysRemaining < 5 ? 'дня' : 'дней'}`
+                          : 'Чекап можно пройти только раз в месяц или после добавления нового ребенка'
+                        }
+                      </Badge>
+                    </div>
+                  )}
+                </div>
+              </WellnessCard>
+            </div>
+
+            {/* Правая колонка: Шаг 2 */}
+            <div>
+              {/* Шаг 2: Получить консультацию */}
+            <WellnessCard
+              className={`group relative overflow-hidden p-8 transition-all flex flex-col ${
+                hasAnyCompletedCheckup
+                  ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98]'
+                  : 'cursor-not-allowed opacity-75'
+              }`}
+              gradient={hasAnyCompletedCheckup ? 'lavender' : undefined}
+              hover={hasAnyCompletedCheckup}
+              style={{ height: '100%', minHeight: '340px' }}
+              onClick={() => hasAnyCompletedCheckup && navigate("/appointments")}
+              role={hasAnyCompletedCheckup ? "button" : undefined}
+              tabIndex={hasAnyCompletedCheckup ? 0 : -1}
+              onKeyDown={(e) => {
+                if (hasAnyCompletedCheckup && (e.key === 'Enter' || e.key === ' ')) {
+                  e.preventDefault();
+                  navigate("/appointments");
+                }
+              }}
+            >
+              {/* Желтый круг с номером шага 2 */}
+              <div className="absolute top-4 right-4 w-12 h-12 rounded-full bg-honey flex items-center justify-center shadow-soft pointer-events-none z-10">
+                <span className="text-ink font-light text-xl">2</span>
+              </div>
+              <div className="flex flex-col items-center text-center justify-center flex-1">
+                <img
+                  src={consultationIllustration}
+                  alt="Waves Portal"
                   className={`mb-6 h-40 w-auto object-contain transition-transform pointer-events-none ${
-                    canStartCheckup.allowed ? 'group-hover:scale-110' : ''
+                    hasAnyCompletedCheckup ? 'group-hover:scale-110' : ''
                   }`}
                 />
                 <SerifHeading size="lg" className={`mb-2 transition-colors pointer-events-none ${
-                  canStartCheckup.allowed ? 'group-hover:text-coral' : 'text-muted-foreground'
+                  hasAnyCompletedCheckup
+                    ? 'text-foreground group-hover:text-coral'
+                    : 'text-muted-foreground'
                 }`}>
-                  Пройти чекап
+                  Получить консультацию
                 </SerifHeading>
-                {canStartCheckup.allowed && canStartCheckup.reason === 'active_checkup_exists' && (
-                  <p className={`text-lg font-medium pointer-events-none ${
-                    canStartCheckup.allowed ? 'text-muted-foreground' : 'text-muted-foreground/70'
-                  }`}>
-                    Продолжить проверку
-                  </p>
-                )}
-                {/* Предупреждение о повторном прохождении чекапа внутри карточки */}
-                {!canStartCheckup.allowed && canStartCheckup.reason === 'too_soon' && (
+                {!hasAnyCompletedCheckup && (
                   <div className="mt-4 flex justify-center">
                     <Badge variant="secondary" className="bg-muted text-muted-foreground border border-border/50 px-4 py-2 rounded-full font-light hover:bg-muted">
                       <Calendar className="h-3.5 w-3.5 mr-2" />
-                      {canStartCheckup.daysRemaining 
-                        ? `Повторно можно пройти через ${canStartCheckup.daysRemaining} ${canStartCheckup.daysRemaining === 1 ? 'день' : canStartCheckup.daysRemaining < 5 ? 'дня' : 'дней'}`
-                        : 'Чекап можно пройти только раз в месяц или после добавления нового ребенка'
-                      }
+                      Для доступа к консультациям пройдите чекап
                     </Badge>
                   </div>
                 )}
               </div>
             </WellnessCard>
-          </div>
-
-          {/* Правая колонка: Шаг 2 */}
-          <div>
-            {/* Шаг 2: Получить консультацию */}
-          <WellnessCard
-            className={`group relative overflow-hidden p-8 transition-all flex flex-col ${
-              hasAnyCompletedCheckup
-                ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98]'
-                : 'cursor-not-allowed opacity-75'
-            }`}
-            gradient={hasAnyCompletedCheckup ? 'lavender' : undefined}
-            hover={hasAnyCompletedCheckup}
-            style={{ height: '100%', minHeight: '340px' }}
-            onClick={() => hasAnyCompletedCheckup && navigate("/appointments")}
-            role={hasAnyCompletedCheckup ? "button" : undefined}
-            tabIndex={hasAnyCompletedCheckup ? 0 : -1}
-            onKeyDown={(e) => {
-              if (hasAnyCompletedCheckup && (e.key === 'Enter' || e.key === ' ')) {
-                e.preventDefault();
-                navigate("/appointments");
-              }
-            }}
-          >
-            {/* Желтый круг с номером шага 2 */}
-            <div className="absolute top-4 right-4 w-12 h-12 rounded-full bg-honey flex items-center justify-center shadow-soft pointer-events-none z-10">
-              <span className="text-ink font-light text-xl">2</span>
             </div>
-            <div className="flex flex-col items-center text-center justify-center flex-1">
-              <img
-                src={consultationIllustration}
-                alt="Waves Portal"
-                className={`mb-6 h-40 w-auto object-contain transition-transform pointer-events-none ${
-                  hasAnyCompletedCheckup ? 'group-hover:scale-110' : ''
-                }`}
-              />
-              <SerifHeading size="lg" className={`mb-2 transition-colors pointer-events-none ${
-                hasAnyCompletedCheckup
-                  ? 'text-foreground group-hover:text-coral'
-                  : 'text-muted-foreground'
-              }`}>
-                Получить консультацию
-              </SerifHeading>
-              {!hasAnyCompletedCheckup && (
-                <div className="mt-4 flex justify-center">
-                  <Badge variant="secondary" className="bg-muted text-muted-foreground border border-border/50 px-4 py-2 rounded-full font-light hover:bg-muted">
-                    <Calendar className="h-3.5 w-3.5 mr-2" />
-                    Для доступа к консультациям пройдите чекап
-                  </Badge>
-                </div>
-              )}
-            </div>
-          </WellnessCard>
           </div>
-        </div>
+        )}
 
         {/* Support Section */}
         <div className="mb-12">
