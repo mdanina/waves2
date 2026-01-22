@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-import { Input } from '../../design-system/Input';
-import { PillButton } from '../../design-system/PillButton';
+import { Input as DesignSystemInput } from '../../design-system/Input';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { SerifHeading } from '../../design-system/SerifHeading';
-import { Logo } from '../../design-system/Logo';
+import bgImage from '@/assets/bg.png';
 
 interface LoginScreenProps {
   onLogin: (email: string, password: string) => void;
@@ -21,82 +22,85 @@ export function LoginScreen({ onLogin, onForgotPassword }: LoginScreenProps) {
   };
 
   return (
-    <div 
-      className="fixed inset-0 flex flex-col"
+    <div
+      className="min-h-screen"
       style={{
-        backgroundImage: 'url(/bg.png)',
+        backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'top center',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
         backgroundRepeat: 'no-repeat',
-        zIndex: 1,
       }}
     >
-      {/* Контейнер для позиционирования формы - можно свободно перемещать */}
-      <div className="flex-1 flex items-start justify-center px-4 sm:px-8 md:px-16" style={{ paddingTop: '77px' }}>
-        {/* Независимый блок формы */}
-        <div className="w-full max-w-sm">
-          {/* Логотип */}
-          <div className="text-center mb-6 sm:mb-8">
-            <div className="flex justify-center mb-3 sm:mb-4">
-              <Logo size="2xl" variant="default" />
+      <div className="container mx-auto max-w-2xl px-4 py-12">
+        <Card className="rounded-[20px] border-2 bg-white p-8 shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
+          <div className="space-y-8 mt-8">
+            <div className="text-center">
+              <SerifHeading size="2xl" className="mb-4">
+                Войдите в свой аккаунт для продолжения
+              </SerifHeading>
             </div>
-          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 rounded-2xl p-4 sm:p-6">
-            <Input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="border-0"
-            />
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <DesignSystemInput
+                id="email"
+                type="email"
+                label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
 
-            <div className="relative">
-              <Input
+              <DesignSystemInput
+                id="password"
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Пароль"
+                label="Пароль"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="border-0"
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/70 hover:text-muted-foreground"
+
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4 inline mr-1" /> : <Eye className="w-4 h-4 inline mr-1" />}
+                  {showPassword ? 'Скрыть' : 'Показать'} пароль
+                </button>
+              </div>
+
+              <Button
+                type="submit"
+                size="lg"
+                className="h-14 w-full text-base font-medium"
               >
-                {showPassword ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
-              </button>
+                Войти
+              </Button>
+            </form>
+
+            <div className="space-y-3 text-center">
+              <p className="text-sm text-muted-foreground">
+                Нет аккаунта?{' '}
+                <a href="#" className="text-foreground hover:underline transition-colors">
+                  Зарегистрируйтесь на сайте
+                </a>
+              </p>
+
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onForgotPassword();
+                }}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors underline"
+              >
+                Забыли пароль?
+              </a>
             </div>
-
-            <PillButton
-              type="submit"
-              variant="secondary"
-              className="w-full shadow-lg text-[#1a1a1a]/70"
-            >
-              Войти
-            </PillButton>
-          </form>
-
-          <p className="text-center text-sm sm:text-base text-white mt-2">
-            Нет аккаунта?{' '}
-            <a href="#" className="text-white hover:text-white/80 underline transition-colors">
-              Зарегистрируйтесь на сайте
-            </a>
-          </p>
-
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              onForgotPassword();
-            }}
-            className="text-sm sm:text-base text-white hover:text-white/80 transition-colors text-center w-full mt-2 block underline"
-          >
-            Забыли пароль?
-          </a>
-        </div>
+          </div>
+        </Card>
       </div>
     </div>
   );

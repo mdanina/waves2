@@ -38,15 +38,23 @@ export function CheckInScreen({ childName = 'ребёнок', onContinue, onBack
   const canContinue = selectedEmotion !== null && concentration !== null;
 
   return (
-    <div className="flex flex-col bg-white min-h-screen">
-      <div className="flex-1 px-4 sm:px-8 md:px-16 py-4 sm:py-6 md:py-8">
-        <SerifHeading size="2xl" className="mb-6 sm:mb-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
+    <div 
+      className="flex items-center justify-center px-16 py-12 min-h-screen"
+      style={{
+        backgroundImage: 'url(/bg2.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'top center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      <div className="w-full max-w-md text-center">
+        <SerifHeading size="2xl" className="mb-6 sm:mb-8 text-3xl sm:text-4xl md:text-5xl">
           Как {childName} себя чувствует сейчас?
         </SerifHeading>
 
         {/* Секция Эмоции */}
         <div className="mb-6 sm:mb-8">
-          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-3 sm:mb-4">Эмоции</h2>
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-3 sm:mb-4 text-center">Эмоции</h2>
           <div className="grid grid-cols-5 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
             {emotions.map((emotion) => {
               const isSelected = selectedEmotion === emotion.value;
@@ -88,7 +96,7 @@ export function CheckInScreen({ childName = 'ребёнок', onContinue, onBack
 
         {/* Секция Концентрация */}
         <div className="mb-6 sm:mb-8">
-          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-3 sm:mb-4">Концентрация</h2>
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-3 sm:mb-4 text-center">Концентрация</h2>
           <div className="grid grid-cols-5 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
             {concentrationLevels.map((level) => {
               const isSelected = concentration === level.value;
