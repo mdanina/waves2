@@ -190,7 +190,7 @@ export function ClientSidebar() {
       {/* Logo */}
       <div className="px-6 pt-10 pb-6 shrink-0">
         <Link to="/cabinet" className="flex items-center justify-center">
-          <img src={logo} alt="Waves" className="h-12 w-auto brightness-0 opacity-30" />
+          <img src={logo} alt="Waves" className="h-12 w-auto" />
         </Link>
       </div>
 

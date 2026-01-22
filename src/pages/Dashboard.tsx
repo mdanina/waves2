@@ -522,7 +522,7 @@ export default function Dashboard() {
   }, [profilesError]);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
         {/* Отображение ошибок загрузки */}
         {(profilesError || appointmentsError) && (
           <div className="mb-6 rounded-lg border border-destructive bg-destructive/10 p-4">
