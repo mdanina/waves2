@@ -47,7 +47,7 @@ export function ClientLayout() {
 
   return (
     <div
-      className="min-h-screen relative"
+      className="relative"
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
@@ -71,7 +71,7 @@ export function ClientLayout() {
       </div>
 
       {/* Main Content */}
-      <main className="md:ml-64 min-h-screen bg-transparent">
+      <main className="md:ml-64 bg-transparent">
         <Outlet />
       </main>
 
