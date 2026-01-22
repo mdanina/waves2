@@ -56,6 +56,11 @@ export function ClientLayout() {
         backgroundRepeat: 'no-repeat',
       }}
     >
+      {/* Main Content */}
+      <main className="md:ml-64 min-h-screen bg-transparent">
+        <Outlet />
+      </main>
+
       {/* Desktop Sidebar */}
       <ClientSidebar />
 
@@ -69,11 +74,6 @@ export function ClientLayout() {
           <Menu className="h-5 w-5" />
         </Button>
       </div>
-
-      {/* Main Content */}
-      <main className="md:ml-64 min-h-screen bg-transparent">
-        <Outlet />
-      </main>
 
       {/* Mobile Sidebar */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
