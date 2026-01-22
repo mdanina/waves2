@@ -27,8 +27,8 @@ import flatMinimalCartoonImage from "@/assets/illustration-in-flat-minimal-carto
 import parentsStandingImage from "@/assets/flat-cartoon-style-illustration-of-parents-standin.png";
 import happyCaucasianCoImage from "@/assets/cartoon-style-illustration-of-a-happy-caucasian-co.png";
 import youngCaucasianCo2Image from "@/assets/cartoon-style-illustration-of-a-young-caucasian-co (2).png";
-import expertImage from "@/assets/nv.jpg";
-import otterRelaxed from "@/assets/otter-relaxed.png";
+// import expertImage from "@/assets/nv.jpg"; // File not found
+// import otterRelaxed from "@/assets/otter-relaxed.png"; // File not found
 import b7d9b091Image from "@/assets/b7d9b091-406e-44ad-a80c-6349c93ba1e3.png";
 import chatgptImage4Dec from "@/assets/ChatGPT Image 4 дек. 2025 г., 15_38_13.png";
 import chatgptImage4Dec2 from "@/assets/ChatGPT Image 4 дек. 2025 г., 15_41_26.png";
@@ -762,15 +762,12 @@ export default function Landing() {
 
                 {/* Right side - Photo */}
                 <div className="flex items-center justify-center px-0">
-                  <img 
-                    src={expertImage} 
-                    alt="Наталья Владимировна Кисельникова"
-                    className="landing-expertise-photo"
-                    onError={(e) => {
-                      // Fallback если изображение не найдено
-                      (e.target as HTMLImageElement).style.display = 'none';
-                    }}
-                  />
+                  <div 
+                    className="landing-expertise-photo bg-muted flex items-center justify-center"
+                    style={{ minHeight: '300px', minWidth: '300px' }}
+                  >
+                    <span className="text-muted-foreground">Фото</span>
+                  </div>
                 </div>
               </div>
               </div>

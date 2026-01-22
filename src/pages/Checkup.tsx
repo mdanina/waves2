@@ -3,7 +3,7 @@ import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useCurrentProfile } from "@/contexts/ProfileContext";
-import otterSchool from "@/assets/otter-school.png";
+// import otterSchool from "@/assets/otter-school.png"; // File not found
 
 export default function Checkup() {
   const navigate = useNavigate();
@@ -39,11 +39,9 @@ export default function Checkup() {
       <div className="container mx-auto max-w-3xl px-4 py-12">
         <div className="space-y-12">
           <div>
-            <img
-              src={otterSchool}
-              alt="Выдра с рюкзаком"
-              className="mx-auto mb-8 h-64 w-64 object-contain"
-            />
+            <div className="mx-auto mb-8 h-64 w-64 flex items-center justify-center bg-muted rounded-lg">
+              <span className="text-muted-foreground text-sm">Изображение</span>
+            </div>
             
             <h1 className="mb-6 text-3xl font-bold text-foreground">
               Сейчас мы будем задавать вопросы об эмоциях и поведении ребенка.

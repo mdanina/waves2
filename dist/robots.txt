@@ -1,0 +1,46 @@
+# Robots.txt для waves.ru
+# Разрешаем индексацию всех публичных страниц
+
+User-agent: *
+Allow: /
+
+# Блокируем приватные разделы
+Disallow: /admin/
+Disallow: /specialist/
+Disallow: /cabinet/
+Disallow: /profile/
+Disallow: /family-setup/
+Disallow: /family-members/
+Disallow: /add-family-member/
+Disallow: /edit-family-member/
+Disallow: /checkup/
+Disallow: /checkup-questions/
+Disallow: /checkup-interlude/
+Disallow: /checkup-results/
+Disallow: /checkup-history/
+Disallow: /results-report/
+Disallow: /appointments/
+Disallow: /packages/
+Disallow: /payment/
+Disallow: /success/
+Disallow: /worries/
+Disallow: /parent-intro/
+Disallow: /parent-questions/
+Disallow: /family-intro/
+Disallow: /family-questions/
+Disallow: /region/
+
+# Разрешаем публичные страницы
+Allow: /
+Allow: /service
+Allow: /login
+Allow: /register
+Allow: /blog
+Allow: /blog/*
+Allow: /terms
+Allow: /privacy
+Allow: /privacy-notice
+Allow: /sitemap
+
+# Ссылка на sitemap
+Sitemap: https://waves.ru/sitemap.xml
