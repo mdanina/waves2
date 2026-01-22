@@ -975,9 +975,9 @@ export default function Dashboard() {
                 variant="outline"
                 size="sm"
                 className="mt-3 border-amber-300 text-amber-800 hover:bg-amber-100"
-                onClick={() => navigate("/cabinet/messages")}
+                onClick={() => window.open('https://t.me/waves_support_bot', '_blank', 'noopener,noreferrer')}
               >
-                <MessageSquare className="h-4 w-4 mr-2" />
+                <HelpCircle className="h-4 w-4 mr-2" />
                 Написать в поддержку
               </Button>
             </div>
@@ -1128,8 +1128,8 @@ export default function Dashboard() {
             <p className="text-muted-foreground mb-4">
               Напишите в поддержку, чтобы решить любые проблемы или записаться к специалисту напрямую без предварительной диагностики.
             </p>
-            <Button onClick={() => navigate("/cabinet/messages")}>
-              <MessageSquare className="h-4 w-4 mr-2" />
+            <Button onClick={() => window.open('https://t.me/waves_support_bot', '_blank', 'noopener,noreferrer')}>
+              <HelpCircle className="h-4 w-4 mr-2" />
               Написать в поддержку
             </Button>
           </Card>

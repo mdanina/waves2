@@ -16,9 +16,8 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { getUnreadCount } from '@/lib/supabase-messages';
-import { useEffect, useState } from 'react';
+// import { Badge } from '@/components/ui/badge'; // Temporarily disabled
+// import { getUnreadCount } from '@/lib/supabase-messages'; // Temporarily disabled
 
 const mainNavigation = [
   {
@@ -38,9 +37,10 @@ const mainNavigation = [
     icon: History,
   },
   {
-    name: 'Сообщения',
-    href: '/cabinet/messages',
-    icon: MessageSquare,
+    name: 'Написать в поддержку',
+    href: 'https://t.me/waves_support_bot',
+    icon: HelpCircle,
+    external: true,
   },
   {
     name: 'Темы для обращения',
@@ -78,60 +78,18 @@ interface ClientSidebarNavProps {
 
 export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
   const location = useLocation();
-  const [unreadMessages, setUnreadMessages] = useState(0);
-  const { user } = useAuth();
-
-  useEffect(() => {
-    if (user?.id) {
-      getUnreadCount().then(setUnreadMessages).catch(() => {});
-    }
-  }, [user?.id]);
 
   return (
     <nav className="flex-1 p-4 space-y-1 overflow-y-auto overflow-x-hidden">
       {mainNavigation.map((item) => {
-        const isActive =
-          item.end
+        const isActive = item.external
+          ? false
+          : item.end
             ? location.pathname === item.href
             : location.pathname.startsWith(item.href);
         
-        return (
-          <Link
-            key={item.name}
-            to={item.href}
-            onClick={onItemClick}
-            className={cn(
-              'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 min-w-0',
-              isActive
-                ? 'text-foreground'
-                : 'text-muted-foreground hover:text-foreground'
-            )}
-            style={isActive ? {
-              background: 'rgba(255, 255, 255, 0.5)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.5)',
-              boxShadow: '0 0 0 3px rgba(255, 255, 255, 0.25), 0 2px 12px rgba(255, 255, 255, 0.2)',
-            } : undefined}
-            onMouseEnter={(e) => {
-              if (!isActive) {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.5)';
-                e.currentTarget.style.backdropFilter = 'blur(8px)';
-                e.currentTarget.style.webkitBackdropFilter = 'blur(8px)';
-                e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.4)';
-                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(255, 255, 255, 0.15), 0 2px 8px rgba(255, 255, 255, 0.1)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!isActive) {
-                e.currentTarget.style.background = '';
-                e.currentTarget.style.backdropFilter = '';
-                e.currentTarget.style.webkitBackdropFilter = '';
-                e.currentTarget.style.border = '';
-                e.currentTarget.style.boxShadow = '';
-              }
-            }}
-          >
+        const linkContent = (
+          <>
             <item.icon
               className={cn(
                 'h-5 w-5 shrink-0',
@@ -139,11 +97,77 @@ export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
               )}
             />
             <span className="flex-1 truncate min-w-0">{item.name}</span>
-            {item.name === 'Сообщения' && unreadMessages > 0 && (
-              <Badge variant="default" className="ml-auto shrink-0">
-                {unreadMessages}
-              </Badge>
-            )}
+          </>
+        );
+
+        const linkClassName = cn(
+          'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 min-w-0',
+          isActive
+            ? 'text-foreground'
+            : 'text-muted-foreground hover:text-foreground'
+        );
+
+        const linkStyle = isActive ? {
+          background: 'rgba(255, 255, 255, 0.5)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          border: '1px solid rgba(255, 255, 255, 0.5)',
+          boxShadow: '0 0 0 3px rgba(255, 255, 255, 0.25), 0 2px 12px rgba(255, 255, 255, 0.2)',
+        } : undefined;
+
+        const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
+          if (!isActive) {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.5)';
+            e.currentTarget.style.backdropFilter = 'blur(8px)';
+            e.currentTarget.style.webkitBackdropFilter = 'blur(8px)';
+            e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.4)';
+            e.currentTarget.style.boxShadow = '0 0 0 3px rgba(255, 255, 255, 0.15), 0 2px 8px rgba(255, 255, 255, 0.1)';
+          }
+        };
+
+        const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
+          if (!isActive) {
+            e.currentTarget.style.background = '';
+            e.currentTarget.style.backdropFilter = '';
+            e.currentTarget.style.webkitBackdropFilter = '';
+            e.currentTarget.style.border = '';
+            e.currentTarget.style.boxShadow = '';
+          }
+        };
+
+        if (item.external) {
+          return (
+            <a
+              key={item.name}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={linkClassName}
+              style={{ ...linkStyle, cursor: 'pointer' }}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.open(item.href, '_blank', 'noopener,noreferrer');
+              }}
+            >
+              {linkContent}
+            </a>
+          );
+        }
+        
+        return (
+          <Link
+            key={item.name}
+            to={item.href}
+            onClick={onItemClick}
+            className={linkClassName}
+            style={linkStyle}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            {linkContent}
           </Link>
         );
       })}
