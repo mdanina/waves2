@@ -277,33 +277,22 @@ export default function Settings() {
     }
   };
 
-  const backgroundStyle = {
-    background: 'var(--bg-golden-hour)',
-    backgroundAttachment: 'fixed',
-    minHeight: '100vh',
-  };
-
-  if (isLoadingProfile) {
-    return (
-      <div style={backgroundStyle} className="flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
   return (
-    <div style={backgroundStyle}>
-      {/* Main Content */}
-      <div className="container mx-auto max-w-3xl px-6 py-8">
-        <div className="mb-8">
-          <SerifHeading size="2xl" className="mb-2">
-            Настройки
-          </SerifHeading>
-          <p className="text-muted-foreground">
-            Управление профилем и предпочтениями
-          </p>
-        </div>
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
+      <div className="mb-8">
+        <SerifHeading size="2xl" className="mb-2">
+          Настройки
+        </SerifHeading>
+        <p className="text-muted-foreground">
+          Управление профилем и предпочтениями
+        </p>
+      </div>
 
+      {isLoadingProfile ? (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:inline-flex">
             <TabsTrigger value="profile" className="flex items-center gap-2">
@@ -646,7 +635,7 @@ export default function Settings() {
             </Card>
           </TabsContent>
         </Tabs>
-      </div>
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Header } from "@/components/Header";
+import { SerifHeading } from "@/components/design-system/SerifHeading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -92,40 +92,23 @@ export default function CheckupHistory() {
     }
   };
 
-  const backgroundStyle = {
-    background: 'var(--bg-golden-hour)',
-    backgroundAttachment: 'fixed'
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background" style={backgroundStyle}>
-        <Header />
-        <div className="container mx-auto max-w-6xl px-4 py-12">
-          <div className="flex items-center justify-center py-12">
-            <Clock className="h-8 w-8 animate-spin text-primary" />
-            <span className="ml-2 text-muted-foreground">Загрузка истории...</span>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-background" style={backgroundStyle}>
-      <Header />
-
-      <div className="container mx-auto max-w-6xl px-4 py-12">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
         {/* Заголовок */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <History className="h-8 w-8 text-primary" />
-            <h1 className="text-4xl font-bold text-foreground">История чекапов</h1>
+            <History className="h-8 w-8 text-primary shrink-0" />
+            <SerifHeading size="2xl">История чекапов</SerifHeading>
           </div>
         </div>
 
         {/* Список чекапов */}
-        {childCheckups.length === 0 ? (
+      {loading ? (
+        <div className="flex items-center justify-center py-12">
+          <Clock className="h-8 w-8 animate-spin text-primary" />
+          <span className="ml-2 text-muted-foreground">Загрузка истории...</span>
+        </div>
+      ) : childCheckups.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
               <History className="h-16 w-16 text-muted-foreground mb-4" />
@@ -182,7 +165,6 @@ export default function CheckupHistory() {
             })}
           </div>
         )}
-      </div>
     </div>
   );
 }

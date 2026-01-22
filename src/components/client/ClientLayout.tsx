@@ -57,7 +57,16 @@ export function ClientLayout() {
       }}
     >
       {/* Main Content */}
-      <main className="md:ml-64 min-h-screen bg-transparent">
+      <main
+        className="md:ml-64 min-h-screen"
+        style={{
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
         <Outlet />
       </main>
 

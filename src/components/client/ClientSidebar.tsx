@@ -208,7 +208,7 @@ export function ClientSidebar() {
   const location = useLocation();
 
   return (
-    <aside 
+    <aside
       className="glass-sidebar hidden md:flex flex-col w-64 fixed left-0 top-0 h-screen"
     >
       {/* Logo */}

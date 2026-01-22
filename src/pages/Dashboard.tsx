@@ -984,9 +984,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Временно скрыто */}
-        {false && (
-          <div className="mb-12 grid gap-6 md:grid-cols-2 md:items-stretch">
+        <div className="mb-12 grid gap-6 md:grid-cols-2 md:items-stretch">
             {/* Левая колонка: Шаг 1 + уведомление */}
             <div className="flex flex-col gap-4 h-full">
               {/* Шаг 1: Психологический чекап семьи */}
@@ -1122,12 +1120,19 @@ export default function Dashboard() {
             </WellnessCard>
             </div>
           </div>
-        )}
 
         {/* Support Section */}
         <div className="mb-12">
           <SerifHeading size="xl" className="mb-4">Есть вопросы?</SerifHeading>
-          <Card className="border-2 bg-white p-6">
+          <Card
+            className="border-2 p-6 shadow-[0_4px_20px_rgba(0,0,0,0.06)]"
+            style={{
+              background: 'linear-gradient(108deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.25) 100%)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              borderColor: 'rgba(255, 255, 255, 0.3)',
+            }}
+          >
             <p className="text-muted-foreground mb-4">
               Напишите в поддержку, чтобы решить любые проблемы или записаться к специалисту напрямую без предварительной диагностики.
             </p>
@@ -1214,9 +1219,15 @@ export default function Dashboard() {
                         : null;
                       
                       return (
-                        <Card 
+                        <Card
                           key={member.id}
-                          className="min-w-[320px] flex-shrink-0 flex flex-col border-2 bg-card p-6 shadow-sm transition-all hover:shadow-md"
+                          className="min-w-[320px] flex-shrink-0 flex flex-col border-2 p-6 shadow-sm transition-all hover:shadow-md"
+                          style={{
+                            background: 'linear-gradient(108deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.25) 100%)',
+                            backdropFilter: 'blur(10px)',
+                            WebkitBackdropFilter: 'blur(10px)',
+                            borderColor: 'rgba(255, 255, 255, 0.3)',
+                          }}
                         >
                           <div className="flex flex-col items-center text-center flex-1">
                             <img 
