@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { Header } from "@/components/Header";
 import { StepIndicator } from "@/components/StepIndicator";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import bgImage from '@/assets/bg.png';
 import { Input as DesignSystemInput } from "@/components/design-system/Input";
 import { RadioGroup as DesignSystemRadioGroup } from "@/components/design-system/Radio";
 import { Checkbox as DesignSystemCheckbox } from "@/components/design-system/Checkbox";
@@ -199,24 +200,32 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      
+    <div
+      className="min-h-screen"
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
       <div className="container mx-auto max-w-2xl px-4 py-12">
-        <StepIndicator currentStep={1} totalSteps={3} label="ПРОФИЛЬ РОДИТЕЛЯ" />
-        
-        <div className="space-y-8">
-          <div className="text-center">
-            <SerifHeading size="2xl" className="mb-4">
-              Расскажите нам больше о себе
-            </SerifHeading>
-            <p className="text-muted-foreground">
-              Данные используются только для облегчения лечения, в соответствии с нашей политикой
-              конфиденциальности.
-            </p>
-          </div>
+        <Card className="rounded-[20px] border-2 bg-white p-8 shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
+          <StepIndicator currentStep={1} totalSteps={3} label="ПРОФИЛЬ РОДИТЕЛЯ" />
+          
+          <div className="space-y-8 mt-8">
+            <div className="text-center">
+              <SerifHeading size="2xl" className="mb-4">
+                Расскажите нам больше о себе
+              </SerifHeading>
+              <p className="text-muted-foreground">
+                Данные используются для персонализации тренировок, в соответствии с нашей политикой
+                конфиденциальности.
+              </p>
+            </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
             <DesignSystemInput
               id="firstName"
               type="text"
@@ -267,7 +276,7 @@ export default function Profile() {
 
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground">
-                Вы ищете помощь для себя? <span className="text-destructive">*</span>
+                Планируете ли вы сами использовать платформу для собственных тренировок? <span className="text-destructive">*</span>
               </label>
               <DesignSystemRadioGroup
                 name="seekingCare"
@@ -298,7 +307,7 @@ export default function Profile() {
                 onChange={(checked) => handleNotificationConsentChange(checked)}
                 label={
                   <span className="text-sm leading-relaxed">
-                    Разрешить отправлять уведомления о консультациях на платформе
+                    Разрешить отправлять уведомления об обновлениях на платформе
                   </span>
                 }
               />
@@ -324,7 +333,8 @@ export default function Profile() {
               {loading ? 'Сохранение...' : 'Продолжить'}
             </Button>
           </form>
-        </div>
+          </div>
+        </Card>
       </div>
     </div>
   );

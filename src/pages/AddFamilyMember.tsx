@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
-import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import bgImage from '@/assets/bg.png';
 import { Input as DesignSystemInput } from "@/components/design-system/Input";
 import { RadioGroup as DesignSystemRadioGroup } from "@/components/design-system/Radio";
 import { SerifHeading } from "@/components/design-system/SerifHeading";
@@ -73,18 +74,26 @@ export default function AddFamilyMember() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      
+    <div
+      className="min-h-screen"
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
       <div className="container mx-auto max-w-2xl px-4 py-12">
-        <div className="space-y-8">
-          <div className="text-center">
-            <SerifHeading size="2xl" className="mb-4">
-              Расскажите нам больше о члене семьи
-            </SerifHeading>
-          </div>
+        <Card className="rounded-[20px] border-2 bg-white p-8 shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
+          <div className="space-y-8">
+            <div className="text-center">
+              <SerifHeading size="2xl" className="mb-4">
+                Расскажите нам больше о члене семьи
+              </SerifHeading>
+            </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
             <DesignSystemInput
               id="firstName"
               type="text"
@@ -131,9 +140,6 @@ export default function AddFamilyMember() {
                 <SelectContent className="rounded-2xl">
                   <SelectItem value="child">Ребенок</SelectItem>
                   <SelectItem value="partner">Партнер</SelectItem>
-                  <SelectItem value="parent">Родитель</SelectItem>
-                  <SelectItem value="sibling">Брат/Сестра</SelectItem>
-                  <SelectItem value="caregiver">Опекун</SelectItem>
                   <SelectItem value="other">Другое</SelectItem>
                 </SelectContent>
               </Select>
@@ -219,7 +225,8 @@ export default function AddFamilyMember() {
               </Button>
             </div>
           </form>
-        </div>
+          </div>
+        </Card>
       </div>
     </div>
   );

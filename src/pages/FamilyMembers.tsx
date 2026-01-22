@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { Header } from "@/components/Header";
 import { StepIndicator } from "@/components/StepIndicator";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import bgImage from '@/assets/bg.png';
 import { Avatar } from "@/components/ui/avatar";
 import { SerifHeading } from "@/components/design-system/SerifHeading";
 import { User, Plus, Pencil, Trash2 } from "lucide-react";
@@ -95,13 +96,21 @@ export default function FamilyMembers() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      
+    <div
+      className="min-h-screen"
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
       <div className="container mx-auto max-w-2xl px-4 py-12">
-        <StepIndicator currentStep={3} totalSteps={3} label="ПРОФИЛЬ СЕМЬИ" />
-        
-        <div className="space-y-8">
+        <Card className="rounded-[20px] border-2 bg-white p-8 shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
+          <StepIndicator currentStep={3} totalSteps={3} label="ПРОФИЛЬ СЕМЬИ" />
+          
+          <div className="space-y-8 mt-8">
           <div className="text-center">
             <img
               src={familyIllustration}
@@ -217,7 +226,8 @@ export default function FamilyMembers() {
               </>
             )}
           </div>
-        </div>
+          </div>
+        </Card>
       </div>
 
       <AlertDialog open={deleteId !== null} onOpenChange={() => setDeleteId(null)}>
