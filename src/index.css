@@ -492,7 +492,6 @@
 
 /* Glass Sidebar - вне @layer для максимального приоритета */
 aside.glass-sidebar {
-  position: relative !important;
   background: linear-gradient(108deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.14) 100%) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
