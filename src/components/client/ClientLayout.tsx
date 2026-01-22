@@ -47,7 +47,7 @@ export function ClientLayout() {
 
   return (
     <div
-      className="min-h-screen relative"
+      className="relative"
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
