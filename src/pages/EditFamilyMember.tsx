@@ -40,6 +40,14 @@ export default function EditFamilyMember() {
         try {
           const member = await getProfile(id);
           if (member) {
+            // Если это профиль родителя, перенаправляем на правильную форму редактирования
+            if (member.type === 'parent') {
+              navigate('/profile', {
+                state: { from: location.state?.from || 'cabinet' },
+                replace: true,
+              });
+              return;
+            }
             setFirstName(member.first_name);
             setLastName(member.last_name || "");
             setDateOfBirth(member.dob || "");
@@ -69,7 +77,7 @@ export default function EditFamilyMember() {
       }
     }
     loadMember();
-  }, [id, navigate]);
+  }, [id, navigate, location.state?.from]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

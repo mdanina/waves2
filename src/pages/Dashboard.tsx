@@ -1271,11 +1271,19 @@ export default function Dashboard() {
                                   variant="ghost"
                                   size="sm"
                                   className="flex-1 text-muted-foreground hover:text-foreground hover:bg-muted/50 font-light"
-                                  onClick={() =>
-                                    member.type === 'parent'
-                                      ? navigate('/profile', { state: { from: 'cabinet' } })
-                                      : navigate(`/edit-family-member/${member.id}`, { state: { from: 'cabinet' } })
-                                  }
+                                  onClick={() => {
+                                    logger.log('Edit clicked for member:', {
+                                      id: member.id,
+                                      name: `${member.first_name} ${member.last_name}`,
+                                      type: member.type,
+                                      isParent: member.type === 'parent'
+                                    });
+                                    if (member.type === 'parent') {
+                                      navigate('/profile', { state: { from: 'cabinet' } });
+                                    } else {
+                                      navigate(`/edit-family-member/${member.id}`, { state: { from: 'cabinet' } });
+                                    }
+                                  }}
                                 >
                                   <Pencil className="h-4 w-4 mr-2" />
                                   Редактировать
