@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProfileProvider } from "@/contexts/ProfileContext";
 import { AdminAuthProvider } from "@/contexts/AdminAuthContext";
@@ -27,7 +27,6 @@ import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import VerifyEmail from "./pages/VerifyEmail";
-import Welcome from "./pages/Welcome";
 import ComingSoon from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
 import Terms from "./pages/Terms";
@@ -162,7 +161,7 @@ const App = () => (
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="/verify-email" element={<VerifyEmail />} />
-                    <Route path="/welcome" element={<Welcome />} />
+                    <Route path="/welcome" element={<Navigate to="/profile" replace />} />
                     <Route path="/coming-soon" element={<ComingSoon />} />
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/blog/category/:categorySlug" element={<Blog />} />

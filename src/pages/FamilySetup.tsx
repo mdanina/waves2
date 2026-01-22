@@ -13,7 +13,7 @@ export default function FamilySetup() {
       <Header />
       
       <div className="container mx-auto max-w-2xl px-4 py-12">
-        <StepIndicator currentStep={3} totalSteps={4} label="ПРОФИЛЬ СЕМЬИ" />
+        <StepIndicator currentStep={2} totalSteps={3} label="ПРОФИЛЬ СЕМЬИ" />
         
         <div className="space-y-12 text-center">
           <img

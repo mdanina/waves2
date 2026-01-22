@@ -56,9 +56,14 @@ const mainNavigation = [
 
 const debugNavigation = [
   {
-    name: 'Debug: Онбординг',
-    href: '/welcome',
+    name: 'Debug: Профиль родителя',
+    href: '/profile',
     icon: Sparkles,
+  },
+  {
+    name: 'Debug: Настройка семьи',
+    href: '/family-setup',
+    icon: Users,
   },
   {
     name: 'Debug: Члены семьи',
@@ -234,6 +239,7 @@ export function ClientSidebar() {
                   <Link
                     key={item.name}
                     to={item.href}
+                    state={['/profile', '/family-setup', '/family-members'].includes(item.href) ? { debug: true } : undefined}
                     className={cn(
                       'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 min-w-0',
                       isActive

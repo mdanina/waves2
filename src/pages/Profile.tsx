@@ -55,9 +55,14 @@ export default function Profile() {
         // Загружаем профиль родителя, если он существует
         const profiles = await getProfiles();
         const parentProfile = profiles.find(p => p.type === 'parent');
+        
+        // Загружаем данные из базы
         if (parentProfile) {
           setFirstName(parentProfile.first_name || "");
           setLastName(parentProfile.last_name || "");
+        }
+        
+        if (parentProfile) {
           setDateOfBirth(parentProfile.dob || "");
           setSex(parentProfile.gender || "");
           setSeekingCare(parentProfile.seeking_care || "");
@@ -66,17 +71,16 @@ export default function Profile() {
         // Проверяем, прошел ли пользователь онбординг полностью:
         // - Есть профиль родителя с заполненными данными
         // - Есть телефон
-        // - Есть регион
         const hasParentProfile = parentProfile && parentProfile.first_name && parentProfile.last_name;
         const hasPhone = userData?.phone;
-        const hasRegion = userData?.region;
 
-        if (hasParentProfile && hasPhone && hasRegion) {
+        if (hasParentProfile && hasPhone) {
           hasCompletedOnboardingRef.current = true;
 
           // Если пользователь уже прошел онбординг и зашел сюда не из cabinet,
           // значит это ошибочный редирект - отправляем на cabinet
-          if (location.state?.from !== 'cabinet') {
+          // Исключение: если это debug-доступ (из сайдбара), разрешаем редактирование
+          if (location.state?.from !== 'cabinet' && !location.state?.debug) {
             navigate('/cabinet', { replace: true });
             return;
           }
@@ -180,7 +184,7 @@ export default function Profile() {
           navigate("/cabinet");
         } else {
           // Первичная настройка → продолжаем поток
-          navigate("/region");
+          navigate("/family-setup");
         }
       } catch (error) {
         console.error('Error saving profile:', error);
@@ -199,7 +203,7 @@ export default function Profile() {
       <Header />
       
       <div className="container mx-auto max-w-2xl px-4 py-12">
-        <StepIndicator currentStep={1} totalSteps={3} label="ПРОФИЛЬ" />
+        <StepIndicator currentStep={1} totalSteps={3} label="ПРОФИЛЬ РОДИТЕЛЯ" />
         
         <div className="space-y-8">
           <div className="text-center">

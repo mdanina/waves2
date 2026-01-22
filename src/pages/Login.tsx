@@ -85,10 +85,8 @@ export default function Login() {
         // Если профиль не заполнен или нет профиля родителя, идем на страницу профиля
         if (!userData || !userData.phone || !parentProfile) {
           navigate('/profile');
-        } else if (!userData.region) {
-          // Если регион не заполнен, идем на выбор региона
-          navigate('/region');
         } else {
+          // Профиль заполнен → идем в кабинет
           navigate('/cabinet');
         }
       } catch (profileError) {
