@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -8,6 +7,8 @@ import { useCurrentProfile } from "@/contexts/ProfileContext";
 import { updateProfile, getProfile, getProfiles } from "@/lib/profileStorage";
 import { logger } from "@/lib/logger";
 import { toast } from "sonner";
+import { SerifHeading } from "@/components/design-system/SerifHeading";
+import backgroundImage from "@/assets/bg.png";
 
 const childWorries = [
   "Фокус и внимание",
@@ -118,29 +119,39 @@ export default function Worries() {
     );
   };
 
-  const backgroundStyle = {
-    background: 'var(--bg-golden-hour)',
-    backgroundAttachment: 'fixed'
-  };
-
   return (
-    <div className="min-h-screen bg-background" style={backgroundStyle}>
-      <Header />
-      
-      <div className="container mx-auto max-w-4xl px-4 py-12">
-        <div className="space-y-8">
-          <div className="text-center">
-            <h1 className="mb-4 text-4xl font-bold text-foreground">
-              Расскажите нам о своих беспокойствах
-            </h1>
-          </div>
+    <div 
+      className="w-full min-h-screen relative"
+      style={{
+        backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed',
+      }}
+    >
+      {/* Gradient overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none bg-gradient-to-br from-[#ffecd2] via-[#ffd7ba] to-[#fcb69f]"
+        style={{
+          opacity: 0.25,
+        }}
+      />
+      <div className="relative z-10">
+        <div className="container mx-auto max-w-4xl px-4 py-12">
+          <div className="space-y-8">
+            <div className="text-center">
+              <SerifHeading size="2xl" className="mb-4">
+                Расскажите нам о своих беспокойствах
+              </SerifHeading>
+            </div>
 
           <div className="space-y-4">
             {/* For Child Section */}
-            <div className="rounded-lg border border-border bg-card">
+            <div className="rounded-2xl border-2 border-muted bg-white/80 backdrop-blur-sm transition-all duration-200">
               <button
                 onClick={() => toggleSection("child")}
-                className="flex w-full items-center justify-between p-6 text-left"
+                className="flex w-full items-center justify-between p-6 text-left hover:bg-white/90 rounded-2xl focus:outline-none focus:ring-2 focus:ring-coral-light focus:ring-offset-2"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-lg font-medium text-foreground">Для Ребенка</span>
@@ -174,10 +185,10 @@ export default function Worries() {
             </div>
 
             {/* For You Section */}
-            <div className="rounded-lg border border-border bg-card">
+            <div className="rounded-2xl border-2 border-muted bg-white/80 backdrop-blur-sm transition-all duration-200">
               <button
                 onClick={() => toggleSection("personal")}
-                className="flex w-full items-center justify-between p-6 text-left"
+                className="flex w-full items-center justify-between p-6 text-left hover:bg-white/90 rounded-2xl focus:outline-none focus:ring-2 focus:ring-coral-light focus:ring-offset-2"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-lg font-medium text-foreground">Для Вас</span>
@@ -211,10 +222,10 @@ export default function Worries() {
             </div>
 
             {/* For Your Family Section */}
-            <div className="rounded-lg border border-border bg-card">
+            <div className="rounded-2xl border-2 border-muted bg-white/80 backdrop-blur-sm transition-all duration-200">
               <button
                 onClick={() => toggleSection("family")}
-                className="flex w-full items-center justify-between p-6 text-left"
+                className="flex w-full items-center justify-between p-6 text-left hover:bg-white/90 rounded-2xl focus:outline-none focus:ring-2 focus:ring-coral-light focus:ring-offset-2"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-lg font-medium text-foreground">Для Вашей Семьи</span>
@@ -250,6 +261,7 @@ export default function Worries() {
 
           <Button
             size="lg"
+            className="h-14 w-full text-base font-medium"
             onClick={async () => {
               let targetProfileId = profileId;
               
@@ -397,10 +409,10 @@ export default function Worries() {
               }
             }}
             disabled={loading}
-            className="h-14 w-full text-base font-medium"
           >
             {loading ? 'Сохранение...' : isFromDashboard ? 'Сохранить' : 'Далее'}
           </Button>
+          </div>
         </div>
       </div>
     </div>

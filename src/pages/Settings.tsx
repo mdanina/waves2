@@ -37,7 +37,6 @@ import { getCurrentUserData, updateUserData } from '@/lib/userStorage';
 import { TIMEZONES, getUserTimezone } from '@/lib/moscowTime';
 import { PushNotificationSettings } from '@/components/settings/PushNotificationSettings';
 import { TelegramNotificationSettings } from '@/components/settings/TelegramNotificationSettings';
-const logo = "/logo.png"; // Логотип из public
 
 // Регионы (тот же список, что в RegionSelect)
 const REGIONS = [
@@ -113,18 +112,6 @@ export default function Settings() {
       // Получаем настройки часового пояса из localStorage
       const savedTimezone = localStorage.getItem('user_timezone');
       setTimezone(savedTimezone || getUserTimezone());
-
-      // Проверяем подключение Telegram (через profiles или users таблицу)
-      const { data: profileData } = await supabase
-        .from('profiles')
-        .select('telegram_chat_id')
-        .eq('user_id', user.id)
-        .single();
-
-      if (profileData?.telegram_chat_id) {
-        setTelegramConnected(true);
-        setTelegramChatId(profileData.telegram_chat_id);
-      }
     } catch (error) {
       console.error('Error loading user data:', error);
     } finally {
@@ -305,22 +292,6 @@ export default function Settings() {
 
   return (
     <div style={backgroundStyle}>
-      {/* Header */}
-      <header
-        className="sticky top-0 z-50 py-4 px-6 border-b border-white/20"
-        style={{
-          background: 'linear-gradient(108deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.25) 100%)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-        }}
-      >
-        <div className="container mx-auto flex items-center justify-center">
-          <Link to="/cabinet">
-            <img src={logo} alt="Waves" className="h-12 w-auto cursor-pointer" />
-          </Link>
-        </div>
-      </header>
-
       {/* Main Content */}
       <div className="container mx-auto max-w-3xl px-6 py-8">
         <div className="mb-8">

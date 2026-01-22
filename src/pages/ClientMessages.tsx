@@ -983,33 +983,9 @@ export default function ClientMessages() {
 
   return (
     <div className="min-h-screen flex flex-col" style={backgroundStyle}>
-      {/* Header */}
-      <header 
-        className="border-b border-[#1a1a1a]/10 px-4 py-3 shrink-0"
-        style={{
-          background: 'linear-gradient(108deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.25) 100%)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)'
-        }}
-      >
-        <div className="container mx-auto max-w-6xl flex items-center justify-center relative">
-          <button
-            onClick={() => navigate('/cabinet')}
-            className="cursor-pointer"
-          >
-            <img src="/logo.png" alt="Waves" className="h-12 w-auto" />
-          </button>
-          {totalUnread > 0 && (
-            <Badge variant="secondary" className="absolute right-0 bg-honey text-ink font-light hover:bg-honey">
-              {totalUnread} новых
-            </Badge>
-          )}
-        </div>
-      </header>
-
       {/* Main content */}
       <div className="flex-1 container mx-auto max-w-6xl p-4">
-        <Card className="h-[calc(100vh-8rem)] overflow-hidden rounded-xl shadow-soft border-2"
+        <Card className="h-[calc(100vh-4rem)] overflow-hidden rounded-xl shadow-soft border-2"
           style={{
             background: 'linear-gradient(108deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.5) 100%)',
             backdropFilter: 'blur(10px)',

@@ -7,7 +7,6 @@ import {
   History,
   Calendar,
   User,
-  ArrowLeft,
   FileText,
   Clock
 } from "lucide-react";
@@ -119,15 +118,6 @@ export default function CheckupHistory() {
       <div className="container mx-auto max-w-6xl px-4 py-12">
         {/* Заголовок */}
         <div className="mb-8">
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/cabinet")}
-            className="mb-4"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Назад в личный кабинет
-          </Button>
-
           <div className="flex items-center gap-3 mb-2">
             <History className="h-8 w-8 text-primary" />
             <h1 className="text-4xl font-bold text-foreground">История чекапов</h1>
