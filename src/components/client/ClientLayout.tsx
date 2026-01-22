@@ -46,7 +46,7 @@ export function ClientLayout() {
 
   return (
     <div 
-      className="flex min-h-screen relative"
+      className="min-h-screen relative"
       style={{
         background: 'var(--bg-golden-hour)',
         backgroundAttachment: 'fixed',
@@ -67,7 +67,7 @@ export function ClientLayout() {
       </div>
 
       {/* Main Content */}
-      <main className="flex-1 md:ml-0 min-h-screen overflow-y-auto bg-transparent">
+      <main className="md:ml-64 h-screen overflow-y-auto bg-transparent">
         <Outlet />
       </main>
 

@@ -5,7 +5,6 @@ import parentFemaleAvatar from "@/assets/friendly-and-clean-face-of-an-adult-per
 import parentMaleAvatar from "@/assets/friendly-and-clean-face-of-an-adult-person--gender (1).png";
 import childFemaleAvatar from "@/assets/friendly-and-clean-face-of-a-white-girl-7-yo--soft.png";
 import childMaleAvatar from "@/assets/friendly-and-clean-face-of-a-white-boy-7-yo--soft- (1).png";
-import backgroundImage from "@/assets/bg.png";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -64,9 +63,6 @@ interface MemberWithAssessment extends Profile {
   activeCheckupAssessment?: Assessment | null;
 }
 
-// URL вступительного видео - замените на ваш реальный URL YouTube или другой видеохостинг
-const INTRO_VIDEO_URL = "https://www.youtube.com/embed/dQw4w9WgXcQ";
-
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -74,7 +70,6 @@ export default function Dashboard() {
   const cancelAppointment = useCancelAppointment();
   const queryClient = useQueryClient();
   const [cancelDialogOpen, setCancelDialogOpen] = useState<string | null>(null);
-  const [videoDialogOpen, setVideoDialogOpen] = useState(false);
   const [unreadMessages, setUnreadMessages] = useState(0);
   const [selectedSpecialistId, setSelectedSpecialistId] = useState<string | null>(null);
   const [pendingRating, setPendingRating] = useState<PendingRating | null>(null);
@@ -527,26 +522,7 @@ export default function Dashboard() {
   }, [profilesError]);
 
   return (
-    <div 
-      className="w-full min-h-screen relative"
-      style={{
-        backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundAttachment: 'fixed',
-      }}
-    >
-      {/* Gradient overlay */}
-      <div 
-        className="absolute inset-0 pointer-events-none bg-gradient-to-br from-[#ffecd2] via-[#ffd7ba] to-[#fcb69f]"
-        style={{
-          opacity: 0.25,
-        }}
-      />
-      <div className="relative z-10">
-        {/* Main Content */}
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-8">
         {/* Отображение ошибок загрузки */}
         {(profilesError || appointmentsError) && (
           <div className="mb-6 rounded-lg border border-destructive bg-destructive/10 p-4">
@@ -1342,27 +1318,6 @@ export default function Dashboard() {
                 </div>
           )}
         </div>
-      </div>
-
-      {/* Video Dialog */}
-      <Dialog open={videoDialogOpen} onOpenChange={setVideoDialogOpen}>
-        <DialogContent className="max-w-4xl w-[90vw] p-0">
-          <DialogHeader className="px-6 pt-6">
-            <DialogTitle>Вступительное видео</DialogTitle>
-          </DialogHeader>
-          <div className="px-6 pb-6">
-            <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-              <iframe
-                className="absolute top-0 left-0 w-full h-full rounded-lg"
-                src={INTRO_VIDEO_URL}
-                title="Вступительное видео"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       {/* Specialist Profile Dialog */}
       <Dialog open={!!selectedSpecialistId} onOpenChange={(open) => !open && setSelectedSpecialistId(null)}>
@@ -1409,7 +1364,6 @@ export default function Dashboard() {
           }}
         />
       )}
-      </div>
     </div>
   );
 }
