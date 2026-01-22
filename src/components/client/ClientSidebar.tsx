@@ -16,7 +16,6 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { getUnreadCount } from '@/lib/supabase-messages';
 import { useEffect, useState } from 'react';
@@ -104,16 +103,41 @@ export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
               to={item.href}
               onClick={onItemClick}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors min-w-0',
+                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 min-w-0',
                 isActive
-                  ? 'bg-[#E0F0FF] text-[#007BFF]'
-                  : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                  ? 'text-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
               )}
+              style={isActive ? {
+                background: 'rgba(255, 255, 255, 0.3)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 178, 153, 0.5)',
+                boxShadow: '0 0 0 3px rgba(255, 178, 153, 0.25), 0 2px 12px rgba(255, 178, 153, 0.2)',
+              } : undefined}
+              onMouseEnter={(e) => {
+                if (!isActive) {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
+                  e.currentTarget.style.backdropFilter = 'blur(8px)';
+                  e.currentTarget.style.webkitBackdropFilter = 'blur(8px)';
+                  e.currentTarget.style.border = '1px solid rgba(255, 178, 153, 0.4)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(255, 178, 153, 0.15), 0 2px 8px rgba(255, 178, 153, 0.1)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive) {
+                  e.currentTarget.style.background = '';
+                  e.currentTarget.style.backdropFilter = '';
+                  e.currentTarget.style.webkitBackdropFilter = '';
+                  e.currentTarget.style.border = '';
+                  e.currentTarget.style.boxShadow = '';
+                }
+              }}
             >
               <item.icon
                 className={cn(
                   'h-5 w-5 shrink-0',
-                  isActive ? 'text-[#007BFF]' : 'text-muted-foreground'
+                  isActive ? 'text-foreground' : 'text-muted-foreground'
                 )}
               />
               <span className="flex-1 truncate min-w-0">{item.name}</span>
@@ -130,7 +154,6 @@ export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
       {/* DEBUG Section */}
       {import.meta.env.DEV && (
         <>
-          <Separator className="mx-4" />
           <div className="px-4 py-2">
             <p className="text-xs text-muted-foreground mb-2">DEBUG</p>
             <nav className="space-y-1">
@@ -142,11 +165,25 @@ export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
                     to={item.href}
                     onClick={onItemClick}
                     className={cn(
-                      'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors min-w-0',
+                      'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 min-w-0',
                       isActive
                         ? 'bg-accent text-accent-foreground'
-                        : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                        : 'text-muted-foreground hover:text-foreground'
                     )}
+                    onMouseEnter={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+                        e.currentTarget.style.backdropFilter = 'blur(8px)';
+                        e.currentTarget.style.webkitBackdropFilter = 'blur(8px)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.background = '';
+                        e.currentTarget.style.backdropFilter = '';
+                        e.currentTarget.style.webkitBackdropFilter = '';
+                      }
+                    }}
                   >
                     <item.icon className="h-4 w-4 shrink-0" />
                     <span className="truncate min-w-0">{item.name}</span>
@@ -189,23 +226,24 @@ export function ClientSidebar() {
     return 'Пользователь';
   };
 
+  const logo = "/logo.png"; // Логотип из public
+
   return (
-    <aside className="hidden md:flex flex-col w-64 border-r border-border bg-background">
+    <aside 
+      className="glass-sidebar hidden md:flex flex-col w-64"
+    >
       {/* Logo */}
-      <div className="p-6 border-b border-border">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">W</span>
-          </div>
-          <span className="font-bold text-lg text-foreground">WAVES</span>
-        </div>
+      <div className="p-6">
+        <Link to="/cabinet" className="flex items-center justify-center">
+          <img src={logo} alt="Waves" className="h-12 w-auto" />
+        </Link>
       </div>
 
       {/* Navigation */}
       <ClientSidebarNav />
 
       {/* User Profile Section */}
-      <div className="border-t border-border p-4 space-y-4">
+      <div className="p-4 space-y-4">
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10">
             <AvatarFallback className="bg-[#E0F0FF] text-[#007BFF]">

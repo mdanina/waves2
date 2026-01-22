@@ -37,6 +37,7 @@ import { getCurrentUserData, updateUserData } from '@/lib/userStorage';
 import { TIMEZONES, getUserTimezone } from '@/lib/moscowTime';
 import { PushNotificationSettings } from '@/components/settings/PushNotificationSettings';
 import { TelegramNotificationSettings } from '@/components/settings/TelegramNotificationSettings';
+import { SerifHeading } from '@/components/ui/serif-heading';
 
 // Регионы (тот же список, что в RegionSelect)
 const REGIONS = [
@@ -295,7 +296,9 @@ export default function Settings() {
       {/* Main Content */}
       <div className="container mx-auto max-w-3xl px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-foreground">Настройки</h1>
+          <SerifHeading size="2xl" className="mb-2">
+            Настройки
+          </SerifHeading>
           <p className="text-muted-foreground">
             Управление профилем и предпочтениями
           </p>

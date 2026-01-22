@@ -489,3 +489,24 @@
     -webkit-backdrop-filter: blur(var(--blur-lg));
   }
 }
+
+/* Glass Sidebar - вне @layer для максимального приоритета */
+aside.glass-sidebar {
+  position: relative !important;
+  background: linear-gradient(108deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.14) 100%) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.3) !important;
+  z-index: 10 !important;
+  isolation: isolate !important;
+}
+
+/* Переопределение любых возможных фоновых классов Tailwind */
+aside.glass-sidebar.bg-background,
+aside.glass-sidebar.bg-white,
+aside.glass-sidebar[class*="bg-background"],
+aside.glass-sidebar[class*="bg-white"] {
+  background: linear-gradient(108deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.14) 100%) !important;
+  background-color: transparent !important;
+}

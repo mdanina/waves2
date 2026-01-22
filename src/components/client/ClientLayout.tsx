@@ -45,7 +45,13 @@ export function ClientLayout() {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div 
+      className="flex min-h-screen relative"
+      style={{
+        background: 'var(--bg-golden-hour)',
+        backgroundAttachment: 'fixed',
+      }}
+    >
       {/* Desktop Sidebar */}
       <ClientSidebar />
 
@@ -61,7 +67,7 @@ export function ClientLayout() {
       </div>
 
       {/* Main Content */}
-      <main className="flex-1 md:ml-0 min-h-screen overflow-y-auto">
+      <main className="flex-1 md:ml-0 min-h-screen overflow-y-auto bg-transparent">
         <Outlet />
       </main>
 
