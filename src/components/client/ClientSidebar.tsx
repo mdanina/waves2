@@ -107,19 +107,19 @@ export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
                 : 'text-muted-foreground hover:text-foreground'
             )}
             style={isActive ? {
-              background: 'rgba(255, 255, 255, 0.3)',
+              background: 'rgba(255, 255, 255, 0.5)',
               backdropFilter: 'blur(8px)',
               WebkitBackdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 178, 153, 0.5)',
-              boxShadow: '0 0 0 3px rgba(255, 178, 153, 0.25), 0 2px 12px rgba(255, 178, 153, 0.2)',
+              border: '1px solid rgba(255, 255, 255, 0.5)',
+              boxShadow: '0 0 0 3px rgba(255, 255, 255, 0.25), 0 2px 12px rgba(255, 255, 255, 0.2)',
             } : undefined}
             onMouseEnter={(e) => {
               if (!isActive) {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.5)';
                 e.currentTarget.style.backdropFilter = 'blur(8px)';
                 e.currentTarget.style.webkitBackdropFilter = 'blur(8px)';
-                e.currentTarget.style.border = '1px solid rgba(255, 178, 153, 0.4)';
-                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(255, 178, 153, 0.15), 0 2px 8px rgba(255, 178, 153, 0.1)';
+                e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.4)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(255, 255, 255, 0.15), 0 2px 8px rgba(255, 255, 255, 0.1)';
               }
             }}
             onMouseLeave={(e) => {
@@ -188,9 +188,9 @@ export function ClientSidebar() {
       className="glass-sidebar hidden md:flex flex-col w-64 fixed left-0 top-0 h-screen"
     >
       {/* Logo */}
-      <div className="p-6 shrink-0">
+      <div className="px-6 pt-10 pb-6 shrink-0">
         <Link to="/cabinet" className="flex items-center justify-center">
-          <img src={logo} alt="Waves" className="h-12 w-auto" />
+          <img src={logo} alt="Waves" className="h-12 w-auto brightness-0 opacity-30" />
         </Link>
       </div>
 
