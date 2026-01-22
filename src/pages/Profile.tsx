@@ -4,9 +4,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Header } from "@/components/Header";
 import { StepIndicator } from "@/components/StepIndicator";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Input as DesignSystemInput } from "@/components/design-system/Input";
+import { RadioGroup as DesignSystemRadioGroup } from "@/components/design-system/Radio";
+import { Checkbox as DesignSystemCheckbox } from "@/components/design-system/Checkbox";
+import { SerifHeading } from "@/components/design-system/SerifHeading";
 import {
   Select,
   SelectContent,
@@ -14,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { getCurrentUserData, upsertUserData, PhoneAlreadyExistsError } from "@/lib/userStorage";
 import { getProfiles, createProfile, updateProfile } from "@/lib/profileStorage";
@@ -203,9 +203,9 @@ export default function Profile() {
         
         <div className="space-y-8">
           <div className="text-center">
-            <h1 className="mb-4 text-4xl font-bold text-foreground">
+            <SerifHeading size="2xl" className="mb-4">
               Расскажите нам больше о себе
-            </h1>
+            </SerifHeading>
             <p className="text-muted-foreground">
               Данные используются только для облегчения лечения, в соответствии с нашей политикой
               конфиденциальности.
@@ -213,38 +213,28 @@ export default function Profile() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="firstName">
-                Имя <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="firstName"
-                type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                required
-                className="h-12 text-base"
-              />
-            </div>
+            <DesignSystemInput
+              id="firstName"
+              type="text"
+              label="Имя *"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+
+            <DesignSystemInput
+              id="lastName"
+              type="text"
+              label="Фамилия *"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
 
             <div className="space-y-2">
-              <Label htmlFor="lastName">
-                Фамилия <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="lastName"
-                type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                required
-                className="h-12 text-base"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="dateOfBirth">
+              <label htmlFor="dateOfBirth" className="text-sm font-medium text-foreground">
                 Дата рождения <span className="text-destructive">*</span>
-              </Label>
+              </label>
               <BirthDatePicker
                 id="dateOfBirth"
                 value={dateOfBirth}
@@ -256,86 +246,69 @@ export default function Profile() {
             </div>
 
             <div className="space-y-3">
-              <Label>
+              <label className="text-sm font-medium text-foreground">
                 Пол <span className="text-destructive">*</span>
-              </Label>
-              <RadioGroup value={sex} onValueChange={setSex} className="grid grid-cols-2 gap-4">
-                <div className="flex items-center space-x-3 rounded-lg border border-input px-4 py-4">
-                  <RadioGroupItem value="male" id="male" />
-                  <Label htmlFor="male" className="flex-1 cursor-pointer font-normal">
-                    Мужской
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-3 rounded-lg border border-input px-4 py-4">
-                  <RadioGroupItem value="female" id="female" />
-                  <Label htmlFor="female" className="flex-1 cursor-pointer font-normal">
-                    Женский
-                  </Label>
-                </div>
-              </RadioGroup>
+              </label>
+              <DesignSystemRadioGroup
+                name="sex"
+                value={sex}
+                onChange={setSex}
+                options={[
+                  { value: 'male', label: 'Мужской' },
+                  { value: 'female', label: 'Женский' }
+                ]}
+                className="grid grid-cols-2 gap-4"
+              />
             </div>
 
             <div className="space-y-3">
-              <Label>
+              <label className="text-sm font-medium text-foreground">
                 Вы ищете помощь для себя? <span className="text-destructive">*</span>
-              </Label>
-              <RadioGroup value={seekingCare} onValueChange={setSeekingCare} className="grid grid-cols-2 gap-4">
-                <div className="flex items-center space-x-3 rounded-lg border border-input px-4 py-4">
-                  <RadioGroupItem value="yes" id="yes" />
-                  <Label htmlFor="yes" className="flex-1 cursor-pointer font-normal">
-                    Да
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-3 rounded-lg border border-input px-4 py-4">
-                  <RadioGroupItem value="no" id="no" />
-                  <Label htmlFor="no" className="flex-1 cursor-pointer font-normal">
-                    Нет
-                  </Label>
-                </div>
-              </RadioGroup>
+              </label>
+              <DesignSystemRadioGroup
+                name="seekingCare"
+                value={seekingCare}
+                onChange={setSeekingCare}
+                options={[
+                  { value: 'yes', label: 'Да' },
+                  { value: 'no', label: 'Нет' }
+                ]}
+                className="grid grid-cols-2 gap-4"
+              />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="phone">
-                Номер телефона <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="phone"
-                type="tel"
-                value={phone}
-                onChange={handlePhoneChange}
-                placeholder="+7 (999) 123-45-67"
-                required
-                className={`h-12 text-base ${phoneError ? 'border-destructive focus-visible:ring-destructive' : ''}`}
-              />
-              {phoneError && (
-                <p className="text-sm text-destructive">{phoneError}</p>
-              )}
-            </div>
+            <DesignSystemInput
+              id="phone"
+              type="tel"
+              label="Номер телефона *"
+              value={phone}
+              onChange={handlePhoneChange}
+              placeholder="+7 (999) 123-45-67"
+              required
+              error={phoneError}
+            />
 
             <div className="space-y-4 rounded-lg border border-border p-4">
-              <div className="flex items-start space-x-3">
-                <Checkbox
-                  id="notifications"
-                  checked={notificationConsent}
-                  onCheckedChange={(checked) => handleNotificationConsentChange(checked as boolean)}
-                />
-                <Label htmlFor="notifications" className="text-sm leading-relaxed">
-                  Разрешить отправлять уведомления о консультациях на платформе
-                </Label>
-              </div>
+              <DesignSystemCheckbox
+                checked={notificationConsent}
+                onChange={(checked) => handleNotificationConsentChange(checked)}
+                label={
+                  <span className="text-sm leading-relaxed">
+                    Разрешить отправлять уведомления о консультациях на платформе
+                  </span>
+                }
+              />
 
-              <div className="flex items-start space-x-3">
-                <Checkbox
-                  id="marketing"
-                  checked={marketingConsent}
-                  onCheckedChange={(checked) => setMarketingConsent(checked as boolean)}
-                />
-                <Label htmlFor="marketing" className="text-sm leading-relaxed">
-                  Я согласен получать <strong>периодические маркетинговые</strong> письма о
-                  программах, предложениях и обновлениях Waves.
-                </Label>
-              </div>
+              <DesignSystemCheckbox
+                checked={marketingConsent}
+                onChange={(checked) => setMarketingConsent(checked)}
+                label={
+                  <span className="text-sm leading-relaxed">
+                    Я согласен получать <strong>периодические маркетинговые</strong> письма о
+                    программах, предложениях и обновлениях Waves.
+                  </span>
+                }
+              />
             </div>
 
             <Button

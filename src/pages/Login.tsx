@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Input as DesignSystemInput } from '@/components/design-system/Input';
+import { Alert as DesignSystemAlert } from '@/components/design-system/Alert';
+import { SerifHeading } from '@/components/design-system/SerifHeading';
 import { AlertCircle, Clock } from 'lucide-react';
 import { toast } from 'sonner';
 import { loginSchema, type LoginInput } from '@/lib/validation/schemas';
@@ -112,67 +112,56 @@ export default function Login() {
                 <img src={logo} alt="Waves" className="h-10 w-auto" />
               </Link>
             </div>
-            <h1 className="text-3xl font-bold text-foreground">Войдите в свой аккаунт для продолжения</h1>
+            <SerifHeading size="2xl" className="mb-2">
+              Войдите в свой аккаунт для продолжения
+            </SerifHeading>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {isBlocked && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
-                  Слишком много неудачных попыток входа. Попробуйте снова через{' '}
-                  {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
-                </AlertDescription>
-              </Alert>
+              <DesignSystemAlert
+                variant="error"
+                message={`Слишком много неудачных попыток входа. Попробуйте снова через ${Math.floor(timeRemaining / 60)}:${(timeRemaining % 60).toString().padStart(2, '0')}`}
+                icon={<AlertCircle className="h-5 w-5" />}
+              />
             )}
 
             {!isBlocked && attemptsRemaining < 5 && attemptsRemaining > 0 && (
-              <Alert>
-                <Clock className="h-4 w-4" />
-                <AlertDescription>
-                  Осталось попыток: {attemptsRemaining}
-                </AlertDescription>
-              </Alert>
+              <DesignSystemAlert
+                variant="warning"
+                message={`Осталось попыток: ${attemptsRemaining}`}
+                icon={<Clock className="h-5 w-5" />}
+              />
             )}
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                {...register('email')}
-                placeholder="your@email.com"
-                className="h-12"
-                aria-invalid={errors.email ? 'true' : 'false'}
-                disabled={isBlocked}
-              />
-              {errors.email && (
-                <p className="text-sm text-destructive mt-1">{errors.email.message}</p>
-              )}
-            </div>
+            <DesignSystemInput
+              id="email"
+              type="email"
+              label="Email"
+              {...register('email')}
+              placeholder="your@email.com"
+              error={errors.email?.message}
+              disabled={isBlocked}
+            />
 
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password">Пароль</Label>
+              <DesignSystemInput
+                id="password"
+                type="password"
+                label="Пароль"
+                {...register('password')}
+                placeholder="••••••••"
+                error={errors.password?.message}
+                disabled={isBlocked}
+              />
+              <div className="flex justify-end">
                 <Link
                   to="/forgot-password"
-                  className="text-sm text-primary hover:underline"
+                  className="text-sm text-muted-foreground hover:text-coral transition-colors"
                 >
                   Забыли пароль?
                 </Link>
               </div>
-              <Input
-                id="password"
-                type="password"
-                {...register('password')}
-                placeholder="••••••••"
-                className="h-12"
-                aria-invalid={errors.password ? 'true' : 'false'}
-                disabled={isBlocked}
-              />
-              {errors.password && (
-                <p className="text-sm text-destructive mt-1">{errors.password.message}</p>
-              )}
             </div>
 
             <Button
@@ -187,7 +176,7 @@ export default function Login() {
 
           <div className="text-center text-sm text-muted-foreground">
             Нет аккаунта?{' '}
-            <Link to="/register" className="text-primary hover:underline">
+            <Link to="/register" className="text-muted-foreground hover:text-coral transition-colors">
               Зарегистрироваться
             </Link>
           </div>

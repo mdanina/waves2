@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { StepIndicator } from "@/components/StepIndicator";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
+import { SerifHeading } from "@/components/design-system/SerifHeading";
 import { User, Plus, Pencil, Trash2 } from "lucide-react";
 import familyIllustration from "@/assets/minimalistic-and-friendly-vector-style-illustratio — копия.png";
 import parentFemaleAvatar from "@/assets/friendly-and-clean-face-of-an-adult-person--gender.png";
@@ -107,9 +108,9 @@ export default function FamilyMembers() {
               alt="Семья"
               className="mx-auto mb-6 h-32 w-32 object-contain"
             />
-            <h1 className="mb-4 text-4xl font-bold text-foreground">
+            <SerifHeading size="2xl" className="mb-4">
               Члены семьи
-            </h1>
+            </SerifHeading>
             <p className="text-muted-foreground">
               Добавьте столько членов семьи, сколько хотите! Вы сможете добавлять и управлять
               членами семьи в вашем кабинете.
@@ -152,6 +153,7 @@ export default function FamilyMembers() {
                         variant="outline"
                         size="icon"
                         onClick={() => navigate(`/edit-family-member/${member.id}`)}
+                        className="hover:border-coral hover:text-coral transition-colors"
                       >
                         <Pencil className="h-4 w-4" />
                       </Button>
@@ -159,6 +161,7 @@ export default function FamilyMembers() {
                         variant="outline"
                         size="icon"
                         onClick={() => setDeleteId(member.id)}
+                        className="hover:border-destructive hover:text-destructive transition-colors"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -172,7 +175,7 @@ export default function FamilyMembers() {
               variant="outline"
               size="lg"
               onClick={() => navigate("/add-family-member")}
-              className="h-14 w-full text-base font-medium"
+              className="h-14 w-full text-base font-medium hover:border-coral hover:text-coral transition-colors"
             >
               <Plus className="mr-2 h-5 w-5" />
               Добавить члена семьи

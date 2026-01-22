@@ -91,7 +91,7 @@ export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
   return (
     <>
       {/* Main Navigation */}
-      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+      <nav className="flex-1 p-4 space-y-1 overflow-y-auto overflow-x-hidden">
         {mainNavigation.map((item) => {
           const isActive =
             item.end
@@ -104,7 +104,7 @@ export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
               to={item.href}
               onClick={onItemClick}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors min-w-0',
                 isActive
                   ? 'bg-[#E0F0FF] text-[#007BFF]'
                   : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
@@ -112,13 +112,13 @@ export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
             >
               <item.icon
                 className={cn(
-                  'h-5 w-5',
+                  'h-5 w-5 shrink-0',
                   isActive ? 'text-[#007BFF]' : 'text-muted-foreground'
                 )}
               />
-              <span className="flex-1">{item.name}</span>
+              <span className="flex-1 truncate min-w-0">{item.name}</span>
               {item.name === 'Сообщения' && unreadMessages > 0 && (
-                <Badge variant="default" className="ml-auto">
+                <Badge variant="default" className="ml-auto shrink-0">
                   {unreadMessages}
                 </Badge>
               )}
@@ -142,14 +142,14 @@ export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
                     to={item.href}
                     onClick={onItemClick}
                     className={cn(
-                      'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                      'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors min-w-0',
                       isActive
                         ? 'bg-accent text-accent-foreground'
                         : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
                     )}
                   >
-                    <item.icon className="h-4 w-4" />
-                    {item.name}
+                    <item.icon className="h-4 w-4 shrink-0" />
+                    <span className="truncate min-w-0">{item.name}</span>
                   </Link>
                 );
               })}

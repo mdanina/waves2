@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { StepIndicator } from "@/components/StepIndicator";
 import { Button } from "@/components/ui/button";
+import { SerifHeading } from "@/components/design-system/SerifHeading";
 import familySetupImage from "@/assets/minimalistic-and-friendly-vector-style-illustratio.png";
 
 export default function FamilySetup() {
@@ -22,9 +23,9 @@ export default function FamilySetup() {
           />
           
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold text-foreground">
+            <SerifHeading size="2xl">
               Теперь давайте настроим вашу семью
-            </h1>
+            </SerifHeading>
             <p className="text-lg text-muted-foreground">
               Добавьте членов семьи, чтобы все было в одном месте.
             </p>

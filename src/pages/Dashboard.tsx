@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { SerifHeading } from "@/components/design-system/SerifHeading";
+import { WellnessCard } from "@/components/design-system/WellnessCard";
 import { User, CheckCircle2, Clock, MapPin, Users, LogOut, Tag, History, Calendar, X, Video, MessageSquare, ChevronRight, ChevronLeft, Briefcase, Eye, HelpCircle, CreditCard, AlertCircle, Pencil, Trash2, Plus, Settings, Bell } from "lucide-react";
 import { toast } from "sonner";
 import { calculateAge, isEligibleForCheckup, deleteProfile, CHECKUP_MIN_AGE, CHECKUP_MAX_AGE } from "@/lib/profileStorage";
@@ -526,14 +528,24 @@ export default function Dashboard() {
 
   return (
     <div 
-      className="w-full"
+      className="w-full min-h-screen relative"
       style={{
-        background: 'var(--bg-mesh-vibrant-2)',
+        backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         backgroundAttachment: 'fixed',
-        minHeight: '100vh'
       }}
     >
-      {/* Main Content */}
+      {/* Gradient overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none bg-gradient-to-br from-[#ffecd2] via-[#ffd7ba] to-[#fcb69f]"
+        style={{
+          opacity: 0.25,
+        }}
+      />
+      <div className="relative z-10">
+        {/* Main Content */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         {/* Отображение ошибок загрузки */}
         {(profilesError || appointmentsError) && (
@@ -556,9 +568,9 @@ export default function Dashboard() {
         {upcomingAppointments.length > 0 && (
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-              <h2 className="text-2xl font-bold text-foreground">
+              <SerifHeading size="xl">
                 Ваши предстоящие консультации
-              </h2>
+              </SerifHeading>
               <div className="flex items-center gap-2 flex-wrap">
                 <Button
                   variant="outline"
@@ -967,9 +979,9 @@ export default function Dashboard() {
 
         {/* Portal Cards */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-foreground mb-4">
+          <SerifHeading size="xl" className="mb-4">
             С чего начать?
-          </h2>
+          </SerifHeading>
         </div>
 
         {/* Предупреждение для семей только с маленькими детьми */}
@@ -1000,12 +1012,14 @@ export default function Dashboard() {
           {/* Левая колонка: Шаг 1 + уведомление */}
           <div className="flex flex-col gap-4 h-full">
             {/* Шаг 1: Психологический чекап семьи */}
-            <Card 
-              className={`group relative overflow-hidden border-2 p-8 shadow-md transition-all flex flex-col ${
+            <WellnessCard 
+              className={`group relative overflow-hidden p-8 transition-all flex flex-col ${
                 canStartCheckup.allowed
-                  ? 'cursor-pointer border-soft-pink/30 bg-gradient-to-br from-soft-pink/10 to-white hover:shadow-xl hover:border-soft-pink/50 hover:scale-[1.02] active:scale-[0.98]'
-                  : 'cursor-not-allowed border-muted bg-gradient-to-br from-cloud to-white opacity-75'
+                  ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98]'
+                  : 'cursor-not-allowed opacity-75'
               }`}
+              gradient={canStartCheckup.allowed ? 'pink' : undefined}
+              hover={canStartCheckup.allowed}
               style={{ height: '100%', minHeight: '340px' }}
               onClick={(e) => {
                 if (!canStartCheckup.allowed) {
@@ -1049,11 +1063,11 @@ export default function Dashboard() {
                     canStartCheckup.allowed ? 'group-hover:scale-110' : ''
                   }`}
                 />
-                <h3 className={`mb-2 text-2xl font-medium text-foreground transition-colors pointer-events-none ${
-                  canStartCheckup.allowed ? 'group-hover:text-soft-pink' : 'text-muted-foreground'
+                <SerifHeading size="lg" className={`mb-2 transition-colors pointer-events-none ${
+                  canStartCheckup.allowed ? 'group-hover:text-coral' : 'text-muted-foreground'
                 }`}>
                   Пройти чекап
-                </h3>
+                </SerifHeading>
                 {canStartCheckup.allowed && canStartCheckup.reason === 'active_checkup_exists' && (
                   <p className={`text-lg font-medium pointer-events-none ${
                     canStartCheckup.allowed ? 'text-muted-foreground' : 'text-muted-foreground/70'
@@ -1074,18 +1088,20 @@ export default function Dashboard() {
                   </div>
                 )}
               </div>
-            </Card>
+            </WellnessCard>
           </div>
 
           {/* Правая колонка: Шаг 2 */}
           <div>
             {/* Шаг 2: Получить консультацию */}
-          <Card
-            className={`group relative overflow-hidden border-2 p-8 shadow-md transition-all flex flex-col ${
+          <WellnessCard
+            className={`group relative overflow-hidden p-8 transition-all flex flex-col ${
               hasAnyCompletedCheckup
-                ? 'cursor-pointer bg-gradient-to-br from-accent/10 to-white hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]'
-                : 'cursor-not-allowed border-muted bg-gradient-to-br from-cloud to-white opacity-75'
+                ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98]'
+                : 'cursor-not-allowed opacity-75'
             }`}
+            gradient={hasAnyCompletedCheckup ? 'lavender' : undefined}
+            hover={hasAnyCompletedCheckup}
             style={{ height: '100%', minHeight: '340px' }}
             onClick={() => hasAnyCompletedCheckup && navigate("/appointments")}
             role={hasAnyCompletedCheckup ? "button" : undefined}
@@ -1109,13 +1125,13 @@ export default function Dashboard() {
                   hasAnyCompletedCheckup ? 'group-hover:scale-110' : ''
                 }`}
               />
-              <h3 className={`mb-2 text-2xl font-medium transition-colors pointer-events-none ${
+              <SerifHeading size="lg" className={`mb-2 transition-colors pointer-events-none ${
                 hasAnyCompletedCheckup
-                  ? 'text-foreground group-hover:text-accent'
+                  ? 'text-foreground group-hover:text-coral'
                   : 'text-muted-foreground'
               }`}>
-                {hasAnyCompletedCheckup ? 'Получить консультацию' : 'Получить консультацию'}
-              </h3>
+                Получить консультацию
+              </SerifHeading>
               {!hasAnyCompletedCheckup && (
                 <div className="mt-4 flex justify-center">
                   <Badge variant="secondary" className="bg-muted text-muted-foreground border border-border/50 px-4 py-2 rounded-full font-light hover:bg-muted">
@@ -1125,13 +1141,13 @@ export default function Dashboard() {
                 </div>
               )}
             </div>
-          </Card>
+          </WellnessCard>
           </div>
         </div>
 
         {/* Support Section */}
         <div className="mb-12">
-          <h2 className="mb-4 text-2xl font-bold text-foreground">Есть вопросы?</h2>
+          <SerifHeading size="xl" className="mb-4">Есть вопросы?</SerifHeading>
           <Card className="border-2 bg-white p-6">
             <p className="text-muted-foreground mb-4">
               Напишите в поддержку, чтобы решить любые проблемы или записаться к специалисту напрямую без предварительной диагностики.
@@ -1146,7 +1162,7 @@ export default function Dashboard() {
         {/* Your Family Section */}
         <div>
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-foreground">Ваша семья</h2>
+            <SerifHeading size="xl">Ваша семья</SerifHeading>
             {familyMembers.length > 0 && (
               <Button
                 variant="ghost"
@@ -1230,9 +1246,9 @@ export default function Dashboard() {
                               className="h-20 w-20 rounded-full object-cover mb-4"
                             />
                             <div className="flex items-center gap-3 mb-2">
-                              <h3 className="text-xl font-medium text-foreground">
+                              <SerifHeading size="lg">
                                 {member.first_name} {member.last_name || ''}
-                              </h3>
+                              </SerifHeading>
                             </div>
                             {age !== null && (
                               <p className="text-muted-foreground mb-2">{age} лет</p>
@@ -1393,6 +1409,7 @@ export default function Dashboard() {
           }}
         />
       )}
+      </div>
     </div>
   );
 }

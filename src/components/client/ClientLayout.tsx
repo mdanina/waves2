@@ -67,26 +67,30 @@ export function ClientLayout() {
 
       {/* Mobile Sidebar */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side="left" className="w-64 p-0 flex flex-col">
-          <SheetHeader className="p-4 border-b">
+        <SheetContent 
+          side="left" 
+          className="w-[280px] max-w-[85vw] p-0 flex flex-col overflow-hidden"
+          style={{ width: '280px', maxWidth: '85vw' }}
+        >
+          <SheetHeader className="p-4 border-b shrink-0">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded bg-primary flex items-center justify-center">
+              <div className="w-8 h-8 rounded bg-primary flex items-center justify-center shrink-0">
                 <span className="text-primary-foreground font-bold text-sm">W</span>
               </div>
-              <SheetTitle>WAVES</SheetTitle>
+              <SheetTitle className="text-base truncate">WAVES</SheetTitle>
             </div>
           </SheetHeader>
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden min-h-0">
             <ClientSidebarNav onItemClick={() => setMobileMenuOpen(false)} />
           </div>
-          <div className="border-t border-border p-4 space-y-4">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-10 w-10">
+          <div className="border-t border-border p-4 space-y-4 shrink-0">
+            <div className="flex items-center gap-3 min-w-0">
+              <Avatar className="h-10 w-10 shrink-0">
                 <AvatarFallback className="bg-[#E0F0FF] text-[#007BFF]">
                   {getUserInitials()}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 overflow-hidden">
                 <p className="text-sm font-medium text-foreground truncate">
                   {getUserName()}
                 </p>
@@ -100,8 +104,8 @@ export function ClientLayout() {
               className="w-full justify-start text-muted-foreground hover:text-foreground"
               onClick={handleSignOut}
             >
-              <LogOut className="h-4 w-4 mr-2" />
-              Выйти
+              <LogOut className="h-4 w-4 mr-2 shrink-0" />
+              <span className="truncate">Выйти</span>
             </Button>
           </div>
         </SheetContent>

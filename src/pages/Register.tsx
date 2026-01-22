@@ -6,8 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Input as DesignSystemInput } from '@/components/design-system/Input';
+import { SerifHeading } from '@/components/design-system/SerifHeading';
 import { toast } from 'sonner';
 import { registerSchema, type RegisterInput } from '@/lib/validation/schemas';
 import { handleApiError } from '@/lib/errorHandler';
@@ -127,60 +127,46 @@ export default function Register() {
                 <img src={logo} alt="Waves" className="h-10 w-auto" />
               </Link>
             </div>
-            <h1 className="text-3xl font-bold text-foreground">Регистрация</h1>
+            <SerifHeading size="2xl" className="mb-2">
+              Регистрация
+            </SerifHeading>
             <p className="mt-2 text-muted-foreground">
               Создайте аккаунт для начала работы
             </p>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                {...register('email')}
-                placeholder="your@email.com"
-                className="h-12"
-                aria-invalid={errors.email ? 'true' : 'false'}
-              />
-              {errors.email && (
-                <p className="text-sm text-destructive mt-1">{errors.email.message}</p>
-              )}
-            </div>
+            <DesignSystemInput
+              id="email"
+              type="email"
+              label="Email"
+              {...register('email')}
+              placeholder="your@email.com"
+              error={errors.email?.message}
+            />
 
             <div className="space-y-2">
-              <Label htmlFor="password">Пароль</Label>
-              <Input
+              <DesignSystemInput
                 id="password"
                 type="password"
+                label="Пароль"
                 {...register('password')}
                 placeholder="••••••••"
-                className="h-12"
-                aria-invalid={errors.password ? 'true' : 'false'}
+                error={errors.password?.message}
               />
-              {errors.password && (
-                <p className="text-sm text-destructive mt-1">{errors.password.message}</p>
-              )}
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground ml-4">
                 Минимум 6 символов
               </p>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Подтвердите пароль</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                {...register('confirmPassword')}
-                placeholder="••••••••"
-                className="h-12"
-                aria-invalid={errors.confirmPassword ? 'true' : 'false'}
-              />
-              {errors.confirmPassword && (
-                <p className="text-sm text-destructive mt-1">{errors.confirmPassword.message}</p>
-              )}
-            </div>
+            <DesignSystemInput
+              id="confirmPassword"
+              type="password"
+              label="Подтвердите пароль"
+              {...register('confirmPassword')}
+              placeholder="••••••••"
+              error={errors.confirmPassword?.message}
+            />
 
             <Button
               type="submit"
@@ -194,7 +180,7 @@ export default function Register() {
 
           <div className="text-center text-sm text-muted-foreground">
             Уже есть аккаунт?{' '}
-            <Link to="/login" className="text-primary hover:underline">
+            <Link to="/login" className="text-muted-foreground hover:text-coral transition-colors">
               Войти
             </Link>
           </div>

@@ -4,9 +4,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Input as DesignSystemInput } from "@/components/design-system/Input";
+import { RadioGroup as DesignSystemRadioGroup } from "@/components/design-system/Radio";
+import { SerifHeading } from "@/components/design-system/SerifHeading";
 import {
   Select,
   SelectContent,
@@ -79,44 +79,34 @@ export default function AddFamilyMember() {
       <div className="container mx-auto max-w-2xl px-4 py-12">
         <div className="space-y-8">
           <div className="text-center">
-            <h1 className="mb-4 text-4xl font-bold text-foreground">
+            <SerifHeading size="2xl" className="mb-4">
               Расскажите нам больше о члене семьи
-            </h1>
+            </SerifHeading>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="firstName">
-                Имя <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="firstName"
-                type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                required
-                className="h-12 text-base"
-              />
-            </div>
+            <DesignSystemInput
+              id="firstName"
+              type="text"
+              label="Имя *"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+
+            <DesignSystemInput
+              id="lastName"
+              type="text"
+              label="Фамилия *"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
 
             <div className="space-y-2">
-              <Label htmlFor="lastName">
-                Фамилия <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="lastName"
-                type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                required
-                className="h-12 text-base"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="dateOfBirth">
+              <label htmlFor="dateOfBirth" className="text-sm font-medium text-foreground">
                 Дата рождения <span className="text-destructive">*</span>
-              </Label>
+              </label>
               <BirthDatePicker
                 id="dateOfBirth"
                 value={dateOfBirth}
@@ -128,14 +118,17 @@ export default function AddFamilyMember() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="relationship">
+              <label htmlFor="relationship" className="text-sm font-medium text-foreground">
                 Кем для вас приходится? <span className="text-destructive">*</span>
-              </Label>
+              </label>
               <Select value={relationship} onValueChange={setRelationship}>
-                <SelectTrigger id="relationship" className="h-12 text-base">
+                <SelectTrigger 
+                  id="relationship" 
+                  className="h-14 text-base rounded-2xl border-2 border-muted bg-white/80 backdrop-blur-sm transition-all duration-200 focus:border-coral-light focus:outline-none focus:ring-0 data-[state=open]:border-coral-light"
+                >
                   <SelectValue placeholder="Выберите" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="rounded-2xl">
                   <SelectItem value="child">Ребенок</SelectItem>
                   <SelectItem value="partner">Партнер</SelectItem>
                   <SelectItem value="parent">Родитель</SelectItem>
@@ -147,34 +140,33 @@ export default function AddFamilyMember() {
             </div>
 
             <div className="space-y-3">
-              <Label>
+              <label className="text-sm font-medium text-foreground">
                 Пол <span className="text-destructive">*</span>
-              </Label>
-              <RadioGroup value={sex} onValueChange={setSex} className="grid grid-cols-2 gap-4">
-                <div className="flex items-center space-x-3 rounded-lg border border-input px-4 py-4">
-                  <RadioGroupItem value="male" id="male-add" />
-                  <Label htmlFor="male-add" className="flex-1 cursor-pointer font-normal">
-                    Мужской
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-3 rounded-lg border border-input px-4 py-4">
-                  <RadioGroupItem value="female" id="female-add" />
-                  <Label htmlFor="female-add" className="flex-1 cursor-pointer font-normal">
-                    Женский
-                  </Label>
-                </div>
-              </RadioGroup>
+              </label>
+              <DesignSystemRadioGroup
+                name="sex"
+                value={sex}
+                onChange={setSex}
+                options={[
+                  { value: 'male', label: 'Мужской' },
+                  { value: 'female', label: 'Женский' }
+                ]}
+                className="grid grid-cols-2 gap-4"
+              />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="referral">
+              <label htmlFor="referral" className="text-sm font-medium text-foreground">
                 Пришел по направлению от организации?
-              </Label>
+              </label>
               <Select value={referral} onValueChange={setReferral}>
-                <SelectTrigger id="referral" className="h-12 text-base">
+                <SelectTrigger 
+                  id="referral" 
+                  className="h-14 text-base rounded-2xl border-2 border-muted bg-white/80 backdrop-blur-sm transition-all duration-200 focus:border-coral-light focus:outline-none focus:ring-0 data-[state=open]:border-coral-light"
+                >
                   <SelectValue placeholder="Нет направления" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="rounded-2xl">
                   <SelectItem value="no">Нет направления</SelectItem>
                   <SelectItem value="insurance">Страховая компания</SelectItem>
                   <SelectItem value="doctor">Врач</SelectItem>
@@ -185,23 +177,19 @@ export default function AddFamilyMember() {
             </div>
 
             <div className="space-y-3">
-              <Label>
+              <label className="text-sm font-medium text-foreground">
                 Этому члену семьи нужна помощь? <span className="text-destructive">*</span>
-              </Label>
-              <RadioGroup value={seekingCare} onValueChange={setSeekingCare} className="grid grid-cols-2 gap-4">
-                <div className="flex items-center space-x-3 rounded-lg border border-input px-4 py-4">
-                  <RadioGroupItem value="yes" id="seeking-yes" />
-                  <Label htmlFor="seeking-yes" className="flex-1 cursor-pointer font-normal">
-                    Да
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-3 rounded-lg border border-input px-4 py-4">
-                  <RadioGroupItem value="no" id="seeking-no" />
-                  <Label htmlFor="seeking-no" className="flex-1 cursor-pointer font-normal">
-                    Нет
-                  </Label>
-                </div>
-              </RadioGroup>
+              </label>
+              <DesignSystemRadioGroup
+                name="seekingCare"
+                value={seekingCare}
+                onChange={setSeekingCare}
+                options={[
+                  { value: 'yes', label: 'Да' },
+                  { value: 'no', label: 'Нет' }
+                ]}
+                className="grid grid-cols-2 gap-4"
+              />
             </div>
 
             <div className="flex gap-4">

@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
+import { SerifHeading } from "@/components/design-system/SerifHeading";
 import { toast } from "sonner";
 import { getCurrentUserData, upsertUserData } from "@/lib/userStorage";
 import { getProfiles } from "@/lib/profileStorage";
@@ -122,21 +122,27 @@ export default function RegionSelect() {
         
         <div className="space-y-8">
           <div className="text-center">
-            <h1 className="mb-4 text-4xl font-bold text-foreground">
+            <SerifHeading size="2xl" className="mb-4">
               В каком регионе вы живете?
-            </h1>
+            </SerifHeading>
           </div>
 
           <div className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="region">
+              <label htmlFor="region" className="text-sm font-medium text-foreground">
                 Регион <span className="text-destructive">*</span>
-              </Label>
+              </label>
               <Select value={region} onValueChange={setRegion}>
-                <SelectTrigger id="region" className="h-14 text-base">
+                <SelectTrigger 
+                  id="region" 
+                  className="h-14 text-base rounded-2xl border-2 border-muted bg-white/80 backdrop-blur-sm transition-all duration-200 focus:border-coral-light focus:outline-none focus:ring-0 data-[state=open]:border-coral-light"
+                  style={{
+                    boxShadow: region ? '0 0 0 3px rgba(255, 178, 153, 0.2), 0 10px 25px -5px rgba(255, 178, 153, 0.5), 0 4px 6px -2px rgba(255, 178, 153, 0.3)' : undefined
+                  }}
+                >
                   <SelectValue placeholder="Выберите регион" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="rounded-2xl">
                   {regions.map((r) => (
                     <SelectItem key={r} value={r}>
                       {r}

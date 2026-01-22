@@ -21,8 +21,8 @@ const buttonVariants = cva(
         honey: "bg-honey text-ink hover:bg-honey-dark shadow-soft",
         // Black - from source project
         black: "bg-[#1a1a1a] text-white hover:bg-[#2a2a2a] shadow-sm",
-        // Outline - from source project
-        outline: "bg-transparent border-2 border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white",
+        // Outline - light background with border
+        outline: "bg-white border-2 border-muted text-foreground hover:border-coral hover:text-coral",
         // Ghost
         ghost: "hover:bg-cloud/50 text-ink",
         // Destructive
