@@ -71,7 +71,7 @@ export function ClientLayout() {
       </div>
 
       {/* Main Content */}
-      <main className="md:ml-64 h-screen overflow-y-auto bg-transparent">
+      <main className="md:ml-64 min-h-screen bg-transparent">
         <Outlet />
       </main>
 
