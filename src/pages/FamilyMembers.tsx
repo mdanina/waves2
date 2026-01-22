@@ -1,9 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { StepIndicator } from "@/components/StepIndicator";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 import bgImage from '@/assets/bg.png';
 import { Avatar } from "@/components/ui/avatar";
 import { SerifHeading } from "@/components/design-system/SerifHeading";
@@ -95,6 +97,25 @@ export default function FamilyMembers() {
     }
   };
 
+  const parentProfile = useMemo(() => members.find(p => p.type === 'parent'), [members]);
+  const parentWantsToTrain = parentProfile?.seeking_care === 'yes';
+  const children = useMemo(() => members.filter(m => m.type === 'child'), [members]);
+  const children6Plus = useMemo(
+    () => children.filter(c => (c.dob ? calculateAge(c.dob) : 0) >= 6),
+    [children]
+  );
+  const isOnboarding = location.state?.from !== 'cabinet';
+  const canComplete = useMemo(() => {
+    if (!isOnboarding) return true;
+    if (parentWantsToTrain) return true;
+    return children6Plus.length >= 1;
+  }, [isOnboarding, parentWantsToTrain, children6Plus.length]);
+
+  const handleComplete = () => {
+    if (!canComplete) return;
+    navigate("/cabinet");
+  };
+
   return (
     <div
       className="min-h-screen"
@@ -121,10 +142,18 @@ export default function FamilyMembers() {
               Члены семьи
             </SerifHeading>
             <p className="text-muted-foreground">
-              Добавьте столько членов семьи, сколько хотите! Вы сможете добавлять и управлять
-              членами семьи в вашем кабинете.
+              Добавьте только тех членов семьи, которых вы планируете подключить к тренировкам на платформе.
             </p>
           </div>
+
+          {isOnboarding && !canComplete && (
+            <Alert variant="warning" className="shadow-[0_0_20px_rgba(255,178,153,0.5)]">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                Нужно выбрать хотя бы одного участника старше 6 лет, чтобы получить доступ к тренировкам.
+              </AlertDescription>
+            </Alert>
+          )}
 
           <div className="space-y-4">
             {loading ? (
@@ -161,19 +190,40 @@ export default function FamilyMembers() {
                       <Button
                         variant="outline"
                         size="icon"
-                        onClick={() => navigate(`/edit-family-member/${member.id}`)}
+                        onClick={() => {
+                          console.log('Edit clicked for member:', {
+                            id: member.id,
+                            name: `${member.first_name} ${member.last_name}`,
+                            type: member.type,
+                            isParent: member.type === 'parent'
+                          });
+                          if (member.type === 'parent') {
+                            navigate('/profile', {
+                              state: {
+                                from:
+                                  location.state?.from === 'cabinet' ? 'cabinet' : 'family-members',
+                              },
+                            });
+                          } else {
+                            navigate(`/edit-family-member/${member.id}`, {
+                              state: location.state ? { from: location.state.from } : undefined,
+                            });
+                          }
+                        }}
                         className="hover:border-coral hover:text-coral transition-colors"
                       >
                         <Pencil className="h-4 w-4" />
                       </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => setDeleteId(member.id)}
-                        className="hover:border-destructive hover:text-destructive transition-colors"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                      {member.type !== 'parent' && (
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => setDeleteId(member.id)}
+                          className="hover:border-destructive hover:text-destructive transition-colors"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      )}
                     </div>
                   </div>
                 );
@@ -218,7 +268,8 @@ export default function FamilyMembers() {
                 <Button
                   type="button"
                   size="lg"
-                  onClick={() => navigate("/cabinet")}
+                  onClick={handleComplete}
+                  disabled={!canComplete}
                   className="h-14 flex-1 text-base font-medium"
                 >
                   Завершить

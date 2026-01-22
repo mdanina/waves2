@@ -78,10 +78,11 @@ export default function Profile() {
         if (hasParentProfile && hasPhone) {
           hasCompletedOnboardingRef.current = true;
 
-          // Если пользователь уже прошел онбординг и зашел сюда не из cabinet,
+          // Если пользователь уже прошел онбординг и зашел сюда не из cabinet/family-members,
           // значит это ошибочный редирект - отправляем на cabinet
           // Исключение: если это debug-доступ (из сайдбара), разрешаем редактирование
-          if (location.state?.from !== 'cabinet' && !location.state?.debug) {
+          const allowedFrom = ['cabinet', 'family-members'];
+          if (!allowedFrom.includes(location.state?.from ?? '') && !location.state?.debug) {
             navigate('/cabinet', { replace: true });
             return;
           }
@@ -176,15 +177,15 @@ export default function Profile() {
           toast.success("Профиль успешно создан!");
         }
 
-        // Определяем, откуда пришли: редактирование из меню или первичная настройка
-        // Также проверяем, прошел ли пользователь онбординг ранее
-        const isEditing = location.state?.from === 'cabinet' || hasCompletedOnboardingRef.current;
+        // Определяем, откуда пришли: cabinet, family-members или первичная настройка
+        const from = location.state?.from;
+        const isEditing = from === 'cabinet' || hasCompletedOnboardingRef.current;
 
         if (isEditing) {
-          // Редактирование из меню или пользователь уже прошел онбординг → возвращаемся в Dashboard
           navigate("/cabinet");
+        } else if (from === 'family-members') {
+          navigate("/family-members");
         } else {
-          // Первичная настройка → продолжаем поток
           navigate("/family-setup");
         }
       } catch (error) {

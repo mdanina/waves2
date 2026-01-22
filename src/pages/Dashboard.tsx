@@ -1271,11 +1271,16 @@ export default function Dashboard() {
                                   variant="ghost"
                                   size="sm"
                                   className="flex-1 text-muted-foreground hover:text-foreground hover:bg-muted/50 font-light"
-                                  onClick={() => navigate(`/edit-family-member/${member.id}`, { state: { from: 'cabinet' } })}
+                                  onClick={() =>
+                                    member.type === 'parent'
+                                      ? navigate('/profile', { state: { from: 'cabinet' } })
+                                      : navigate(`/edit-family-member/${member.id}`, { state: { from: 'cabinet' } })
+                                  }
                                 >
                                   <Pencil className="h-4 w-4 mr-2" />
                                   Редактировать
                                 </Button>
+                                {member.type !== 'parent' && (
                                 <AlertDialog open={deleteMemberId === member.id} onOpenChange={(open) => setDeleteMemberId(open ? member.id : null)}>
                                   <AlertDialogTrigger asChild>
                                     <Button
@@ -1306,6 +1311,7 @@ export default function Dashboard() {
                                     </AlertDialogFooter>
                                   </AlertDialogContent>
                                 </AlertDialog>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -1321,7 +1327,7 @@ export default function Dashboard() {
                         <button
                           key={index}
                           className={`h-2 w-2 rounded-full transition-colors ${
-                            index === currentFamilyIndex ? 'bg-honey' : 'bg-muted-foreground/30 hover:bg-muted-foreground/60'
+                            index === currentFamilyIndex ? 'bg-coral-light' : 'bg-muted-foreground/30 hover:bg-muted-foreground/60'
                           }`}
                           onClick={() => goToFamilyCard(index)}
                           aria-label={`Перейти к карточке ${index + 1}`}
