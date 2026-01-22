@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { LogOut } from 'lucide-react';
+import bgImage from '@/assets/bg.png';
 
 export function ClientLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -45,11 +46,14 @@ export function ClientLayout() {
   };
 
   return (
-    <div 
+    <div
       className="min-h-screen relative"
       style={{
-        background: 'var(--bg-golden-hour)',
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       {/* Desktop Sidebar */}
@@ -67,7 +71,7 @@ export function ClientLayout() {
       </div>
 
       {/* Main Content */}
-      <main className="md:ml-64 h-screen overflow-y-auto bg-transparent">
+      <main className="md:ml-64 min-h-screen bg-transparent">
         <Outlet />
       </main>
 
