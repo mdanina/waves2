@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { sendVerificationCode, sendNotification } from '@/lib/emailService';
+import { sendVerificationCode } from '@/lib/emailService';
 import {
   type LicenseDevice,
   type LicenseDeviceStatus,
@@ -12,7 +12,6 @@ import {
   type LicenseEmailBinding,
   TRUST_CONFIGS,
   TRUST_THRESHOLDS,
-  isDeviceInactive,
   getUnbindLimitResetDate,
 } from '@/types/license-device';
 
@@ -556,24 +555,31 @@ export function useAutoBindDevice(licenseId: string | undefined) {
   const { user } = useAuth();
   const [isBinding, setIsBinding] = useState(false);
   const [bindError, setBindError] = useState<string | null>(null);
+  const hasAttemptedBind = useRef(false);
 
   const licenseDevices = useLicenseDevices({
     licenseId: licenseId || '',
   });
 
-  useEffect(() => {
-    if (!licenseId || !user?.id || licenseDevices.loading) return;
+  const { currentDevice, canAddDevice, addCurrentDevice, updateLastActive, loading } = licenseDevices;
 
-    // Если текущее устройство уже привязано — ничего не делаем
-    if (licenseDevices.currentDevice) {
-      licenseDevices.updateLastActive();
+  useEffect(() => {
+    if (!licenseId || !user?.id || loading) return;
+
+    // Если текущее устройство уже привязано — обновляем активность
+    if (currentDevice) {
+      updateLastActive();
       return;
     }
 
+    // Предотвращаем повторные попытки привязки
+    if (hasAttemptedBind.current) return;
+    hasAttemptedBind.current = true;
+
     // Если можно добавить — добавляем автоматически
-    if (licenseDevices.canAddDevice) {
+    if (canAddDevice) {
       setIsBinding(true);
-      licenseDevices.addCurrentDevice()
+      addCurrentDevice()
         .then(() => {
           setIsBinding(false);
         })
@@ -584,12 +590,12 @@ export function useAutoBindDevice(licenseId: string | undefined) {
     } else {
       setBindError('Достигнут лимит устройств. Отвяжите одно из устройств, чтобы продолжить.');
     }
-  }, [licenseId, user?.id, licenseDevices.loading]);
+  }, [licenseId, user?.id, loading, currentDevice, canAddDevice, addCurrentDevice, updateLastActive]);
 
   return {
     isBinding,
     bindError,
-    isDeviceBound: !!licenseDevices.currentDevice,
+    isDeviceBound: !!currentDevice,
     ...licenseDevices,
   };
 }
