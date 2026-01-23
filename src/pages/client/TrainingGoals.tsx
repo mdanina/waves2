@@ -336,7 +336,7 @@ export default function TrainingGoals() {
       {/* Шаг 1: Выбор профиля */}
       {step === 'select_profile' && (
         <div className="space-y-4">
-          <Card className="bg-white p-6">
+          <Card className="glass-elegant p-6" style={{ background: 'rgba(255, 255, 255, 0.25)' }}>
             <div className="grid gap-3 sm:grid-cols-2">
               {profiles?.map((profile) => {
                 const existingGoals = getGoalsForProfile(profile.id);
@@ -346,10 +346,10 @@ export default function TrainingGoals() {
                   <div
                     key={profile.id}
                     className={cn(
-                      'flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all',
+                      'flex items-center gap-3 p-4 rounded-xl cursor-pointer transition-all bg-white',
                       isSelected
-                        ? 'border-coral-light bg-coral-light/5'
-                        : 'border-border/50 hover:border-coral-light/50'
+                        ? 'bg-coral-light/5'
+                        : 'hover:bg-coral-light/5'
                     )}
                     style={isSelected ? {
                       boxShadow: '0 0 0 2px rgba(255, 182, 153, 0.6), 0 0 0 4px rgba(255, 182, 153, 0.3), 0 0 30px rgba(255, 182, 153, 0.4)'
@@ -379,7 +379,13 @@ export default function TrainingGoals() {
                         {profile.type === 'parent' ? 'Родитель' : 'Ребёнок'}
                       </p>
                       {existingGoals && (
-                        <Badge variant="secondary" className="mt-1 text-xs">
+                        <Badge 
+                          className="mt-1 text-xs text-coral-light border-0"
+                          style={{ 
+                            background: 'rgba(255, 182, 153, 0.2)',
+                            backgroundImage: 'none'
+                          }}
+                        >
                           Цели выбраны
                         </Badge>
                       )}
@@ -407,7 +413,7 @@ export default function TrainingGoals() {
         <div className="space-y-4">
           {/* Выбранный профиль */}
 
-          <Card className="bg-white p-6">
+          <Card className="glass-elegant p-6" style={{ background: 'rgba(255, 255, 255, 0.25)' }}>
             <h3 className="font-medium mb-4">
               Выберите цели <span className="text-muted-foreground font-normal">(можно несколько)</span>
             </h3>
@@ -419,10 +425,10 @@ export default function TrainingGoals() {
                   <div
                     key={goal.id}
                     className={cn(
-                      'flex items-start gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all',
+                      'flex items-start gap-4 p-4 rounded-xl cursor-pointer transition-all bg-white',
                       isSelected
-                        ? 'border-coral-light bg-coral-light/5'
-                        : 'border-border/50 hover:border-coral-light/50'
+                        ? 'bg-coral-light/5'
+                        : 'hover:bg-coral-light/5'
                     )}
                     style={isSelected ? {
                       boxShadow: '0 0 0 2px rgba(255, 182, 153, 0.6), 0 0 0 4px rgba(255, 182, 153, 0.3), 0 0 30px rgba(255, 182, 153, 0.4)'
@@ -480,7 +486,7 @@ export default function TrainingGoals() {
             </span>
           </div>
 
-          <Card className="bg-white p-6">
+          <Card className="glass-elegant p-6" style={{ background: 'rgba(255, 255, 255, 0.25)' }}>
             {/* Текущая цель */}
             <div className="flex items-center gap-2 mb-4">
               <span className="text-xl">{currentGoal.icon}</span>
@@ -500,10 +506,10 @@ export default function TrainingGoals() {
                     <div
                       key={option.id}
                       className={cn(
-                        'flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all',
+                        'flex items-center gap-3 p-4 rounded-xl cursor-pointer transition-all bg-white',
                         isSelected
-                          ? 'border-coral-light bg-coral-light/5'
-                          : 'border-border/50 hover:border-coral-light/50'
+                          ? 'bg-coral-light/5'
+                          : 'hover:bg-coral-light/5'
                       )}
                       style={isSelected ? {
                         boxShadow: '0 0 0 2px rgba(255, 182, 153, 0.6), 0 0 0 4px rgba(255, 182, 153, 0.3), 0 0 30px rgba(255, 182, 153, 0.4)'
@@ -527,10 +533,10 @@ export default function TrainingGoals() {
                     <div
                       key={option.id}
                       className={cn(
-                        'flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all',
+                        'flex items-center gap-3 p-4 rounded-xl cursor-pointer transition-all bg-white',
                         isSelected
-                          ? 'border-coral-light bg-coral-light/5'
-                          : 'border-border/50 hover:border-coral-light/50'
+                          ? 'bg-coral-light/5'
+                          : 'hover:bg-coral-light/5'
                       )}
                       style={isSelected ? {
                         boxShadow: '0 0 0 2px rgba(255, 182, 153, 0.6), 0 0 0 4px rgba(255, 182, 153, 0.3), 0 0 30px rgba(255, 182, 153, 0.4)'
