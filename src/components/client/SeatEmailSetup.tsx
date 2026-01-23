@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Alert } from '@/components/design-system/Alert';
 import { useSeatDevices } from '@/hooks/useSeatDevices';

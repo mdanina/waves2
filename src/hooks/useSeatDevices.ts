@@ -537,6 +537,13 @@ export function useSeatDevices({ seatId }: UseSeatDevicesOptions) {
   // Автоматическое завершение pending отвязок при загрузке
   // Проверяем один раз после загрузки данных
   const hasCheckedPendingRef = useRef(false);
+  const prevSeatIdForPendingRef = useRef(seatId);
+
+  // Сброс ref при изменении seatId
+  if (prevSeatIdForPendingRef.current !== seatId) {
+    prevSeatIdForPendingRef.current = seatId;
+    hasCheckedPendingRef.current = false;
+  }
 
   useEffect(() => {
     if (loading || hasCheckedPendingRef.current || devices.length === 0) return;

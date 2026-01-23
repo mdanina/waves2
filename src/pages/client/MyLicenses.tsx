@@ -459,7 +459,7 @@ export default function MyLicenses() {
                           </div>
 
                           {/* Устройства этого участника */}
-                          <div className="pl-13">
+                          <div className="mt-4 pt-4 border-t border-border/30">
                             <SeatDevicesManager
                               seatId={seat.id}
                               profileName={seat.profile?.first_name}
