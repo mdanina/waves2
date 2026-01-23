@@ -75,22 +75,15 @@ export function OnboardingChecklist({
     }
   }, [isDismissed, isCompleted, restore]);
 
-  // Анимация скрытия при завершении всех пунктов
+  // Показываем сообщение о завершении при завершении всех пунктов
   useEffect(() => {
     if (isCompleted && !isDismissed) {
       setShowCompletionMessage(true);
-      const timer = setTimeout(() => {
-        setIsHiding(true);
-        setTimeout(() => {
-          dismiss();
-        }, 500);
-      }, 3000);
-      return () => clearTimeout(timer);
     }
-  }, [isCompleted, isDismissed, dismiss]);
+  }, [isCompleted, isDismissed]);
 
-  // Не показываем если скрыт (только если все шаги завершены)
-  if (isDismissed && isCompleted) {
+  // Не показываем только если явно скрыт пользователем
+  if (isDismissed) {
     return null;
   }
 

@@ -53,12 +53,12 @@ export interface DeviceSetupStep {
 export const DEVICE_SETUP_STEPS: Omit<DeviceSetupStep, 'completed'>[] = [
   {
     id: 'unpack',
-    title: 'Распаковать устройство',
+    title: 'Распаковать нейроустройство',
     description: 'Проверьте комплектацию и целостность',
   },
   {
     id: 'charge',
-    title: 'Зарядить устройство',
+    title: 'Зарядить нейроустройство и мобильное устройство',
     description: 'Полностью зарядите перед первым использованием',
   },
   {
@@ -70,7 +70,7 @@ export const DEVICE_SETUP_STEPS: Omit<DeviceSetupStep, 'completed'>[] = [
   },
   {
     id: 'pair_device',
-    title: 'Подключить устройство к приложению',
+    title: 'Подключить нейроустройство к приложению',
     description: 'Следуйте инструкциям в приложении',
   },
   {

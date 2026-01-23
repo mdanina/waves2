@@ -6,17 +6,15 @@ import { Badge } from '@/components/ui/badge';
 import { SerifHeading } from '@/components/design-system/SerifHeading';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
-  Users,
   Plus,
   Check,
-  Smartphone,
   Calendar,
   AlertCircle,
   ChevronRight,
   Sparkles,
   Crown,
-  User,
 } from 'lucide-react';
+import { Uicon, UiconSmartphone } from '@/components/icons/Uicon';
 import {
   Dialog,
   DialogContent,
@@ -203,12 +201,12 @@ export default function MyLicenses() {
             </div>
 
             {/* Планы */}
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 lg:grid-cols-2">
               {LICENSE_PLANS.map((plan) => (
                 <Card
                   key={plan.id}
                   className={cn(
-                    'relative p-6 transition-all cursor-pointer hover:shadow-lg bg-white border-0',
+                    'relative p-4 sm:p-6 transition-all cursor-pointer hover:shadow-lg bg-white border-0',
                     selectedPlan === plan.id
                       ? 'bg-coral/5'
                       : 'hover:bg-coral/5'
@@ -224,24 +222,24 @@ export default function MyLicenses() {
 
                   <div className="flex items-center gap-3 mb-4">
                     {plan.id === 'individual' ? (
-                      <User className="h-8 w-8 text-coral" />
+                      <Uicon name="user" size={41} className="text-coral flex-shrink-0" />
                     ) : (
-                      <Users className="h-8 w-8 text-coral" />
+                      <Uicon name="users" size={41} className="text-coral flex-shrink-0" />
                     )}
-                    <div>
-                      <h3 className="font-semibold text-lg">{plan.name}</h3>
-                      <p className="text-sm text-muted-foreground">{plan.description}</p>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-semibold text-base sm:text-lg truncate">{plan.name}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground truncate">{plan.description}</p>
                     </div>
                   </div>
 
                   <div className="mb-4">
-                    <div className="flex items-baseline gap-2 mb-1">
-                      <span className="text-3xl font-bold">{formatPrice(plan.price)}</span>
+                    <div className="flex flex-wrap items-baseline gap-2 mb-1">
+                      <span className="text-2xl sm:text-3xl font-bold">{formatPrice(plan.price)}</span>
                       {plan.id === 'individual' && (
-                        <span className="text-sm text-muted-foreground">или 3 333 ₽/мес</span>
+                        <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">или 3 333 ₽/мес</span>
                       )}
                       {plan.id === 'family' && (
-                        <span className="text-sm text-muted-foreground">или 5 000 ₽/мес</span>
+                        <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">или 5 000 ₽/мес</span>
                       )}
                     </div>
                     {(plan.id === 'individual' || plan.id === 'family') && (
@@ -251,9 +249,9 @@ export default function MyLicenses() {
 
                   <ul className="space-y-2 mb-6">
                     {plan.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm">
-                        <Check className="h-4 w-4 text-coral flex-shrink-0" />
-                        <span>{feature}</span>
+                      <li key={i} className="flex items-start gap-2 text-xs sm:text-sm">
+                        <Check className="h-4 w-4 text-coral flex-shrink-0 mt-0.5" />
+                        <span className="break-words">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -299,11 +297,11 @@ export default function MyLicenses() {
                 {/* Header */}
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-coral/20 to-coral/10 flex items-center justify-center">
+                    <div className="w-24 h-24 rounded-xl bg-gradient-to-br from-coral/20 to-coral/10 flex items-center justify-center">
                       {license.plan_type === 'individual' ? (
-                        <User className="h-6 w-6 text-coral" />
+                        <Uicon name="user" size={38} className="text-coral" />
                       ) : (
-                        <Users className="h-6 w-6 text-coral" />
+                        <Uicon name="users" size={38} className="text-coral" />
                       )}
                     </div>
                     <div>
@@ -481,25 +479,26 @@ export default function MyLicenses() {
 
                 {/* Физическое устройство */}
                 <div className="mt-6 pt-6 border-t border-border/50">
-                  <h4 className="font-medium mb-4">Физическое устройство</h4>
                   <Button
                     variant="outline"
                     className="w-full sm:w-auto"
                     onClick={async () => {
                       // Если устройство не привязано и есть устройство у пользователя
+                      // Привязываем устройство пользователя (из useDevice) к лицензии
                       if (!license.device_id && hasDevice && device) {
                         try {
                           await linkDevice(license.id, device.id);
-                          toast.success('Устройство успешно привязано к лицензии');
+                          toast.success(`Устройство ${device.model || device.id} успешно привязано к лицензии`);
                         } catch (error) {
                           toast.error('Ошибка при привязке устройства');
                         }
                       }
+                      // Переход на страницу управления устройством
                       navigate('/cabinet/device');
                     }}
                   >
-                    <Smartphone className="h-4 w-4 mr-2" />
-                    {license.device_id ? 'Управление устройством' : 'Привязать устройство'}
+                    <UiconSmartphone className="h-4 w-4 mr-2" />
+                    {license.device_id ? 'Управление нейроустройством' : 'Привязать нейроустройство'}
                   </Button>
                 </div>
               </Card>
@@ -526,7 +525,7 @@ export default function MyLicenses() {
               Выберите план, который подходит вам
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 sm:grid-cols-2 mt-4">
+          <div className="grid gap-4 lg:grid-cols-2 mt-4">
             {LICENSE_PLANS.map((plan) => (
               <Card
                 key={plan.id}

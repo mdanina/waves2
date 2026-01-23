@@ -25,7 +25,7 @@ const mainNavigation = [
     iconName: 'target',
   },
   {
-    name: 'Моё устройство',
+    name: 'Мое нейроустройство',
     href: '/cabinet/device',
     iconName: 'smartphone',
   },

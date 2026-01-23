@@ -1,7 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-type AlertVariant = 'info' | 'success' | 'warning' | 'error';
+type AlertVariant = 'info' | 'success' | 'warning' | 'error' | 'coral';
 
 interface AlertProps {
   variant?: AlertVariant;
@@ -40,6 +40,11 @@ export function Alert({
       container: 'bg-gradient-to-r from-red-50 to-red-100/50 border-red-200',
       icon: 'text-red-500',
       text: 'text-red-900'
+    },
+    coral: {
+      container: 'bg-gradient-to-r from-[rgba(255,138,91,0.2)] to-[rgba(255,138,91,0.1)] border-[rgba(255,138,91,0.3)]',
+      icon: 'text-coral',
+      text: 'text-[#1a1a1a]'
     }
   };
 
@@ -62,6 +67,11 @@ export function Alert({
     error: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+    coral: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
     )
   };

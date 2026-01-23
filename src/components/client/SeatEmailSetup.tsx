@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Alert } from '@/components/design-system/Alert';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { useSeatDevices } from '@/hooks/useSeatDevices';
 import { useAuth } from '@/contexts/AuthContext';
 import {
@@ -75,20 +78,18 @@ export function SeatEmailSetup({
   if (hasEmail && binding) {
     return (
       <div className={cn('space-y-4', className)}>
-        <div className="flex items-center gap-3 p-4 bg-green-50 border-2 border-green-200 rounded-2xl">
-          <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
-            <Mail className="w-6 h-6 text-green-600" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <span className="font-medium text-green-900">Email для приложения</span>
-              {binding.email_verified && (
-                <CheckCircle className="w-4 h-4 text-green-600" />
-              )}
-            </div>
-            <div className="text-green-700 truncate">{binding.email}</div>
-          </div>
-        </div>
+        <Alert
+          variant="success"
+          title="Email для приложения"
+          message={binding.email}
+          icon={
+            binding.email_verified ? (
+              <CheckCircle className="w-5 h-5" />
+            ) : (
+              <Mail className="w-5 h-5" />
+            )
+          }
+        />
 
         <p className="text-sm text-muted-foreground">
           Этот email используется для входа в мобильное приложение
@@ -103,7 +104,7 @@ export function SeatEmailSetup({
     <div className={cn('space-y-4', className)}>
       {/* Объяснение */}
       <Alert
-        variant="info"
+        variant="coral"
         title="Укажите email для мобильного приложения"
         message={
           profileType === 'child'
@@ -114,14 +115,16 @@ export function SeatEmailSetup({
       />
 
       {/* Подсказка */}
-      <button
+      <Button
         type="button"
+        variant="ghost"
+        size="sm"
         onClick={() => setShowHelp(!showHelp)}
-        className="flex items-center gap-2 text-sm text-primary hover:underline"
+        className="h-auto p-0 text-sm text-primary hover:underline"
       >
         <HelpCircle className="w-4 h-4" />
         Зачем нужен email?
-      </button>
+      </Button>
 
       {showHelp && (
         <div className="p-4 bg-cloud/50 rounded-xl text-sm space-y-2">
@@ -143,30 +146,18 @@ export function SeatEmailSetup({
 
       {/* Поле ввода */}
       <div className="space-y-3">
-        <div>
-          <label htmlFor={`email-${seatId}`} className="block text-sm font-medium mb-2">
+        <div className="space-y-2">
+          <Label htmlFor={`email-${seatId}`}>
             Email {profileName && `для ${profileName}`}
-          </label>
-          <input
+          </Label>
+          <Input
             id={`email-${seatId}`}
             type="email"
             value={inputEmail}
             onChange={(e) => setInputEmail(e.target.value)}
             placeholder="example@mail.com"
-            className="w-full px-4 py-3 rounded-xl border-2 border-border focus:border-primary focus:outline-none transition-colors"
           />
         </div>
-
-        {/* Предложение использовать email аккаунта */}
-        {suggestedEmail && inputEmail !== suggestedEmail && (
-          <button
-            type="button"
-            onClick={handleUseSuggestedEmail}
-            className="text-sm text-primary hover:underline"
-          >
-            Использовать {suggestedEmail}
-          </button>
-        )}
       </div>
 
       {/* Ошибка */}
@@ -180,20 +171,17 @@ export function SeatEmailSetup({
       )}
 
       {/* Кнопка */}
-      <button
+      <Button
         onClick={handleSetEmail}
         disabled={isSubmitting || !inputEmail.trim()}
-        className={cn(
-          'w-full px-4 py-3 rounded-xl font-medium transition-colors',
-          'bg-primary text-white hover:bg-primary/90',
-          'disabled:opacity-50 disabled:cursor-not-allowed'
-        )}
+        className="w-full"
+        size="lg"
       >
         {isSubmitting ? 'Сохранение...' : 'Привязать email'}
-      </button>
+      </Button>
 
       {/* Предупреждение */}
-      <p className="text-xs text-muted-foreground text-center">
+      <p className="text-xs text-coral text-center font-medium">
         Email нельзя изменить после привязки
       </p>
     </div>

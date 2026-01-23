@@ -17,7 +17,6 @@ import {
   Clock,
   Settings,
   AlertCircle,
-  Sparkles,
   Wifi,
   Package,
 } from 'lucide-react';
@@ -121,7 +120,7 @@ export default function MyDevice() {
       {/* Заголовок */}
       <div className="mb-8">
         <SerifHeading size="2xl" className="mb-2">
-          Моё устройство
+          Мое нейроустройство
         </SerifHeading>
       </div>
 
@@ -132,10 +131,10 @@ export default function MyDevice() {
             {hasLicense ? (
               <>
                 <SerifHeading size="xl" className="mb-3">
-                  Дооформите доставку устройства
+                  Дооформите доставку нейроустройства
                 </SerifHeading>
                 <p className="text-muted-foreground mb-6">
-                  Вы приобрели лицензию с устройством. Теперь нужно указать адрес доставки, чтобы мы могли отправить вам устройство.
+                  Вы приобрели лицензию с нейроустройством. Теперь нужно указать адрес доставки, чтобы мы могли отправить вам его.
                 </p>
                 <Button
                   size="lg"
@@ -358,7 +357,7 @@ export default function MyDevice() {
                 <Uicon name="check-circle-2" style="rr" className="h-4 w-4 text-green-600" />
               </div>
               <div>
-                <SerifHeading size="lg">Устройство доставлено!</SerifHeading>
+                <SerifHeading size="lg">Нейроустройство доставлено!</SerifHeading>
                 <p className="text-muted-foreground">
                   Теперь настройте его, следуя чек-листу ниже
                 </p>
@@ -387,6 +386,7 @@ export default function MyDevice() {
               {DEVICE_SETUP_STEPS.map((step, index) => {
                 const completed = isStepComplete(step.id);
                 const isCurrent = !completed && index === setupProgress.completed;
+                const isClickable = true; // Все шаги кликабельны
                 return (
                   <div
                     key={step.id}
@@ -394,9 +394,17 @@ export default function MyDevice() {
                       'flex items-start gap-3 p-3 rounded-xl transition-all duration-200',
                       isCurrent && !completed && 'bg-white/50',
                       completed && 'opacity-60',
-                      !completed && 'cursor-pointer hover:bg-white/50'
+                      (isClickable || completed) && 'cursor-pointer hover:bg-white/50'
                     )}
-                    onClick={() => !completed && toggleStep(step.id)}
+                    onClick={isClickable ? () => toggleStep(step.id) : completed ? () => toggleStep(step.id) : undefined}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleStep(step.id);
+                      }
+                    }}
                   >
                     <div className="flex-shrink-0 mt-0.5">
                       {completed ? (
@@ -469,9 +477,8 @@ export default function MyDevice() {
               <div className="mt-6 pt-6 border-t border-border/50 text-center">
                 <Button
                   onClick={() => updateStatus('setup_complete')}
-                  className="bg-gradient-to-r from-success to-success/80"
+                  size="lg"
                 >
-                  <Sparkles className="h-4 w-4 mr-2" />
                   Завершить настройку
                 </Button>
               </div>

@@ -333,7 +333,7 @@ export default function TrainingGoals() {
       {step === 'select_profile' && (
         <div className="space-y-4">
           <Card className="glass-elegant p-6" style={{ background: 'rgba(255, 255, 255, 0.25)' }}>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-3 md:grid-cols-2">
               {profiles?.map((profile) => {
                 const existingGoals = getGoalsForProfile(profile.id);
                 const isSelected = selectedProfileId === profile.id;
@@ -382,7 +382,7 @@ export default function TrainingGoals() {
                             return (
                               <Badge 
                                 key={goalId}
-                                className="text-xs text-coral-light border-0"
+                                className="text-xs text-coral-light border-0 whitespace-nowrap"
                                 style={{ 
                                   background: 'rgba(255, 182, 153, 0.2)',
                                   backgroundImage: 'none'
