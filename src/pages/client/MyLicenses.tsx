@@ -30,6 +30,7 @@ import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProfiles } from '@/hooks/useProfiles';
 import { useDevice } from '@/hooks/useDevice';
+import { SeatDevicesManager } from '@/components/client/SeatDevicesManager';
 import {
   License,
   LicenseSeat,
@@ -423,36 +424,48 @@ export default function MyLicenses() {
                       Нет добавленных участников
                     </p>
                   ) : (
-                    <div className="space-y-2">
+                    <div className="space-y-4">
                       {licenseSeats.map((seat) => (
                         <div
                           key={seat.id}
-                          className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg"
+                          className="p-4 bg-muted/30 rounded-xl space-y-4"
                         >
-                          <Avatar className="h-10 w-10">
-                            <AvatarFallback>
-                              {seat.profile?.first_name?.[0] || '?'}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <p className="font-medium">
-                              {seat.profile?.first_name} {seat.profile?.last_name || ''}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              Добавлен {new Date(seat.assigned_at).toLocaleDateString('ru-RU')}
-                            </p>
+                          {/* Информация об участнике */}
+                          <div className="flex items-center gap-3">
+                            <Avatar className="h-10 w-10">
+                              <AvatarFallback>
+                                {seat.profile?.first_name?.[0] || '?'}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                              <p className="font-medium">
+                                {seat.profile?.first_name} {seat.profile?.last_name || ''}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {seat.profile?.type === 'parent' ? 'Родитель' : 'Ребёнок'} · Добавлен {new Date(seat.assigned_at).toLocaleDateString('ru-RU')}
+                              </p>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-muted-foreground hover:text-destructive"
+                              onClick={() => {
+                                removeSeat(seat.id);
+                                toast.success('Участник удалён');
+                              }}
+                            >
+                              Удалить
+                            </Button>
                           </div>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="text-muted-foreground hover:text-destructive"
-                            onClick={() => {
-                              removeSeat(seat.id);
-                              toast.success('Участник удалён');
-                            }}
-                          >
-                            Удалить
-                          </Button>
+
+                          {/* Устройства этого участника */}
+                          <div className="mt-4 pt-4 border-t border-border/30">
+                            <SeatDevicesManager
+                              seatId={seat.id}
+                              profileName={seat.profile?.first_name}
+                              profileType={seat.profile?.type}
+                            />
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -466,8 +479,9 @@ export default function MyLicenses() {
                   )}
                 </div>
 
-                {/* Device link */}
+                {/* Физическое устройство */}
                 <div className="mt-6 pt-6 border-t border-border/50">
+                  <h4 className="font-medium mb-4">Физическое устройство</h4>
                   <Button
                     variant="outline"
                     className="w-full sm:w-auto"

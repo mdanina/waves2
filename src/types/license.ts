@@ -86,6 +86,12 @@ export interface LicenseSeat {
   license_id: string;
   profile_id: string;
 
+  // Email для идентификации в мобильном приложении
+  // Может отличаться от email аккаунта (например, у ребёнка свой email)
+  app_email?: string;
+  app_email_verified?: boolean;
+  app_email_set_at?: string;
+
   // Связанный профиль (для отображения)
   profile?: {
     id: string;
