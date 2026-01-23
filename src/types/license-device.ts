@@ -1,15 +1,16 @@
-// Система привязки устройств к лицензии с Trust Score
+// Система привязки устройств к месту в лицензии (seat) с Trust Score
+// Каждый участник лицензии (seat) имеет свой email и свои устройства
 
-// Уровни доверия пользователя
+// Уровни доверия пользователя (для каждого seat отдельно)
 export type TrustLevel = 'new' | 'standard' | 'trusted';
 
 // Статус привязки устройства
-export type LicenseDeviceStatus = 'active' | 'pending_unbind' | 'unbound';
+export type SeatDeviceStatus = 'active' | 'pending_unbind' | 'unbound';
 
-// Устройство, привязанное к лицензии
-export interface LicenseDevice {
+// Устройство, привязанное к месту в лицензии (seat)
+export interface SeatDevice {
   id: string;
-  license_id: string;
+  seat_id: string;                  // Привязка к месту, не к лицензии
 
   // Идентификация устройства
   device_fingerprint: string;
@@ -17,7 +18,7 @@ export interface LicenseDevice {
   device_type: 'mobile' | 'tablet' | 'desktop';
 
   // Статус привязки
-  status: LicenseDeviceStatus;
+  status: SeatDeviceStatus;
   unbind_requested_at?: string;     // Когда запросили отвязку
   unbind_available_at?: string;     // Когда можно завершить (+ cooldown)
   unbind_code?: string;             // Код подтверждения (хранится хешированным на бэке)
@@ -32,7 +33,7 @@ export interface LicenseDevice {
 // История отвязок (для подсчёта лимитов)
 export interface DeviceUnbindHistory {
   id: string;
-  license_id: string;
+  seat_id: string;
   device_fingerprint: string;
   device_name: string;
   unbound_at: string;
@@ -88,14 +89,14 @@ export const TRUST_THRESHOLDS = {
   },
 };
 
-// Расширение интерфейса License для поддержки email-binding
-export interface LicenseEmailBinding {
-  license_id: string;
-  email: string;                    // Привязанный email (неизменяемый после первой привязки)
+// Привязка email к месту (seat) для идентификации в мобильном приложении
+export interface SeatEmailBinding {
+  seat_id: string;
+  email: string;                    // Email для входа в мобильное приложение
   email_verified: boolean;
   bound_at: string;
 
-  // Trust Score
+  // Trust Score (для каждого seat отдельно)
   trust_level: TrustLevel;
   trust_level_updated_at: string;
 
@@ -111,7 +112,7 @@ export interface LicenseEmailBinding {
 // Результат проверки возможности отвязки
 export interface UnbindCheckResult {
   canUnbind: boolean;
-  reason?: 'cooldown' | 'limit_reached' | 'pending_unbind' | 'last_device';
+  reason?: 'cooldown' | 'limit_reached' | 'pending_unbind' | 'last_device' | 'no_email';
 
   // Детали для UI
   cooldownEndsAt?: string;          // Когда закончится cooldown
@@ -178,7 +179,7 @@ function pluralize(n: number, one: string, few: string, many: string): string {
 }
 
 // Проверка, истёк ли период неактивности
-export function isDeviceInactive(device: LicenseDevice): boolean {
+export function isDeviceInactive(device: SeatDevice): boolean {
   const lastActive = new Date(device.last_active_at);
   const now = new Date();
   const daysSinceActive = Math.floor(
@@ -192,3 +193,11 @@ export function getUnbindLimitResetDate(lastUnbindAt: string): Date {
   const lastUnbind = new Date(lastUnbindAt);
   return new Date(lastUnbind.getTime() + 30 * 24 * 60 * 60 * 1000);
 }
+
+// Алиасы для обратной совместимости (deprecated, удалить позже)
+/** @deprecated Use SeatDevice instead */
+export type LicenseDevice = SeatDevice;
+/** @deprecated Use SeatDeviceStatus instead */
+export type LicenseDeviceStatus = SeatDeviceStatus;
+/** @deprecated Use SeatEmailBinding instead */
+export type LicenseEmailBinding = SeatEmailBinding;
