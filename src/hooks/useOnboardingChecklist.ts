@@ -31,6 +31,8 @@ export const CHECKLIST_ITEMS: Omit<ChecklistItem, 'completed'>[] = [
     id: 'select_goals',
     title: 'Выбрать цели тренинга',
     description: 'Определите, чего хотите достичь с помощью нейрофидбэка',
+    link: '/cabinet/goals',
+    linkText: 'Выбрать цели',
   },
   {
     id: 'learn_neurofeedback',
@@ -50,11 +52,15 @@ export const CHECKLIST_ITEMS: Omit<ChecklistItem, 'completed'>[] = [
     id: 'order_device',
     title: 'Заказать доставку устройства для тренировки',
     description: 'Оформите заказ на устройство нейрофидбэка',
+    link: '/cabinet/device',
+    linkText: 'Заказать',
   },
   {
     id: 'pay_licenses',
     title: 'Оплатить лицензии для участников',
     description: 'Активируйте доступ для всех членов семьи',
+    link: '/cabinet/licenses',
+    linkText: 'Выбрать план',
   },
   {
     id: 'test_device',

@@ -14,6 +14,7 @@ import {
   Users,
   Smartphone,
   CreditCard,
+  Target,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -37,6 +38,11 @@ const mainNavigation = [
     name: 'Мои лицензии',
     href: '/cabinet/licenses',
     icon: CreditCard,
+  },
+  {
+    name: 'Цели тренировок',
+    href: '/cabinet/goals',
+    icon: Target,
   },
   {
     name: 'Консультации',
