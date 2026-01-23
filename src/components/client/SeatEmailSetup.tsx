@@ -78,18 +78,21 @@ export function SeatEmailSetup({
   if (hasEmail && binding) {
     return (
       <div className={cn('space-y-4', className)}>
-        <Alert
-          variant="success"
-          title="Email для приложения"
-          message={binding.email}
-          icon={
-            binding.email_verified ? (
-              <CheckCircle className="w-5 h-5" />
-            ) : (
-              <Mail className="w-5 h-5" />
-            )
-          }
-        />
+        <div className="rounded-2xl border-2 p-4 backdrop-blur-sm bg-gradient-to-r from-[rgba(255,138,91,0.2)] to-[rgba(255,138,91,0.1)] border-[rgba(255,138,91,0.3)]">
+          <div className="flex gap-3">
+            <div className="flex-shrink-0 mt-0.5 text-coral">
+              {binding.email_verified ? (
+                <CheckCircle className="w-5 h-5" />
+              ) : (
+                <Mail className="w-5 h-5" />
+              )}
+            </div>
+            <div className="flex-1">
+              <h4 className="font-medium mb-1 text-[#1a1a1a]">Email для приложения</h4>
+              <p className="text-sm text-[#1a1a1a]">{binding.email}</p>
+            </div>
+          </div>
+        </div>
 
         <p className="text-sm text-muted-foreground">
           Этот email используется для входа в мобильное приложение

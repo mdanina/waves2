@@ -55,6 +55,7 @@ interface SeatDevicesManagerProps {
   profileName?: string;
   profileType?: 'parent' | 'child';
   className?: string;
+  onEmailSet?: (email: string) => void;
 }
 
 export function SeatDevicesManager({
@@ -62,6 +63,7 @@ export function SeatDevicesManager({
   profileName,
   profileType,
   className,
+  onEmailSet,
 }: SeatDevicesManagerProps) {
   const {
     activeDevices,
@@ -181,6 +183,7 @@ export function SeatDevicesManager({
           seatId={seatId}
           profileName={profileName}
           profileType={profileType}
+          onEmailSet={onEmailSet}
         />
       </div>
     );
@@ -231,12 +234,6 @@ export function SeatDevicesManager({
         </div>
       </div>
 
-      {/* Trust Level описание */}
-      <Alert
-        variant="info"
-        message={TRUST_LEVEL_DESCRIPTIONS[binding?.trust_level || 'new']}
-        icon={<Info className="w-5 h-5" />}
-      />
 
       {/* Уведомления */}
       {successMessage && (

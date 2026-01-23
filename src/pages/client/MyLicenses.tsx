@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -44,10 +44,102 @@ import {
 function useLicenses() {
   const { user } = useAuth();
 
-  // Mock: no licenses by default
-  // Change this for testing different states
-  const [licenses, setLicenses] = useState<License[]>([]);
-  const [seats, setSeats] = useState<LicenseSeat[]>([]);
+  // Загрузка из localStorage для персистентности
+  const LICENSES_STORAGE_KEY = 'waves_licenses';
+  const SEATS_STORAGE_KEY = 'waves_license_seats';
+
+  const [licenses, setLicenses] = useState<License[]>(() => {
+    try {
+      const stored = localStorage.getItem(LICENSES_STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [seats, setSeats] = useState<LicenseSeat[]>(() => {
+    try {
+      const stored = localStorage.getItem(SEATS_STORAGE_KEY);
+      const loadedSeats: LicenseSeat[] = stored ? JSON.parse(stored) : [];
+      
+      // Синхронизируем app_email из useSeatDevices (localStorage)
+      return loadedSeats.map(seat => {
+        try {
+          const bindingKey = `waves_seat_email_binding_${seat.id}`;
+          const binding = localStorage.getItem(bindingKey);
+          if (binding) {
+            const bindingData = JSON.parse(binding);
+            return {
+              ...seat,
+              app_email: bindingData.email,
+              app_email_verified: bindingData.email_verified,
+              app_email_set_at: bindingData.bound_at,
+            };
+          }
+        } catch {
+          // Игнорируем ошибки парсинга
+        }
+        return seat;
+      });
+    } catch {
+      return [];
+    }
+  });
+
+  // Сохранение в localStorage при изменении
+  useEffect(() => {
+    localStorage.setItem(LICENSES_STORAGE_KEY, JSON.stringify(licenses));
+  }, [licenses]);
+
+  useEffect(() => {
+    localStorage.setItem(SEATS_STORAGE_KEY, JSON.stringify(seats));
+  }, [seats]);
+
+  // Синхронизация app_email из useSeatDevices при монтировании
+  useEffect(() => {
+    const syncSeatsEmail = () => {
+      setSeats(prevSeats => {
+        return prevSeats.map(seat => {
+          try {
+            const bindingKey = `waves_seat_email_binding_${seat.id}`;
+            const binding = localStorage.getItem(bindingKey);
+            if (binding) {
+              const bindingData = JSON.parse(binding);
+              return {
+                ...seat,
+                app_email: bindingData.email,
+                app_email_verified: bindingData.email_verified,
+                app_email_set_at: bindingData.bound_at,
+              };
+            }
+          } catch {
+            // Игнорируем ошибки
+          }
+          return seat;
+        });
+      });
+    };
+
+    // Синхронизируем при монтировании
+    syncSeatsEmail();
+
+    // Слушаем изменения localStorage для синхронизации
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key && e.key.startsWith('waves_seat_email_binding_')) {
+        syncSeatsEmail();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Также проверяем периодически (на случай изменений в том же окне)
+    const interval = setInterval(syncSeatsEmail, 1000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, []);
 
   const loading = false;
   const error = null;
@@ -98,7 +190,43 @@ function useLicenses() {
   };
 
   const removeSeat = async (seatId: string) => {
+    // Проверяем, есть ли привязанный email (проверяем и в состоянии, и в localStorage)
+    const seat = seats.find(s => s.id === seatId);
+    if (seat?.app_email) {
+      throw new Error('Нельзя удалить участника с привязанным email. Обратитесь в поддержку.');
+    }
+
+    // Дополнительная проверка в localStorage
+    try {
+      const bindingKey = `waves_seat_email_binding_${seatId}`;
+      const binding = localStorage.getItem(bindingKey);
+      if (binding) {
+        const bindingData = JSON.parse(binding);
+        if (bindingData.email) {
+          throw new Error('Нельзя удалить участника с привязанным email. Обратитесь в поддержку.');
+        }
+      }
+    } catch (e) {
+      if (e instanceof Error && e.message.includes('Нельзя удалить')) {
+        throw e;
+      }
+    }
+    
     setSeats(prev => prev.filter(s => s.id !== seatId));
+  };
+
+  // Обновление app_email в seat при привязке email
+  const updateSeatEmail = (seatId: string, email: string, verified: boolean = false) => {
+    setSeats(prev => prev.map(seat => 
+      seat.id === seatId 
+        ? {
+            ...seat,
+            app_email: email,
+            app_email_verified: verified,
+            app_email_set_at: new Date().toISOString(),
+          }
+        : seat
+    ));
   };
 
   const linkDevice = async (licenseId: string, deviceId: string) => {
@@ -116,6 +244,7 @@ function useLicenses() {
     assignSeat,
     removeSeat,
     linkDevice,
+    updateSeatEmail,
     hasLicense: licenses.length > 0,
   };
 }
@@ -132,6 +261,7 @@ export default function MyLicenses() {
     removeSeat,
     linkDevice,
     hasLicense,
+    updateSeatEmail,
   } = useLicenses();
   
   const { device, hasDevice } = useDevice();
@@ -443,17 +573,28 @@ export default function MyLicenses() {
                                 {seat.profile?.type === 'parent' ? 'Родитель' : 'Ребёнок'} · Добавлен {new Date(seat.assigned_at).toLocaleDateString('ru-RU')}
                               </p>
                             </div>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-muted-foreground hover:text-destructive"
-                              onClick={() => {
-                                removeSeat(seat.id);
-                                toast.success('Участник удалён');
-                              }}
-                            >
-                              Удалить
-                            </Button>
+                            {seat.app_email ? (
+                              <div className="text-right">
+                                <p className="text-xs text-muted-foreground">
+                                  Email привязан
+                                </p>
+                                <p className="text-xs text-coral">
+                                  Удаление через поддержку
+                                </p>
+                              </div>
+                            ) : (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-muted-foreground hover:text-destructive"
+                                onClick={() => {
+                                  removeSeat(seat.id);
+                                  toast.success('Участник удалён');
+                                }}
+                              >
+                                Удалить
+                              </Button>
+                            )}
                           </div>
 
                           {/* Устройства этого участника */}
@@ -462,6 +603,9 @@ export default function MyLicenses() {
                               seatId={seat.id}
                               profileName={seat.profile?.first_name}
                               profileType={seat.profile?.type}
+                              onEmailSet={(email) => {
+                                updateSeatEmail(seat.id, email, true);
+                              }}
                             />
                           </div>
                         </div>

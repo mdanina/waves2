@@ -955,6 +955,18 @@ export default function Dashboard() {
           </div>
         ) : null}
 
+        {/* Приветствие */}
+        {parentName && (
+          <div className="mb-8">
+            <SerifHeading size="xl" className="mb-2 text-2xl sm:text-3xl">
+              Привет, {parentName}!
+            </SerifHeading>
+            <p className="text-base text-muted-foreground">
+              Добро пожаловать в систему нейротренинга Waves
+            </p>
+          </div>
+        )}
+
         {/* Onboarding Checklist */}
         <OnboardingChecklist
           profilesCount={familyMembers.length}
