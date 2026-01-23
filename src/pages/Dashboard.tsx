@@ -42,6 +42,7 @@ import {
 import SpecialistProfileCard from "@/components/SpecialistProfileCard";
 import RatingModal from "@/components/RatingModal";
 import { CalendarFeedDialog } from "@/components/CalendarFeedDialog";
+import { OnboardingChecklist } from "@/components/client/OnboardingChecklist";
 import {
   Carousel,
   CarouselContent,
@@ -952,6 +953,12 @@ export default function Dashboard() {
             <p className="text-muted-foreground">Загрузка...</p>
           </div>
         ) : null}
+
+        {/* Onboarding Checklist */}
+        <OnboardingChecklist
+          profilesCount={familyMembers.length}
+          className="mb-8"
+        />
 
         {/* Portal Cards */}
         <div className="mb-8">
