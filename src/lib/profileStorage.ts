@@ -486,3 +486,89 @@ function simpleGenitiveDeclension(
   return trimmedName;
 }
 
+/**
+ * Склонить имя в дательный падеж (кому? чему?)
+ * Используется для фраз типа "Цели для Марии", "Помочь Ивану"
+ * @param firstName - имя в именительном падеже
+ * @param gender - пол ('male' | 'female' | 'other')
+ * @returns имя в дательном падеже или оригинальное имя если склонение не удалось
+ */
+export function getDativeName(
+  firstName: string | null | undefined,
+  gender?: 'male' | 'female' | 'other' | null
+): string {
+  if (!firstName) {
+    return 'вашего ребенка';
+  }
+
+  try {
+    const lvovichGender = gender === 'male' ? 'male' : gender === 'female' ? 'female' : undefined;
+    const result = inclineFirstname(firstName, 'dative', lvovichGender);
+
+    if (result && result !== firstName) {
+      return result;
+    }
+
+    return simpleDativeDeclension(firstName, gender);
+  } catch (error) {
+    logger.warn('Failed to decline name to dative:', firstName, error);
+    return simpleDativeDeclension(firstName, gender);
+  }
+}
+
+/**
+ * Простое склонение имени в дательный падеж (кому? чему?)
+ * Используется как фоллбэк если библиотека не справилась
+ * Примеры: Маша → Маше, Иван → Ивану, Мария → Марии, Дмитрий → Дмитрию
+ */
+function simpleDativeDeclension(
+  name: string,
+  gender?: 'male' | 'female' | 'other' | null
+): string {
+  if (!name) return 'вашему ребенку';
+
+  const trimmedName = name.trim();
+  const lastChar = trimmedName.slice(-1).toLowerCase();
+  const lastTwoChars = trimmedName.slice(-2).toLowerCase();
+
+  // ВАЖНО: Проверки на -ия и -ий должны быть ПЕРВЫМИ, до проверок на -а/-я и -й
+
+  // Имена на -ия → -ии (Мария → Марии, Виктория → Виктории)
+  if (lastTwoChars === 'ия') {
+    return trimmedName.slice(0, -2) + 'ии';
+  }
+
+  // Имена на -ий → -ию (Дмитрий → Дмитрию, Василий → Василию)
+  if (lastTwoChars === 'ий') {
+    return trimmedName.slice(0, -2) + 'ию';
+  }
+
+  // Женские имена на -а → -е (Маша → Маше, Анна → Анне)
+  if (lastChar === 'а') {
+    return trimmedName.slice(0, -1) + 'е';
+  }
+
+  // Имена на -я → -е (Настя → Насте, Катя → Кате)
+  if (lastChar === 'я') {
+    return trimmedName.slice(0, -1) + 'е';
+  }
+
+  // Имена на -й → -ю (Андрей → Андрею, Сергей → Сергею)
+  if (lastChar === 'й') {
+    return trimmedName.slice(0, -1) + 'ю';
+  }
+
+  // Имена на -ь (Игорь → Игорю, Олег → Олегу)
+  if (lastChar === 'ь') {
+    return trimmedName.slice(0, -1) + 'ю';
+  }
+
+  // Мужские имена на согласную → +у (Иван → Ивану, Петр → Петру)
+  if (gender === 'male' || (!gender && /[бвгджзклмнпрстфхцчшщ]$/i.test(trimmedName))) {
+    return trimmedName + 'у';
+  }
+
+  // Если ничего не подошло, возвращаем как есть
+  return trimmedName;
+}
+

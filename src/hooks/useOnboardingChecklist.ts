@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
+import { logger } from '@/lib/logger';
 
 export interface ChecklistItem {
   id: string;
@@ -32,35 +34,35 @@ export const CHECKLIST_ITEMS: Omit<ChecklistItem, 'completed'>[] = [
     title: 'Выбрать цели тренинга',
     description: 'Определите, чего хотите достичь с помощью нейрофидбэка',
     link: '/cabinet/goals',
-    linkText: 'Выбрать цели',
+    linkText: 'Открыть',
   },
   {
     id: 'learn_neurofeedback',
     title: 'Познакомиться с методом нейрофидбэка',
     description: 'Узнайте, как работает технология',
     link: 'https://waves.ai/neurofeedback',
-    linkText: 'Узнать больше',
+    linkText: 'Открыть',
   },
   {
     id: 'download_app',
     title: 'Скачать мобильное приложение',
     description: 'Установите приложение Waves на телефон',
     link: 'https://waves.ai/app',
-    linkText: 'Скачать приложение',
+    linkText: 'Скачать',
   },
   {
     id: 'order_device',
     title: 'Заказать доставку устройства для тренировки',
     description: 'Оформите заказ на устройство нейрофидбэка',
     link: '/cabinet/device',
-    linkText: 'Заказать',
+    linkText: 'Открыть',
   },
   {
     id: 'pay_licenses',
     title: 'Оплатить лицензии для участников',
     description: 'Активируйте доступ для всех членов семьи',
     link: '/cabinet/licenses',
-    linkText: 'Выбрать план',
+    linkText: 'Открыть',
   },
   {
     id: 'test_device',
@@ -96,32 +98,87 @@ export function useOnboardingChecklist(options: UseOnboardingChecklistOptions = 
     return { items: {} };
   });
 
-  // Перезагружаем состояние при смене пользователя
+  // Загружаем состояние из БД при монтировании и смене пользователя
   useEffect(() => {
     if (!user?.id) return;
 
-    try {
-      const stored = localStorage.getItem(`${STORAGE_KEY}_${user.id}`);
-      if (stored) {
-        setState(JSON.parse(stored));
-      } else {
-        setState({ items: {} });
+    const loadFromDB = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('users')
+          .select('onboarding_checklist')
+          .eq('id', user.id)
+          .single();
+
+        if (error && error.code !== 'PGRST116') { // PGRST116 = not found
+          logger.error('Error loading checklist from DB:', error);
+          // Fallback на localStorage
+          const stored = localStorage.getItem(`${STORAGE_KEY}_${user.id}`);
+          if (stored) {
+            setState(JSON.parse(stored));
+          }
+          return;
+        }
+
+        if (data?.onboarding_checklist) {
+          // Данные из БД имеют приоритет
+          setState(data.onboarding_checklist);
+          // Синхронизируем с localStorage
+          localStorage.setItem(`${STORAGE_KEY}_${user.id}`, JSON.stringify(data.onboarding_checklist));
+        } else {
+          // Если в БД нет данных, пробуем загрузить из localStorage
+          const stored = localStorage.getItem(`${STORAGE_KEY}_${user.id}`);
+          if (stored) {
+            const localState = JSON.parse(stored);
+            setState(localState);
+            // Сохраняем в БД для синхронизации
+            await supabase
+              .from('users')
+              .update({ onboarding_checklist: localState })
+              .eq('id', user.id);
+          } else {
+            setState({ items: {} });
+          }
+        }
+      } catch (e) {
+        logger.error('Error loading checklist state:', e);
+        // Fallback на localStorage
+        const stored = localStorage.getItem(`${STORAGE_KEY}_${user.id}`);
+        if (stored) {
+          setState(JSON.parse(stored));
+        }
       }
-    } catch (e) {
-      console.error('Error loading checklist state:', e);
-      setState({ items: {} });
-    }
+    };
+
+    loadFromDB();
   }, [user?.id]);
 
-  // Сохраняем состояние при изменении
+  // Сохраняем состояние в БД и localStorage при изменении
   useEffect(() => {
     if (!user?.id) return;
 
-    try {
-      localStorage.setItem(`${STORAGE_KEY}_${user.id}`, JSON.stringify(state));
-    } catch (e) {
-      console.error('Error saving checklist state:', e);
-    }
+    const saveToDB = async () => {
+      try {
+        // Сохраняем в localStorage для быстрого доступа
+        localStorage.setItem(`${STORAGE_KEY}_${user.id}`, JSON.stringify(state));
+
+        // Сохраняем в БД
+        const { error } = await supabase
+          .from('users')
+          .update({ onboarding_checklist: state })
+          .eq('id', user.id);
+
+        if (error) {
+          logger.error('Error saving checklist to DB:', error);
+        }
+      } catch (e) {
+        logger.error('Error saving checklist state:', e);
+      }
+    };
+
+    // Дебаунсим сохранение в БД (не чаще раза в секунду)
+    const timeoutId = setTimeout(saveToDB, 500);
+    return () => clearTimeout(timeoutId);
   }, [state, user?.id]);
 
   // Формируем список элементов с учетом автопроверок

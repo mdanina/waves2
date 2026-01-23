@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { SerifHeading } from '@/components/design-system/SerifHeading';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
-  CreditCard,
   Users,
   Plus,
   Check,
@@ -184,9 +183,6 @@ export default function MyLicenses() {
         <div className="space-y-6">
           <Card className="glass-elegant border-2 p-6 sm:p-8">
             <div className="text-center max-w-md mx-auto mb-8">
-              <div className="w-20 h-20 rounded-full bg-honey/10 flex items-center justify-center mx-auto mb-6">
-                <CreditCard className="h-10 w-10 text-honey" />
-              </div>
               <SerifHeading size="xl" className="mb-3">
                 У вас нет активных лицензий
               </SerifHeading>

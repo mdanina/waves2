@@ -960,38 +960,40 @@ export default function Dashboard() {
           className="mb-8"
         />
 
-        {/* Portal Cards */}
-        <div className="mb-8">
-          <SerifHeading size="xl" className="mb-4">
-            С чего начать?
-          </SerifHeading>
-        </div>
-
-        {/* Предупреждение для семей только с маленькими детьми */}
-        {hasOnlyYoungChildren && (
-          <div className="mb-8 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800">
-            <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0" />
-            <div>
-              <p className="font-medium">Чекап для детей до {CHECKUP_MIN_AGE} лет пока недоступен</p>
-              <p className="mt-1 text-amber-700">
-                Наш чекап разработан для детей от {CHECKUP_MIN_AGE} до {CHECKUP_MAX_AGE} лет.
-                Однако вы можете получить консультацию специалиста для себя как родителя.
-                Для этого напишите в поддержку — мы поможем записаться.
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-3 border-amber-300 text-amber-800 hover:bg-amber-100"
-                onClick={() => window.open('https://t.me/waves_support_bot', '_blank', 'noopener,noreferrer')}
-              >
-                <HelpCircle className="h-4 w-4 mr-2" />
-                Написать в поддержку
-              </Button>
+        {/* Portal Cards - скрыто, возможно понадобится в будущем */}
+        {false && (
+          <>
+            <div className="mb-8">
+              <SerifHeading size="xl" className="mb-4">
+                С чего начать?
+              </SerifHeading>
             </div>
-          </div>
-        )}
 
-        <div className="mb-12 grid gap-6 md:grid-cols-2 md:items-stretch">
+            {/* Предупреждение для семей только с маленькими детьми */}
+            {hasOnlyYoungChildren && (
+              <div className="mb-8 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800">
+                <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium">Чекап для детей до {CHECKUP_MIN_AGE} лет пока недоступен</p>
+                  <p className="mt-1 text-amber-700">
+                    Наш чекап разработан для детей от {CHECKUP_MIN_AGE} до {CHECKUP_MAX_AGE} лет.
+                    Однако вы можете получить консультацию специалиста для себя как родителя.
+                    Для этого напишите в поддержку — мы поможем записаться.
+                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-3 border-amber-300 text-amber-800 hover:bg-amber-100"
+                    onClick={() => window.open('https://t.me/waves_support_bot', '_blank', 'noopener,noreferrer')}
+                  >
+                    <HelpCircle className="h-4 w-4 mr-2" />
+                    Написать в поддержку
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            <div className="mb-12 grid gap-6 md:grid-cols-2 md:items-stretch">
             {/* Левая колонка: Шаг 1 + уведомление */}
             <div className="flex flex-col gap-4 h-full">
               {/* Шаг 1: Психологический чекап семьи */}
@@ -1127,6 +1129,8 @@ export default function Dashboard() {
             </WellnessCard>
             </div>
           </div>
+          </>
+        )}
 
         {/* Support Section */}
         <div className="mb-12">

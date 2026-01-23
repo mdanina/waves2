@@ -30,6 +30,11 @@ const mainNavigation = [
     end: true,
   },
   {
+    name: 'Цели тренировок',
+    href: '/cabinet/goals',
+    icon: Target,
+  },
+  {
     name: 'Моё устройство',
     href: '/cabinet/device',
     icon: Smartphone,
@@ -38,11 +43,6 @@ const mainNavigation = [
     name: 'Мои лицензии',
     href: '/cabinet/licenses',
     icon: CreditCard,
-  },
-  {
-    name: 'Цели тренировок',
-    href: '/cabinet/goals',
-    icon: Target,
   },
   {
     name: 'Консультации',

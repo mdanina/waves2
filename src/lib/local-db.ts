@@ -202,6 +202,7 @@ export class LocalAuth {
       marketing_consent: false,
       free_consultation_created: false,
       role: 'user',
+      onboarding_checklist: null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     });

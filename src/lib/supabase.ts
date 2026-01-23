@@ -126,6 +126,11 @@ export interface Database {
           marketing_consent: boolean;
           free_consultation_created: boolean;
           role: 'user' | 'support' | 'admin' | 'super_admin';
+          onboarding_checklist: {
+            items: Record<string, boolean>;
+            completedAt?: string;
+            dismissedAt?: string;
+          } | null;
           created_at: string;
           updated_at: string;
         };
@@ -137,6 +142,11 @@ export interface Database {
           marketing_consent?: boolean;
           free_consultation_created?: boolean;
           role?: 'user' | 'support' | 'admin' | 'super_admin';
+          onboarding_checklist?: {
+            items: Record<string, boolean>;
+            completedAt?: string;
+            dismissedAt?: string;
+          } | null;
         };
         Update: {
           email?: string | null;
@@ -145,6 +155,11 @@ export interface Database {
           marketing_consent?: boolean;
           free_consultation_created?: boolean;
           role?: 'user' | 'support' | 'admin' | 'super_admin';
+          onboarding_checklist?: {
+            items: Record<string, boolean>;
+            completedAt?: string;
+            dismissedAt?: string;
+          } | null;
         };
       };
       profiles: {
@@ -160,6 +175,7 @@ export interface Database {
           worry_tags: string[] | null;
           referral: string | null;
           seeking_care: 'yes' | 'no' | null;
+          training_goals: Record<string, any> | null;
           created_at: string;
           updated_at: string;
         };
@@ -175,6 +191,7 @@ export interface Database {
           worry_tags?: string[] | null;
           referral?: string | null;
           seeking_care?: 'yes' | 'no' | null;
+          training_goals?: Record<string, any> | null;
         };
         Update: {
           type?: 'parent' | 'child' | 'partner' | 'sibling' | 'caregiver' | 'other';
@@ -186,6 +203,7 @@ export interface Database {
           worry_tags?: string[] | null;
           referral?: string | null;
           seeking_care?: 'yes' | 'no' | null;
+          training_goals?: Record<string, any> | null;
         };
       };
       assessments: {

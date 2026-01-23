@@ -10,16 +10,17 @@ import {
   ChevronRight,
   ChevronLeft,
   Check,
-  Sparkles,
   Calendar,
   Clock,
-  Lightbulb,
   User,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProfiles } from '@/hooks/useProfiles';
+import { supabase } from '@/lib/supabase';
+import { logger } from '@/lib/logger';
+import { getDativeName } from '@/lib/profileStorage';
 import {
   GoalId,
   Goal,
@@ -34,7 +35,7 @@ import {
 // Шаги флоу
 type FlowStep = 'select_profile' | 'select_goals' | 'questionnaire' | 'results';
 
-// Хук для хранения целей (localStorage mock)
+// Хук для хранения целей (localStorage + БД)
 function useProfileGoals() {
   const { user } = useAuth();
   const STORAGE_KEY = 'waves_profile_goals';
@@ -43,17 +44,53 @@ function useProfileGoals() {
 
   useEffect(() => {
     if (!user?.id) return;
-    try {
-      const stored = localStorage.getItem(`${STORAGE_KEY}_${user.id}`);
-      if (stored) {
-        setGoalsMap(JSON.parse(stored));
+    
+    const loadGoals = async () => {
+      try {
+        // Загружаем из localStorage
+        const stored = localStorage.getItem(`${STORAGE_KEY}_${user.id}`);
+        if (stored) {
+          setGoalsMap(JSON.parse(stored));
+        }
+
+        // Загружаем из БД
+        const { data: profiles, error } = await supabase
+          .from('profiles')
+          .select('id, training_goals')
+          .eq('user_id', user.id);
+
+        if (error) {
+          logger.error('Error loading training goals from DB:', error);
+          return;
+        }
+
+        if (profiles) {
+          const dbGoalsMap: Record<string, ProfileGoals> = {};
+          profiles.forEach(profile => {
+            if (profile.training_goals) {
+              dbGoalsMap[profile.id] = profile.training_goals as ProfileGoals;
+            }
+          });
+
+          // Объединяем: приоритет у БД, но если в localStorage есть более свежие данные, используем их
+          if (Object.keys(dbGoalsMap).length > 0) {
+            setGoalsMap(prev => {
+              const merged = { ...dbGoalsMap, ...prev };
+              // Сохраняем обратно в localStorage для синхронизации
+              localStorage.setItem(`${STORAGE_KEY}_${user.id}`, JSON.stringify(merged));
+              return merged;
+            });
+          }
+        }
+      } catch (e) {
+        logger.error('Error loading goals:', e);
       }
-    } catch (e) {
-      console.error('Error loading goals:', e);
-    }
+    };
+
+    loadGoals();
   }, [user?.id]);
 
-  const saveGoals = useCallback((profileId: string, data: Omit<ProfileGoals, 'profileId' | 'updatedAt'>) => {
+  const saveGoals = useCallback(async (profileId: string, data: Omit<ProfileGoals, 'profileId' | 'updatedAt'>) => {
     if (!user?.id) return;
 
     const profileGoals: ProfileGoals = {
@@ -62,11 +99,31 @@ function useProfileGoals() {
       updatedAt: new Date().toISOString(),
     };
 
+    // Сохраняем в localStorage
     setGoalsMap(prev => {
       const next = { ...prev, [profileId]: profileGoals };
       localStorage.setItem(`${STORAGE_KEY}_${user.id}`, JSON.stringify(next));
       return next;
     });
+
+    // Сохраняем в БД
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          training_goals: profileGoals,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', profileId);
+
+      if (error) {
+        logger.error('Error saving training goals to database:', error);
+      } else {
+        logger.log('Training goals saved to database successfully');
+      }
+    } catch (error) {
+      logger.error('Error saving training goals:', error);
+    }
   }, [user?.id]);
 
   const getGoalsForProfile = useCallback((profileId: string) => {
@@ -214,18 +271,28 @@ export default function TrainingGoals() {
   };
 
   // Сохранение результатов
-  const saveResults = () => {
+  const saveResults = async () => {
     if (!selectedProfileId || !recommendations) return;
 
-    saveGoals(selectedProfileId, {
-      goals: selectedGoals,
-      answers,
-      recommendations,
-    });
+    try {
+      await saveGoals(selectedProfileId, {
+        goals: selectedGoals,
+        answers,
+        recommendations,
+      });
 
-    toast.success('Цели сохранены!');
-    navigate('/cabinet/licenses');
+      toast.success('Цели сохранены!');
+    } catch (error) {
+      logger.error('Error saving goals:', error);
+      toast.error('Ошибка при сохранении целей');
+    }
   };
+
+  // Проверка: есть ли профили без сохраненных целей
+  const profilesWithoutGoals = useMemo(() => {
+    if (!profiles) return [];
+    return profiles.filter(profile => !getGoalsForProfile(profile.id));
+  }, [profiles, getGoalsForProfile]);
 
   // Проверка: можно ли перейти к следующему шагу
   const canProceed = useMemo(() => {
@@ -253,25 +320,23 @@ export default function TrainingGoals() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="max-w-2xl w-full mx-auto px-4 sm:px-6 py-8">
       {/* Заголовок */}
-      <div className="mb-8">
-        <SerifHeading size="2xl" className="mb-2">
-          Цели тренировок
-        </SerifHeading>
-        <p className="text-muted-foreground">
-          {step === 'select_profile' && 'Выберите, для кого настраиваем цели'}
-          {step === 'select_goals' && 'Что хотите улучшить?'}
-          {step === 'questionnaire' && 'Расскажите подробнее'}
-          {step === 'results' && 'Ваш персональный план'}
-        </p>
-      </div>
+      {step !== 'results' && (
+        <div className="mb-8">
+          <SerifHeading size="2xl" className="mb-2">
+            {step === 'select_profile' && 'Для кого выбираем цели?'}
+            {step === 'select_goals' && 'Что хотите улучшить?'}
+            {step === 'questionnaire' && 'Расскажите подробнее'}
+          </SerifHeading>
+        </div>
+      )}
 
       {/* Шаг 1: Выбор профиля */}
       {step === 'select_profile' && (
         <div className="space-y-4">
-          <Card className="glass-elegant border-2 p-6">
-            <h3 className="font-medium mb-4">Для кого выбираем цели?</h3>
+          <Card className="bg-white p-6">
             <div className="grid gap-3 sm:grid-cols-2">
               {profiles?.map((profile) => {
                 const existingGoals = getGoalsForProfile(profile.id);
@@ -283,10 +348,23 @@ export default function TrainingGoals() {
                     className={cn(
                       'flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all',
                       isSelected
-                        ? 'border-coral bg-coral/5'
-                        : 'border-border/50 hover:border-coral/50'
+                        ? 'border-coral-light bg-coral-light/5'
+                        : 'border-border/50 hover:border-coral-light/50'
                     )}
-                    onClick={() => setSelectedProfileId(profile.id)}
+                    style={isSelected ? {
+                      boxShadow: '0 0 0 2px rgba(255, 182, 153, 0.6), 0 0 0 4px rgba(255, 182, 153, 0.3), 0 0 30px rgba(255, 182, 153, 0.4)'
+                    } : undefined}
+                    onClick={() => {
+                      setSelectedProfileId(profile.id);
+                      
+                      // Если у профиля есть сохраненные цели, загружаем их и переходим к результатам
+                      if (existingGoals) {
+                        setSelectedGoals(existingGoals.goals || []);
+                        setAnswers(existingGoals.answers || {});
+                        setRecommendations(existingGoals.recommendations || null);
+                        setStep('results');
+                      }
+                    }}
                   >
                     <Avatar className="h-12 w-12">
                       <AvatarFallback className="bg-muted">
@@ -306,9 +384,6 @@ export default function TrainingGoals() {
                         </Badge>
                       )}
                     </div>
-                    {isSelected && (
-                      <Check className="h-5 w-5 text-coral flex-shrink-0" />
-                    )}
                   </div>
                 );
               })}
@@ -319,7 +394,6 @@ export default function TrainingGoals() {
             <Button
               onClick={() => setStep('select_goals')}
               disabled={!canProceed}
-              className="bg-gradient-to-r from-coral to-coral-light"
             >
               Продолжить
               <ChevronRight className="h-4 w-4 ml-1" />
@@ -332,28 +406,8 @@ export default function TrainingGoals() {
       {step === 'select_goals' && (
         <div className="space-y-4">
           {/* Выбранный профиль */}
-          {selectedProfile && (
-            <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg mb-4">
-              <Avatar className="h-8 w-8">
-                <AvatarFallback className="text-xs">
-                  {selectedProfile.first_name[0]}
-                </AvatarFallback>
-              </Avatar>
-              <span className="text-sm">
-                Цели для <strong>{selectedProfile.first_name}</strong>
-              </span>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="ml-auto h-7 text-xs"
-                onClick={() => setStep('select_profile')}
-              >
-                Изменить
-              </Button>
-            </div>
-          )}
 
-          <Card className="glass-elegant border-2 p-6">
+          <Card className="bg-white p-6">
             <h3 className="font-medium mb-4">
               Выберите цели <span className="text-muted-foreground font-normal">(можно несколько)</span>
             </h3>
@@ -367,23 +421,18 @@ export default function TrainingGoals() {
                     className={cn(
                       'flex items-start gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all',
                       isSelected
-                        ? 'border-coral bg-coral/5'
-                        : 'border-border/50 hover:border-coral/50'
+                        ? 'border-coral-light bg-coral-light/5'
+                        : 'border-border/50 hover:border-coral-light/50'
                     )}
+                    style={isSelected ? {
+                      boxShadow: '0 0 0 2px rgba(255, 182, 153, 0.6), 0 0 0 4px rgba(255, 182, 153, 0.3), 0 0 30px rgba(255, 182, 153, 0.4)'
+                    } : undefined}
                     onClick={() => toggleGoal(goal.id)}
                   >
                     <div className="text-2xl flex-shrink-0">{goal.icon}</div>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium">{goal.title}</p>
                       <p className="text-sm text-muted-foreground">{goal.description}</p>
-                    </div>
-                    <div className={cn(
-                      'w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors',
-                      isSelected
-                        ? 'border-coral bg-coral'
-                        : 'border-muted-foreground/30'
-                    )}>
-                      {isSelected && <Check className="h-4 w-4 text-white" />}
                     </div>
                   </div>
                 );
@@ -407,7 +456,6 @@ export default function TrainingGoals() {
                 setStep('questionnaire');
               }}
               disabled={!canProceed}
-              className="bg-gradient-to-r from-coral to-coral-light"
             >
               Продолжить
               <ChevronRight className="h-4 w-4 ml-1" />
@@ -421,18 +469,18 @@ export default function TrainingGoals() {
         <div className="space-y-4">
           {/* Прогресс */}
           <div className="flex items-center gap-3 mb-2">
-            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+            <div className="flex-1 h-2.5 bg-white rounded-full overflow-hidden border border-border/50">
               <div
-                className="h-full bg-gradient-to-r from-coral to-coral-light transition-all duration-300"
+                className="h-full bg-gradient-to-r from-coral to-coral-light transition-all duration-300 rounded-full"
                 style={{ width: `${questionnaireProgress.percentage}%` }}
               />
             </div>
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm font-medium text-foreground">
               {questionnaireProgress.current + 1}/{questionnaireProgress.total}
             </span>
           </div>
 
-          <Card className="glass-elegant border-2 p-6">
+          <Card className="bg-white p-6">
             {/* Текущая цель */}
             <div className="flex items-center gap-2 mb-4">
               <span className="text-xl">{currentGoal.icon}</span>
@@ -454,19 +502,14 @@ export default function TrainingGoals() {
                       className={cn(
                         'flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all',
                         isSelected
-                          ? 'border-coral bg-coral/5'
-                          : 'border-border/50 hover:border-coral/50'
+                          ? 'border-coral-light bg-coral-light/5'
+                          : 'border-border/50 hover:border-coral-light/50'
                       )}
+                      style={isSelected ? {
+                        boxShadow: '0 0 0 2px rgba(255, 182, 153, 0.6), 0 0 0 4px rgba(255, 182, 153, 0.3), 0 0 30px rgba(255, 182, 153, 0.4)'
+                      } : undefined}
                       onClick={() => handleAnswer(option.value)}
                     >
-                      <div className={cn(
-                        'w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors',
-                        isSelected
-                          ? 'border-coral bg-coral'
-                          : 'border-muted-foreground/30'
-                      )}>
-                        {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
-                      </div>
                       <span>{option.label}</span>
                     </div>
                   );
@@ -486,9 +529,12 @@ export default function TrainingGoals() {
                       className={cn(
                         'flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all',
                         isSelected
-                          ? 'border-coral bg-coral/5'
-                          : 'border-border/50 hover:border-coral/50'
+                          ? 'border-coral-light bg-coral-light/5'
+                          : 'border-border/50 hover:border-coral-light/50'
                       )}
+                      style={isSelected ? {
+                        boxShadow: '0 0 0 2px rgba(255, 182, 153, 0.6), 0 0 0 4px rgba(255, 182, 153, 0.3), 0 0 30px rgba(255, 182, 153, 0.4)'
+                      } : undefined}
                       onClick={() => {
                         if (isSelected) {
                           handleAnswer(currentValues.filter(v => v !== option.value));
@@ -497,14 +543,6 @@ export default function TrainingGoals() {
                         }
                       }}
                     >
-                      <div className={cn(
-                        'w-5 h-5 rounded border-2 flex items-center justify-center transition-colors',
-                        isSelected
-                          ? 'border-coral bg-coral'
-                          : 'border-muted-foreground/30'
-                      )}>
-                        {isSelected && <Check className="h-3 w-3 text-white" />}
-                      </div>
                       <span>{option.label}</span>
                     </div>
                   );
@@ -530,7 +568,6 @@ export default function TrainingGoals() {
             <Button
               onClick={nextQuestion}
               disabled={!canProceed}
-              className="bg-gradient-to-r from-coral to-coral-light"
             >
               {currentQuestionGoalIndex === selectedGoals.length - 1 &&
                currentQuestionIndex === (currentGoal?.questions.length || 1) - 1
@@ -547,27 +584,24 @@ export default function TrainingGoals() {
       {step === 'results' && recommendations && (
         <div className="space-y-6">
           {/* Успех */}
-          <Card className="glass-elegant border-2 p-6 text-center bg-gradient-to-br from-success/5 to-success/10">
-            <div className="w-16 h-16 rounded-full bg-success/20 flex items-center justify-center mx-auto mb-4">
-              <Sparkles className="h-8 w-8 text-success" />
-            </div>
+          <div className="p-6 text-center">
             <SerifHeading size="xl" className="mb-2">
-              Цели для {selectedProfile?.first_name} готовы!
+              Цели для {selectedProfile ? getDativeName(selectedProfile.first_name, selectedProfile.gender) : ''} готовы!
             </SerifHeading>
             <p className="text-muted-foreground">
               На основе ваших ответов мы подготовили персональные рекомендации
             </p>
-          </Card>
+          </div>
 
           {/* Выбранные цели */}
-          <Card className="glass-elegant border-2 p-6">
+          <Card className="bg-white p-6">
             <h3 className="font-medium mb-4">Выбранные цели</h3>
             <div className="flex flex-wrap gap-2">
               {selectedGoals.map(goalId => {
                 const goal = getGoalById(goalId);
                 if (!goal) return null;
                 return (
-                  <Badge key={goalId} variant="secondary" className="text-sm py-1.5 px-3">
+                  <Badge key={goalId} variant="secondary">
                     {goal.icon} {goal.title}
                   </Badge>
                 );
@@ -576,7 +610,7 @@ export default function TrainingGoals() {
           </Card>
 
           {/* Рекомендации */}
-          <Card className="glass-elegant border-2 p-6">
+          <Card className="bg-white p-6">
             <h3 className="font-medium mb-4">Рекомендуемый план</h3>
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="p-4 bg-muted/50 rounded-lg text-center">
@@ -603,11 +637,8 @@ export default function TrainingGoals() {
 
           {/* Советы */}
           {recommendations.tips.length > 0 && (
-            <Card className="glass-elegant border-2 p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Lightbulb className="h-5 w-5 text-honey" />
-                <h3 className="font-medium">Советы для эффективных тренировок</h3>
-              </div>
+            <Card className="bg-white p-6">
+              <h3 className="font-medium mb-4">Советы для эффективных тренировок</h3>
               <ul className="space-y-2">
                 {recommendations.tips.map((tip, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
@@ -623,7 +654,7 @@ export default function TrainingGoals() {
           <div className="flex flex-col sm:flex-row gap-3">
             <Button
               onClick={saveResults}
-              className="flex-1 bg-gradient-to-r from-coral to-coral-light"
+              className="flex-1"
             >
               Сохранить и перейти к лицензиям
               <ChevronRight className="h-4 w-4 ml-1" />
@@ -631,16 +662,18 @@ export default function TrainingGoals() {
             <Button
               variant="outline"
               onClick={() => {
+                // Возвращаемся к выбору целей, сохраняя выбранный профиль
                 setStep('select_goals');
                 setAnswers({});
                 setRecommendations(null);
               }}
             >
-              Изменить цели
+              Редактировать
             </Button>
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }
