@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import "react-quill/dist/quill.snow.css";
+import "@flaticon/flaticon-uicons/css/all/all.rounded.css";
 
 // Optional: Initialize Sentry if available
 (async () => {

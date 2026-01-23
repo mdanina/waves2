@@ -5,13 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { SerifHeading } from '@/components/design-system/SerifHeading';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Uicon } from '@/components/icons/Uicon';
 import {
-  Target,
-  ChevronRight,
-  ChevronLeft,
   Check,
-  Calendar,
-  Clock,
   User,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -320,8 +316,7 @@ export default function TrainingGoals() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="max-w-2xl w-full mx-auto px-4 sm:px-6 py-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
       {/* Заголовок */}
       {step !== 'results' && (
         <div className="mb-8">
@@ -402,7 +397,7 @@ export default function TrainingGoals() {
               disabled={!canProceed}
             >
               Продолжить
-              <ChevronRight className="h-4 w-4 ml-1" />
+              <Uicon name="chevron-right" style="rr" className="h-4 w-4 ml-1" />
             </Button>
           </div>
         </div>
@@ -451,7 +446,7 @@ export default function TrainingGoals() {
               variant="ghost"
               onClick={() => setStep('select_profile')}
             >
-              <ChevronLeft className="h-4 w-4 mr-1" />
+              <Uicon name="chevron-left" style="rr" className="h-4 w-4 mr-1" />
               Назад
             </Button>
             <Button
@@ -464,7 +459,7 @@ export default function TrainingGoals() {
               disabled={!canProceed}
             >
               Продолжить
-              <ChevronRight className="h-4 w-4 ml-1" />
+              <Uicon name="chevron-right" style="rr" className="h-4 w-4 ml-1" />
             </Button>
           </div>
         </div>
@@ -568,7 +563,7 @@ export default function TrainingGoals() {
                 }
               }}
             >
-              <ChevronLeft className="h-4 w-4 mr-1" />
+              <Uicon name="chevron-left" style="rr" className="h-4 w-4 mr-1" />
               Назад
             </Button>
             <Button
@@ -616,27 +611,44 @@ export default function TrainingGoals() {
           </Card>
 
           {/* Рекомендации */}
-          <Card className="bg-white p-6">
-            <h3 className="font-medium mb-4">Рекомендуемый план</h3>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div className="p-4 bg-muted/50 rounded-lg text-center">
-                <Calendar className="h-6 w-6 mx-auto mb-2 text-coral" />
-                <p className="text-2xl font-bold">{recommendations.sessionsPerWeek}</p>
-                <p className="text-sm text-muted-foreground">тренировок в неделю</p>
+          <Card className="bg-white p-4 sm:p-6">
+            <h3 className="font-medium mb-4 sm:mb-6 text-[#1a1a1a]">Рекомендуемый план</h3>
+            <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
+              {/* Тренировок в неделю */}
+              <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-br from-[#ffecd2] via-[#ffd7ba] to-[#fcb69f] p-4 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-300 hover:shadow-[0_6px_30px_rgba(0,0,0,0.1)] hover:scale-[1.02]">
+                <div className="relative z-10">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/30 backdrop-blur-sm flex items-center justify-center mb-3 sm:mb-4" style={{ lineHeight: 0 }}>
+                    <Uicon name="calendar" style="rr" className="h-5 w-5 sm:h-6 sm:w-6 text-[#1a1a1a]" />
+                  </div>
+                  <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1a1a1a] mb-1">{recommendations.sessionsPerWeek}</p>
+                  <p className="text-xs sm:text-sm text-[#1a1a1a]/80 font-medium">тренировок в неделю</p>
+                </div>
               </div>
-              <div className="p-4 bg-muted/50 rounded-lg text-center">
-                <Clock className="h-6 w-6 mx-auto mb-2 text-coral" />
-                <p className="text-2xl font-bold">{recommendations.sessionDuration}</p>
-                <p className="text-sm text-muted-foreground">минут за сессию</p>
+
+              {/* Минут за сессию */}
+              <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-br from-[#E8F5FE] via-[#D4EDFC] to-[#C0E5FA] p-4 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-300 hover:shadow-[0_6px_30px_rgba(0,0,0,0.1)] hover:scale-[1.02]">
+                <div className="relative z-10">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/40 backdrop-blur-sm flex items-center justify-center mb-3 sm:mb-4" style={{ lineHeight: 0 }}>
+                    <Uicon name="clock" style="rr" className="h-5 w-5 sm:h-6 sm:w-6 text-[#1a1a1a]" />
+                  </div>
+                  <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1a1a1a] mb-1">{recommendations.sessionDuration}</p>
+                  <p className="text-xs sm:text-sm text-[#1a1a1a]/80 font-medium">минут за сессию</p>
+                </div>
               </div>
-              <div className="p-4 bg-muted/50 rounded-lg text-center">
-                <Target className="h-6 w-6 mx-auto mb-2 text-coral" />
-                <p className="text-2xl font-bold capitalize">
-                  {recommendations.intensity === 'light' && 'Лёгкая'}
-                  {recommendations.intensity === 'moderate' && 'Умеренная'}
-                  {recommendations.intensity === 'intensive' && 'Интенсивная'}
-                </p>
-                <p className="text-sm text-muted-foreground">интенсивность</p>
+
+              {/* Интенсивность */}
+              <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-br from-[#e6dff5] via-[#d4c5f0] to-[#c8b8e8] p-4 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-300 hover:shadow-[0_6px_30px_rgba(0,0,0,0.1)] hover:scale-[1.02]">
+                <div className="relative z-10">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/50 backdrop-blur-sm flex items-center justify-center mb-3 sm:mb-4" style={{ lineHeight: 0 }}>
+                    <Uicon name="target" style="rr" className="h-5 w-5 sm:h-6 sm:w-6 text-[#1a1a1a]" />
+                  </div>
+                  <p className="text-lg sm:text-xl md:text-2xl font-bold text-[#1a1a1a] mb-1 capitalize break-words">
+                    {recommendations.intensity === 'light' && 'Лёгкая'}
+                    {recommendations.intensity === 'moderate' && 'Умеренная'}
+                    {recommendations.intensity === 'intensive' && 'Интенсивная'}
+                  </p>
+                  <p className="text-xs sm:text-sm text-[#1a1a1a]/80 font-medium">интенсивность</p>
+                </div>
               </div>
             </div>
           </Card>
@@ -693,7 +705,6 @@ export default function TrainingGoals() {
           </div>
         </div>
       )}
-      </div>
     </div>
   );
 }

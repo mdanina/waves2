@@ -103,7 +103,7 @@ export const LICENSE_STATUS_LABELS: Record<LicenseStatus, string> = {
 };
 
 export const LICENSE_STATUS_COLORS: Record<LicenseStatus, string> = {
-  active: 'bg-success/20 text-success',
+  active: 'text-green-600',
   expired: 'bg-muted text-muted-foreground',
   cancelled: 'bg-destructive/20 text-destructive',
   pending: 'bg-honey/20 text-honey-dark',

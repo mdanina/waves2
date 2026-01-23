@@ -11,7 +11,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { SerifHeading } from "@/components/design-system/SerifHeading";
 import { WellnessCard } from "@/components/design-system/WellnessCard";
-import { User, CheckCircle2, Clock, MapPin, Users, LogOut, Tag, History, Calendar, X, Video, MessageSquare, ChevronRight, ChevronLeft, Briefcase, Eye, HelpCircle, CreditCard, AlertCircle, Pencil, Trash2, Plus, Settings, Bell } from "lucide-react";
+import { User, CheckCircle2, Clock, MapPin, Users, LogOut, Tag, History, Calendar, X, Video, MessageSquare, ChevronRight, ChevronLeft, Briefcase, Eye, CreditCard, AlertCircle, Plus, Settings, Bell } from "lucide-react";
+import { Uicon } from '@/components/icons/Uicon';
 import { toast } from "sonner";
 import { calculateAge, isEligibleForCheckup, deleteProfile, CHECKUP_MIN_AGE, CHECKUP_MAX_AGE } from "@/lib/profileStorage";
 import { useAuth } from "@/contexts/AuthContext";
@@ -986,7 +987,7 @@ export default function Dashboard() {
                     className="mt-3 border-amber-300 text-amber-800 hover:bg-amber-100"
                     onClick={() => window.open('https://t.me/waves_support_bot', '_blank', 'noopener,noreferrer')}
                   >
-                    <HelpCircle className="h-4 w-4 mr-2" />
+                    <Uicon name="help-circle" style="rr" className="h-4 w-4 mr-2" />
                     Написать в поддержку
                   </Button>
                 </div>
@@ -1132,22 +1133,8 @@ export default function Dashboard() {
           </>
         )}
 
-        {/* Support Section */}
-        <div className="mb-12">
-          <SerifHeading size="xl" className="mb-4">Есть вопросы?</SerifHeading>
-          <Card className="glass-elegant border-2 p-6">
-            <p className="text-muted-foreground mb-4">
-              Напишите в поддержку, чтобы решить любые проблемы или записаться к специалисту напрямую без предварительной диагностики.
-            </p>
-            <Button onClick={() => window.open('https://t.me/waves_support_bot', '_blank', 'noopener,noreferrer')}>
-              <HelpCircle className="h-4 w-4 mr-2" />
-              Написать в поддержку
-            </Button>
-          </Card>
-        </div>
-
         {/* Your Family Section */}
-        <div>
+        <div className="mb-12">
           <div className="mb-6 flex items-center justify-between">
             <SerifHeading size="xl">Ваша семья</SerifHeading>
             {familyMembers.length > 0 && (
@@ -1282,7 +1269,7 @@ export default function Dashboard() {
                                     }
                                   }}
                                 >
-                                  <Pencil className="h-4 w-4 mr-2" />
+                                  <Uicon name="pencil" style="rr" className="h-4 w-4 mr-2" />
                                   Редактировать
                                 </Button>
                                 {member.type !== 'parent' && (
@@ -1294,7 +1281,7 @@ export default function Dashboard() {
                                       className="flex-1 text-muted-foreground hover:text-destructive hover:bg-muted/50 font-light"
                                       onClick={() => setDeleteMemberId(member.id)}
                                     >
-                                      <Trash2 className="h-4 w-4 mr-2" />
+                                      <Uicon name="trash" style="rr" className="h-4 w-4 mr-2" />
                                       Удалить
                                     </Button>
                                   </AlertDialogTrigger>
@@ -1342,6 +1329,20 @@ export default function Dashboard() {
                   )}
                 </div>
           )}
+        </div>
+
+        {/* Support Section */}
+        <div className="mb-12">
+          <SerifHeading size="xl" className="mb-4">Есть вопросы?</SerifHeading>
+          <Card className="glass-elegant border-2 p-6">
+            <p className="text-muted-foreground mb-4">
+              Напишите в поддержку, чтобы решить любые проблемы или попросить помочь.
+            </p>
+            <Button onClick={() => window.open('https://t.me/waves_support_bot', '_blank', 'noopener,noreferrer')}>
+              <Uicon name="help-circle" style="rr" className="h-4 w-4 mr-2" />
+              Написать в поддержку
+            </Button>
+          </Card>
         </div>
 
       {/* Specialist Profile Dialog */}

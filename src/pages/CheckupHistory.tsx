@@ -96,10 +96,7 @@ export default function CheckupHistory() {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
         {/* Заголовок */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <History className="h-8 w-8 text-primary shrink-0" />
-            <SerifHeading size="2xl">История чекапов</SerifHeading>
-          </div>
+          <SerifHeading size="2xl">Прогресс</SerifHeading>
         </div>
 
         {/* Список чекапов */}

@@ -173,9 +173,6 @@ export default function MyLicenses() {
         <SerifHeading size="2xl" className="mb-2">
           Мои лицензии
         </SerifHeading>
-        <p className="text-muted-foreground">
-          Управление подписками и участниками
-        </p>
       </div>
 
       {/* Нет лицензий - показываем планы */}
@@ -197,10 +194,10 @@ export default function MyLicenses() {
                 <Card
                   key={plan.id}
                   className={cn(
-                    'relative p-6 border-2 transition-all cursor-pointer hover:shadow-lg',
+                    'relative p-6 transition-all cursor-pointer hover:shadow-lg bg-white',
                     selectedPlan === plan.id
-                      ? 'border-coral bg-coral/5'
-                      : 'border-border/50 hover:border-coral/50'
+                      ? 'bg-coral/5'
+                      : 'hover:bg-coral/5'
                   )}
                   onClick={() => setSelectedPlan(plan.id)}
                 >
@@ -290,7 +287,14 @@ export default function MyLicenses() {
                       <p className="text-sm text-muted-foreground">{plan?.description}</p>
                     </div>
                   </div>
-                  <Badge className={cn(LICENSE_STATUS_COLORS[license.status])}>
+                  <Badge 
+                    className={cn(LICENSE_STATUS_COLORS[license.status], 'border-0 !from-transparent !to-transparent')}
+                    style={license.status === 'active' ? {
+                      background: 'white',
+                      backgroundImage: 'none',
+                      border: '1px solid rgba(34, 197, 94, 0.3)'
+                    } : { backgroundImage: 'none' }}
+                  >
                     {LICENSE_STATUS_LABELS[license.status]}
                   </Badge>
                 </div>

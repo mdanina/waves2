@@ -1,20 +1,10 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { Uicon } from '@/components/icons/Uicon';
 import {
-  Home,
-  Calendar,
-  History,
-  MessageSquare,
-  Settings,
-  Tag,
-  HelpCircle,
-  LogOut,
   Sparkles,
   UserPlus,
   Users,
-  Smartphone,
-  CreditCard,
-  Target,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -26,49 +16,34 @@ const mainNavigation = [
   {
     name: 'Главная',
     href: '/cabinet',
-    icon: Home,
+    iconName: 'home',
     end: true,
   },
   {
     name: 'Цели тренировок',
     href: '/cabinet/goals',
-    icon: Target,
+    iconName: 'target',
   },
   {
     name: 'Моё устройство',
     href: '/cabinet/device',
-    icon: Smartphone,
+    iconName: 'smartphone',
   },
   {
     name: 'Мои лицензии',
     href: '/cabinet/licenses',
-    icon: CreditCard,
+    iconName: 'credit-card',
   },
   {
-    name: 'Консультации',
-    href: '/appointments',
-    icon: Calendar,
-  },
-  {
-    name: 'История чекапов',
+    name: 'Прогресс',
     href: '/checkup-history',
-    icon: History,
+    iconName: 'trending-up',
   },
   {
     name: 'Написать в поддержку',
     href: 'https://t.me/waves_support_bot',
-    icon: HelpCircle,
+    iconName: 'help-circle',
     external: true,
-  },
-  {
-    name: 'Темы для обращения',
-    href: '/worries',
-    icon: Tag,
-  },
-  {
-    name: 'Настройки',
-    href: '/cabinet/settings',
-    icon: Settings,
   },
 ];
 
@@ -113,7 +88,11 @@ export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
         
         const linkContent = (
           <>
-            <item.icon className="h-4 w-4 shrink-0" />
+            {'iconName' in item ? (
+              <Uicon name={item.iconName} style="rr" className="h-4 w-4 shrink-0" />
+            ) : (
+              <item.icon className="h-4 w-4 shrink-0" />
+            )}
             <span className="flex-1 truncate min-w-0">{item.name}</span>
           </>
         );
@@ -302,7 +281,7 @@ export function ClientSidebar() {
             className="w-full justify-start text-muted-foreground hover:text-foreground"
             onClick={handleSignOut}
           >
-            <LogOut className="h-4 w-4 mr-2" />
+            <Uicon name="log-out" style="rr" className="h-4 w-4 mr-2" />
             Выйти
           </Button>
         </div>

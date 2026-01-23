@@ -8,23 +8,19 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { SerifHeading } from '@/components/design-system/SerifHeading';
 import {
-  Package,
-  Truck,
-  CheckCircle2,
   Circle,
   ChevronDown,
   ChevronUp,
   ExternalLink,
   Smartphone,
-  HelpCircle,
   MapPin,
   Clock,
   Settings,
   AlertCircle,
   Sparkles,
-  Box,
   Wifi,
 } from 'lucide-react';
+import { Uicon } from '@/components/icons/Uicon';
 import {
   Accordion,
   AccordionContent,
@@ -117,18 +113,12 @@ export default function MyDevice() {
         <SerifHeading size="2xl" className="mb-2">
           Моё устройство
         </SerifHeading>
-        <p className="text-muted-foreground">
-          Управление устройством нейрофидбэка
-        </p>
       </div>
 
       {/* Состояние: Нет устройства */}
       {!hasDevice && !showOrderForm && (
         <Card className="glass-elegant border-2 p-6 sm:p-8">
           <div className="text-center max-w-md mx-auto">
-            <div className="w-20 h-20 rounded-full bg-coral/10 flex items-center justify-center mx-auto mb-6">
-              <Smartphone className="h-10 w-10 text-coral" />
-            </div>
             <SerifHeading size="xl" className="mb-3">
               У вас ещё нет устройства
             </SerifHeading>
@@ -163,14 +153,7 @@ export default function MyDevice() {
       {/* Форма заказа */}
       {!hasDevice && showOrderForm && (
         <Card className="glass-elegant border-2 p-6 sm:p-8">
-          <div className="flex items-center gap-3 mb-6">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowOrderForm(false)}
-            >
-              ← Назад
-            </Button>
+          <div className="mb-6">
             <SerifHeading size="lg">Оформление заказа</SerifHeading>
           </div>
 
@@ -246,7 +229,7 @@ export default function MyDevice() {
               <Button
                 type="submit"
                 disabled={isOrdering}
-                className="flex-1 bg-gradient-to-r from-coral to-coral-light hover:opacity-90"
+                className="flex-1"
               >
                 {isOrdering ? 'Оформление...' : 'Оформить заказ'}
               </Button>
@@ -269,7 +252,18 @@ export default function MyDevice() {
           <Card className="glass-elegant border-2 p-6">
             <div className="flex items-center justify-between mb-6">
               <SerifHeading size="lg">Статус заказа</SerifHeading>
-              <Badge className={cn(DEVICE_STATUS_COLORS[device.status])}>
+              <Badge 
+                className={cn(
+                  DEVICE_STATUS_COLORS[device.status],
+                  device.status === 'ordered' && 'border-0 !from-transparent !to-transparent'
+                )}
+                style={device.status === 'ordered' ? {
+                  background: 'white',
+                  backgroundImage: 'none',
+                  border: '1px solid rgba(34, 197, 94, 0.3)',
+                  color: 'rgb(22, 163, 74)' // text-green-600
+                } : undefined}
+              >
                 {DEVICE_STATUS_LABELS[device.status]}
               </Badge>
             </div>
@@ -497,10 +491,10 @@ export default function MyDevice() {
 // Компонент прогресс-бара доставки
 function DeliveryProgress({ device }: { device: Device }) {
   const steps = [
-    { id: 'ordered', label: 'Заказ оформлен', icon: Box },
-    { id: 'shipped', label: 'Отправлено', icon: Package },
-    { id: 'in_transit', label: 'В пути', icon: Truck },
-    { id: 'delivered', label: 'Доставлено', icon: CheckCircle2 },
+    { id: 'ordered', label: 'Заказ оформлен', iconName: 'box' },
+    { id: 'shipped', label: 'Отправлено', iconName: 'envelope' },
+    { id: 'in_transit', label: 'В пути', iconName: 'truck' },
+    { id: 'delivered', label: 'Доставлено', iconName: 'check-circle-2' },
   ];
 
   const currentIndex = steps.findIndex(s => s.id === device.status);
@@ -508,7 +502,7 @@ function DeliveryProgress({ device }: { device: Device }) {
   return (
     <div className="relative">
       {/* Линия прогресса */}
-      <div className="absolute top-5 left-0 right-0 h-0.5 bg-muted">
+      <div className="absolute top-5 left-0 right-0 h-0.5 bg-white">
         <div
           className="h-full bg-gradient-to-r from-coral to-coral-light transition-all duration-500"
           style={{ width: `${(currentIndex / (steps.length - 1)) * 100}%` }}
@@ -526,13 +520,15 @@ function DeliveryProgress({ device }: { device: Device }) {
             <div key={step.id} className="flex flex-col items-center">
               <div
                 className={cn(
-                  'w-10 h-10 rounded-full flex items-center justify-center border-2 bg-background transition-all',
+                  'w-10 h-10 rounded-full flex items-center justify-center transition-all',
                   isComplete
-                    ? 'border-coral bg-coral/10'
-                    : 'border-muted-foreground/30'
+                    ? 'border-2 border-coral bg-white'
+                    : 'bg-background'
                 )}
               >
-                <Icon
+                <Uicon
+                  name={step.iconName}
+                  style="rr"
                   className={cn(
                     'h-5 w-5',
                     isComplete ? 'text-coral' : 'text-muted-foreground/50'
@@ -567,7 +563,7 @@ function FAQSection() {
   return (
     <Card className="glass-elegant border-2 p-6">
       <div className="flex items-center gap-3 mb-6">
-        <HelpCircle className="h-5 w-5 text-muted-foreground" />
+        <Uicon name="help-circle" style="rr" className="h-5 w-5 text-muted-foreground" />
         <SerifHeading size="lg">Частые вопросы</SerifHeading>
       </div>
 
@@ -596,7 +592,7 @@ function FAQSection() {
           variant="outline"
           onClick={() => window.open('https://t.me/waves_support_bot', '_blank')}
         >
-          <HelpCircle className="h-4 w-4 mr-2" />
+          <Uicon name="help-circle" style="rr" className="h-4 w-4 mr-2" />
           Написать в поддержку
         </Button>
       </div>
