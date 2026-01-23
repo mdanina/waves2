@@ -186,10 +186,17 @@ export default function CheckupHistory() {
       const expectedThisMonth = RECOMMENDED_FREQUENCY * 4;
       const missedThisMonth = Math.max(0, expectedThisMonth - completedThisMonth);
       
-      // Процент соответствия
-      const complianceRate = expectedThisWeek > 0 
-        ? Math.round((completedThisWeek / expectedThisWeek) * 100)
-        : 100;
+      // Процент соответствия - используем среднее за месяц, если за неделю нет данных
+      let complianceRate = 0;
+      if (completedThisWeek > 0) {
+        complianceRate = Math.round((completedThisWeek / expectedThisWeek) * 100);
+      } else if (completedThisMonth > 0) {
+        // Если нет данных за неделю, считаем по месяцу
+        complianceRate = Math.round((completedThisMonth / expectedThisMonth) * 100);
+      } else {
+        // Если вообще нет данных, показываем 0
+        complianceRate = 0;
+      }
       
       // Streak (упрощенный расчет)
       const sortedSessions = participantSessions
@@ -197,15 +204,17 @@ export default function CheckupHistory() {
         .sort((a, b) => b.dateISO.localeCompare(a.dateISO));
       
       let streak = 0;
-      let currentDate = new Date(today);
-      for (const session of sortedSessions) {
-        const sessionDate = new Date(session.dateISO);
-        const daysDiff = Math.floor((currentDate.getTime() - sessionDate.getTime()) / (1000 * 60 * 60 * 24));
-        if (daysDiff === streak) {
-          streak++;
-          currentDate = sessionDate;
-        } else {
-          break;
+      if (sortedSessions.length > 0) {
+        let currentDate = new Date(today);
+        for (const session of sortedSessions) {
+          const sessionDate = new Date(session.dateISO);
+          const daysDiff = Math.floor((currentDate.getTime() - sessionDate.getTime()) / (1000 * 60 * 60 * 24));
+          if (daysDiff === streak) {
+            streak++;
+            currentDate = sessionDate;
+          } else if (daysDiff > streak) {
+            break;
+          }
         }
       }
       
@@ -279,7 +288,7 @@ export default function CheckupHistory() {
 
       {/* Табы */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="glass-elegant grid w-full grid-cols-3 mb-6">
+        <TabsList className="glass-elegant grid w-full grid-cols-2 mb-6">
           <TabsTrigger 
             value="history"
             className="flex items-center gap-2 data-[state=active]:bg-white/20 data-[state=active]:backdrop-blur-[8px]"
@@ -291,12 +300,6 @@ export default function CheckupHistory() {
             className="flex items-center gap-2 data-[state=active]:bg-white/20 data-[state=active]:backdrop-blur-[8px]"
           >
             Участники
-          </TabsTrigger>
-          <TabsTrigger 
-            value="report"
-            className="flex items-center gap-2 data-[state=active]:bg-white/20 data-[state=active]:backdrop-blur-[8px]"
-          >
-            Отчет
           </TabsTrigger>
         </TabsList>
 
@@ -415,95 +418,114 @@ export default function CheckupHistory() {
 
         {/* Вкладка: Участники */}
         <TabsContent value="participants" className="space-y-6">
-          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-[#1a1a1a] mb-4">Сводная статистика по участникам</h2>
           <div className="grid grid-cols-1 gap-4">
-            {participantStats.map((participant) => (
-              <WellnessCard key={participant.profileId} className="p-4 sm:p-6">
-                <div className="mb-4">
-                  <h3 className="text-lg sm:text-xl font-semibold text-[#1a1a1a] mb-2">{participant.profileName}</h3>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
-                  <div>
-                    <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-1">Всего тренировок</p>
-                    <p className="text-xl sm:text-2xl font-bold text-[#1a1a1a]">{participant.totalSessions}</p>
+            {participantStats.map((participant) => {
+              const report = frequencyReports.find(r => r.profileId === participant.profileId);
+              return (
+                <div key={participant.profileId} className="bg-white rounded-[20px] shadow-[0_4px_20px_rgba(0,0,0,0.06)] p-4 sm:p-6">
+                  {/* Заголовок */}
+                  <div className="mb-4">
+                    <h3 className="text-lg sm:text-xl font-semibold text-[#1a1a1a] mb-2">{participant.profileName}</h3>
                   </div>
-                  <div>
-                    <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-1">Всего минут</p>
-                    <p className="text-xl sm:text-2xl font-bold text-[#1a1a1a]">{participant.totalMinutes}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-1">Средний % в зоне</p>
-                    <p className="text-xl sm:text-2xl font-bold text-[#1a1a1a]">{Math.round(participant.avgTimeInZone)}%</p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-1">Завершено</p>
-                    <p className="text-xl sm:text-2xl font-bold text-[#1a1a1a]">{participant.completedSessions}</p>
-                  </div>
-                </div>
-                <div className="border-t border-[#1a1a1a]/10 pt-4">
-                  <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-2">Тренировки по типам:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {Object.entries(participant.sessionsByType).map(([type, count]) => (
-                      <span key={type} className="text-xs sm:text-sm px-2 py-1 bg-[#1a1a1a]/5 rounded-full text-[#1a1a1a]">
-                        {type}: {count}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </WellnessCard>
-            ))}
-          </div>
-        </TabsContent>
 
-        {/* Вкладка: Отчет */}
-        <TabsContent value="report" className="space-y-6">
-          <h2 className="text-base sm:text-lg md:text-xl font-semibold text-[#1a1a1a] mb-4">Отчет о частоте тренировок</h2>
-          <div className="grid grid-cols-1 gap-4">
-            {frequencyReports.map((report) => (
-              <WellnessCard key={report.profileId} className="p-4 sm:p-6">
-                <div className="mb-4">
-                  <h3 className="text-lg sm:text-xl font-semibold text-[#1a1a1a] mb-2">{report.profileName}</h3>
+                  {/* Основная статистика */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4">
+                    <div>
+                      <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-1">Тренировок</p>
+                      <p className="text-xl sm:text-2xl font-bold text-[#1a1a1a]">{participant.totalSessions}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-1">Минут</p>
+                      <p className="text-xl sm:text-2xl font-bold text-[#1a1a1a]">{participant.totalMinutes}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-1">% в зоне</p>
+                      <p className="text-xl sm:text-2xl font-bold text-[#1a1a1a]">{Math.round(participant.avgTimeInZone)}%</p>
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-1">Завершено</p>
+                      <p className="text-xl sm:text-2xl font-bold text-[#1a1a1a]">{participant.completedSessions}</p>
+                    </div>
+                  </div>
+
+                  {/* Отчет о частоте - компактный вид */}
+                  {report && (
+                    <div className="border-t border-[#1a1a1a]/10 pt-4 space-y-3">
+                      <div className="flex items-center justify-between mb-3">
+                        <p className="text-xs sm:text-sm font-medium text-[#1a1a1a]">Частота тренировок</p>
+                        <p className={`text-xs sm:text-sm font-semibold ${
+                          report.complianceRate >= 80 ? 'text-green-600' :
+                          report.complianceRate >= 50 ? 'text-[#F3B83A]' :
+                          report.complianceRate > 0 ? 'text-coral' : 'text-[#1a1a1a]/50'
+                        }`}>
+                          {report.complianceRate > 0 ? `${report.complianceRate}% соответствие` : 'Нет данных'}
+                        </p>
+                      </div>
+                      {/* Уведомление о низком соответствии */}
+                      {report.complianceRate > 0 && report.complianceRate < 50 && (
+                        <div className="p-2 sm:p-3 bg-coral/10 border border-coral/20 rounded-lg">
+                          <p className="text-xs sm:text-sm text-[#1a1a1a]/70">
+                            Рекомендуется увеличить частоту тренировок до {report.recommendedFrequency} раз в неделю
+                          </p>
+                        </div>
+                      )}
+                      {report.complianceRate >= 50 && report.complianceRate < 80 && (
+                        <div className="p-2 sm:p-3 bg-[#F3B83A]/10 border border-[#F3B83A]/20 rounded-lg">
+                          <p className="text-xs sm:text-sm text-[#1a1a1a]/70">
+                            Хороший прогресс! Старайтесь тренироваться {report.recommendedFrequency} раза в неделю
+                          </p>
+                        </div>
+                      )}
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs sm:text-sm">
+                        <div>
+                          <p className="text-[#1a1a1a]/70 mb-0.5">Рекомендуется</p>
+                          <p className="font-semibold text-[#1a1a1a]">{report.recommendedFrequency}/нед</p>
+                        </div>
+                        <div>
+                          <p className="text-[#1a1a1a]/70 mb-0.5">Выполнено (нед)</p>
+                          <p className="font-semibold text-[#1a1a1a]">{report.completedThisWeek}</p>
+                        </div>
+                        <div>
+                          <p className="text-[#1a1a1a]/70 mb-0.5">Выполнено (мес)</p>
+                          <p className="font-semibold text-[#1a1a1a]">{report.completedThisMonth}</p>
+                        </div>
+                        <div>
+                          <p className="text-[#1a1a1a]/70 mb-0.5">Серия</p>
+                          <p className="font-semibold text-[#1a1a1a]">{report.streak} {report.streak === 1 ? 'день' : report.streak < 5 ? 'дня' : 'дней'}</p>
+                        </div>
+                      </div>
+                      {/* Прогресс-бар соответствия */}
+                      {report.complianceRate > 0 && (
+                        <div className="mt-3">
+                          <div className="w-full bg-[#1a1a1a]/10 rounded-full h-2.5 overflow-hidden">
+                            <div
+                              className={`h-2.5 rounded-full transition-all ${
+                                report.complianceRate >= 80 ? 'bg-gradient-to-r from-green-500 to-green-400' :
+                                report.complianceRate >= 50 ? 'bg-gradient-to-r from-[#F3B83A] to-[#FFD54F]' :
+                                'bg-gradient-to-r from-coral to-coral-light'
+                              }`}
+                              style={{ width: `${Math.min(report.complianceRate, 100)}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Типы тренировок */}
+                  <div className="border-t border-[#1a1a1a]/10 pt-4 mt-4">
+                    <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-2">Тренировки по типам:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {Object.entries(participant.sessionsByType).map(([type, count]) => (
+                        <span key={type} className="text-xs sm:text-sm px-2 py-1 bg-[#1a1a1a]/5 rounded-full text-[#1a1a1a]">
+                          {type}: {count}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4">
-                  <div>
-                    <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-1">Рекомендуемая частота</p>
-                    <p className="text-lg sm:text-xl font-bold text-[#1a1a1a]">{report.recommendedFrequency} в неделю</p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-1">Выполнено (неделя)</p>
-                    <p className="text-lg sm:text-xl font-bold text-[#1a1a1a]">{report.completedThisWeek}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-1">Пропущено (неделя)</p>
-                    <p className="text-lg sm:text-xl font-bold text-[#1a1a1a]">{report.missedThisWeek}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-1">Выполнено (месяц)</p>
-                    <p className="text-lg sm:text-xl font-bold text-[#1a1a1a]">{report.completedThisMonth}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-1">Пропущено (месяц)</p>
-                    <p className="text-lg sm:text-xl font-bold text-[#1a1a1a]">{report.missedThisMonth}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm text-[#1a1a1a]/70 mb-1">Соответствие</p>
-                    <p className={`text-lg sm:text-xl font-bold ${
-                      report.complianceRate >= 80 ? 'text-green-600' :
-                      report.complianceRate >= 50 ? 'text-orange-600' :
-                      'text-red-600'
-                    }`}>
-                      {report.complianceRate}%
-                    </p>
-                  </div>
-                </div>
-                <div className="border-t border-[#1a1a1a]/10 pt-4">
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs sm:text-sm text-[#1a1a1a]/70">Серия дней подряд</p>
-                    <p className="text-lg sm:text-xl font-bold text-[#1a1a1a]">{report.streak} дней</p>
-                  </div>
-                </div>
-              </WellnessCard>
-            ))}
+              );
+            })}
           </div>
         </TabsContent>
       </Tabs>

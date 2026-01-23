@@ -249,7 +249,7 @@ export default function MyDevice() {
       {hasDevice && device && !isDelivered && (
         <div className="space-y-6">
           {/* Статус заказа */}
-          <Card className="glass-elegant border-2 p-6">
+          <Card className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] p-6">
             <div className="flex items-center justify-between mb-6">
               <SerifHeading size="lg">Статус заказа</SerifHeading>
               <Badge 
@@ -326,7 +326,7 @@ export default function MyDevice() {
       {hasDevice && device && isDelivered && !isSetupComplete && (
         <div className="space-y-6">
           {/* Поздравление с доставкой */}
-          <Card className="glass-elegant border-2 p-6 bg-gradient-to-br from-success/5 to-success/10">
+          <Card className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] p-6">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0">
                 <Uicon name="check-circle-2" style="rr" className="h-6 w-6 text-success" />
@@ -341,7 +341,7 @@ export default function MyDevice() {
           </Card>
 
           {/* Чек-лист настройки */}
-          <Card className="glass-elegant border-2 p-6">
+          <Card className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] p-6">
             <div className="flex items-center justify-between mb-6">
               <SerifHeading size="lg">Настройка устройства</SerifHeading>
               <div className="flex items-center gap-2">
@@ -357,53 +357,83 @@ export default function MyDevice() {
               </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               {DEVICE_SETUP_STEPS.map((step, index) => {
                 const completed = isStepComplete(step.id);
+                const isCurrent = !completed && index === setupProgress.completed;
                 return (
                   <div
                     key={step.id}
                     className={cn(
-                      'flex items-start gap-3 p-3 rounded-xl transition-all cursor-pointer',
-                      completed ? 'opacity-60' : 'hover:bg-white/50'
+                      'flex items-start gap-3 p-3 rounded-xl transition-all duration-200',
+                      isCurrent && !completed && 'bg-white/50',
+                      completed && 'opacity-60',
+                      !completed && 'cursor-pointer hover:bg-white/50'
                     )}
-                    onClick={() => toggleStep(step.id)}
+                    onClick={() => !completed && toggleStep(step.id)}
                   >
                     <div className="flex-shrink-0 mt-0.5">
                       {completed ? (
-                        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-success to-success/80 flex items-center justify-center">
-                          <Uicon name="check-circle-2" style="rr" className="h-4 w-4 text-white" />
+                        <div 
+                          className="w-6 h-6 rounded-full flex items-center justify-center shadow-sm"
+                          style={{
+                            background: 'linear-gradient(108deg, rgba(34, 197, 94, 0.25) 0%, rgba(34, 197, 94, 0.14) 100%)',
+                            backdropFilter: 'blur(8px)',
+                            WebkitBackdropFilter: 'blur(8px)',
+                            border: '1px solid rgba(34, 197, 94, 0.3)',
+                          }}
+                        >
+                          <Uicon name="check-circle-2" style="rr" className="h-4 w-4 text-green-600" />
                         </div>
                       ) : (
-                        <div className="w-6 h-6 rounded-full border-2 border-muted-foreground/30 flex items-center justify-center">
-                          <span className="text-xs font-medium text-muted-foreground">
+                        <div 
+                          className={cn(
+                            'w-6 h-6 rounded-full border flex items-center justify-center transition-colors',
+                            isCurrent && 'border-coral'
+                          )}
+                          style={{
+                            background: isCurrent 
+                              ? 'linear-gradient(108deg, rgba(255, 138, 91, 0.25) 0%, rgba(255, 138, 91, 0.14) 100%)'
+                              : 'linear-gradient(108deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.14) 100%)',
+                            backdropFilter: 'blur(8px)',
+                            WebkitBackdropFilter: 'blur(8px)',
+                            border: isCurrent 
+                              ? '1px solid rgba(255, 138, 91, 0.3)'
+                              : '1px solid rgba(0, 0, 0, 0.1)',
+                          }}
+                        >
+                          <span className="text-xs font-medium text-foreground">
                             {index + 1}
                           </span>
                         </div>
                       )}
                     </div>
-                    <div className="flex-1">
-                      <p className={cn('font-medium', completed && 'line-through text-muted-foreground')}>
-                        {step.title}
-                      </p>
-                      {step.description && !completed && (
-                        <p className="text-sm text-muted-foreground">{step.description}</p>
-                      )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1 min-w-0">
+                          <p className={cn(
+                            'transition-all',
+                            completed && 'line-through text-muted-foreground'
+                          )}>
+                            {step.title}
+                          </p>
+                        </div>
+                        {step.link && !completed && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 px-2 text-coral hover:text-coral hover:bg-coral/10 flex-shrink-0"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.open(step.link, '_blank');
+                            }}
+                          >
+                            <span className="text-xs mr-1">{step.linkText || 'Открыть'}</span>
+                            <ExternalLink className="h-3 w-3" />
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                    {step.link && !completed && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-7 px-2 text-coral"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.open(step.link, '_blank');
-                        }}
-                      >
-                        <span className="text-xs mr-1">{step.linkText || 'Открыть'}</span>
-                        <ExternalLink className="h-3 w-3" />
-                      </Button>
-                    )}
                   </div>
                 );
               })}
@@ -436,7 +466,7 @@ export default function MyDevice() {
       {hasDevice && device && isSetupComplete && (
         <div className="space-y-6">
           {/* Информация об устройстве */}
-          <Card className="glass-elegant border-2 p-6">
+          <Card className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] p-6">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-coral/20 to-coral/10 flex items-center justify-center">
                 <Wifi className="h-8 w-8 text-coral" />
@@ -503,7 +533,7 @@ function DeliveryProgress({ device }: { device: Device }) {
   return (
     <div className="relative">
       {/* Линия прогресса */}
-      <div className="absolute top-5 left-0 right-0 h-0.5 bg-white">
+      <div className="absolute top-5 left-0 right-0 h-0.5 bg-[#1a1a1a]/10">
         <div
           className="h-full bg-gradient-to-r from-coral to-coral-light transition-all duration-500"
           style={{ width: `${(currentIndex / (steps.length - 1)) * 100}%` }}
@@ -523,7 +553,7 @@ function DeliveryProgress({ device }: { device: Device }) {
                   'w-10 h-10 rounded-full flex items-center justify-center transition-all',
                   isComplete
                     ? 'border-2 border-coral bg-white'
-                    : 'bg-background'
+                    : 'border-2 border-[#1a1a1a]/20 bg-white'
                 )}
               >
                 <Uicon
