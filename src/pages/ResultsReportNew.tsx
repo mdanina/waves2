@@ -143,7 +143,7 @@ export default function ResultsReportNew() {
     >
       <Header />
 
-      <div className="container mx-auto max-w-5xl px-4 py-12">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
         {/* Header */}
         <div className="relative mb-12">
           <div className="text-center">

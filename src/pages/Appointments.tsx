@@ -171,7 +171,7 @@ export default function Appointments() {
     <div className="min-h-screen bg-background" style={backgroundStyle}>
       <Header />
       
-      <div className="container mx-auto max-w-4xl px-4 py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-2">Записаться на консультацию</h1>
           <p className="text-muted-foreground">Выберите тип консультации</p>

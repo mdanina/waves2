@@ -180,7 +180,7 @@ export default function MyLicenses() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
       {/* Заголовок */}
       <div className="mb-8">
         <SerifHeading size="2xl" className="mb-2">

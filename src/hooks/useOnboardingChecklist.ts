@@ -51,17 +51,17 @@ export const CHECKLIST_ITEMS: Omit<ChecklistItem, 'completed'>[] = [
     linkText: 'Скачать',
   },
   {
-    id: 'order_device',
-    title: 'Заказать доставку устройства для тренировки',
-    description: 'Оформите заказ на устройство нейрофидбэка',
-    link: '/cabinet/device',
-    linkText: 'Открыть',
-  },
-  {
     id: 'pay_licenses',
     title: 'Оплатить лицензии для участников',
     description: 'Активируйте доступ для всех членов семьи',
     link: '/cabinet/licenses',
+    linkText: 'Открыть',
+  },
+  {
+    id: 'order_device',
+    title: 'Заказать доставку устройства для тренировки',
+    description: 'Оформите заказ на устройство нейрофидбэка',
+    link: '/cabinet/device',
     linkText: 'Открыть',
   },
   {

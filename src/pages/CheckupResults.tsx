@@ -12,7 +12,7 @@ export default function CheckupResults() {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <div className="container mx-auto max-w-3xl px-4 py-12">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
         <div className="space-y-12">
           <div className="text-center">
             <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success/20">

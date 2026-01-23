@@ -984,7 +984,7 @@ export default function ClientMessages() {
   return (
     <div className="min-h-screen flex flex-col" style={backgroundStyle}>
       {/* Main content */}
-      <div className="flex-1 container mx-auto max-w-6xl p-4">
+      <div className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
         <Card className="h-[calc(100vh-4rem)] overflow-hidden rounded-xl shadow-soft border-2"
           style={{
             background: 'linear-gradient(108deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.5) 100%)',

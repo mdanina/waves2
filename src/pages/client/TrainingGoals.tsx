@@ -388,7 +388,7 @@ export default function TrainingGoals() {
                                   backgroundImage: 'none'
                                 }}
                               >
-                                {goal.icon} {goal.title}
+                                {goal.title}
                               </Badge>
                             );
                           })}
@@ -613,7 +613,7 @@ export default function TrainingGoals() {
                 if (!goal) return null;
                 return (
                   <Badge key={goalId} variant="secondary">
-                    {goal.icon} {goal.title}
+                    {goal.title}
                   </Badge>
                 );
               })}

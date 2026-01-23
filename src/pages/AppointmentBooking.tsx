@@ -300,7 +300,7 @@ export default function AppointmentBooking() {
     return (
       <div className="min-h-screen bg-background" style={backgroundStyle}>
         <Header />
-        <div className="container mx-auto max-w-4xl px-4 py-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
           <Card className="p-8 text-center">
             <p className="text-muted-foreground mb-4">
               Тип консультации не найден
@@ -319,7 +319,7 @@ export default function AppointmentBooking() {
     return (
       <div className="min-h-screen bg-background" style={backgroundStyle}>
         <Header />
-        <div className="container mx-auto max-w-4xl px-4 py-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
           <Button
             variant="ghost"
             onClick={() => navigate("/appointments")}
@@ -361,7 +361,7 @@ export default function AppointmentBooking() {
     return (
       <div className="min-h-screen bg-background" style={backgroundStyle}>
         <Header />
-        <div className="container mx-auto max-w-4xl px-4 py-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
           <Button
             variant="ghost"
             onClick={() => navigate("/appointments")}

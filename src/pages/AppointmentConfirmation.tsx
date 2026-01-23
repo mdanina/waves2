@@ -92,7 +92,7 @@ export default function AppointmentConfirmation() {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <div className="container mx-auto max-w-2xl px-4 py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
         <Card className="p-8 text-center">
           <div className="mb-6 flex justify-center">
             <div className="h-20 w-20 rounded-full bg-success/20 flex items-center justify-center">
