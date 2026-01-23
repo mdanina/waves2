@@ -113,6 +113,8 @@ const SpecialistSettings = lazy(() => import("./pages/specialist/SpecialistSetti
 const SpecialistMessages = lazy(() => import("./pages/specialist/SpecialistMessages"));
 const ClientMessages = lazy(() => import("./pages/ClientMessages"));
 const Settings = lazy(() => import("./pages/Settings"));
+const MyDevice = lazy(() => import("./pages/client/MyDevice"));
+const MyLicenses = lazy(() => import("./pages/client/MyLicenses"));
 
 // Компонент загрузки
 const PageLoader = () => (
@@ -208,6 +210,8 @@ const App = () => (
                       <Route index element={<Dashboard />} />
                       <Route path="messages" element={<ClientMessages />} />
                       <Route path="settings" element={<Settings />} />
+                      <Route path="device" element={<MyDevice />} />
+                      <Route path="licenses" element={<MyLicenses />} />
                     </Route>
                     <Route
                       path="/appointments/*"
