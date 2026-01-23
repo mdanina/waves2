@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -9,6 +10,7 @@ import {
   ChevronDown,
   ChevronUp,
   ExternalLink,
+  ChevronRight,
   Sparkles,
   X
 } from 'lucide-react';
@@ -27,6 +29,7 @@ export function OnboardingChecklist({
   profilesCount = 0,
   className
 }: OnboardingChecklistProps) {
+  const navigate = useNavigate();
   const {
     items,
     progress,
@@ -172,6 +175,7 @@ export function OnboardingChecklist({
                 index={index}
                 isCurrent={currentItem?.id === item.id}
                 onToggle={() => !item.autoCheck && toggleItem(item.id)}
+                onNavigate={(path) => navigate(path)}
               />
             ))}
           </div>
@@ -186,10 +190,12 @@ interface ChecklistItemRowProps {
   index: number;
   isCurrent: boolean;
   onToggle: () => void;
+  onNavigate: (path: string) => void;
 }
 
-function ChecklistItemRow({ item, index, isCurrent, onToggle }: ChecklistItemRowProps) {
+function ChecklistItemRow({ item, index, isCurrent, onToggle, onNavigate }: ChecklistItemRowProps) {
   const isClickable = !item.autoCheck;
+  const isInternalLink = item.link?.startsWith('/');
 
   return (
     <div
@@ -252,11 +258,19 @@ function ChecklistItemRow({ item, index, isCurrent, onToggle }: ChecklistItemRow
                 className="h-7 px-2 text-coral hover:text-coral hover:bg-coral/10"
                 onClick={(e) => {
                   e.stopPropagation();
-                  window.open(item.link, '_blank', 'noopener,noreferrer');
+                  if (isInternalLink) {
+                    onNavigate(item.link!);
+                  } else {
+                    window.open(item.link, '_blank', 'noopener,noreferrer');
+                  }
                 }}
               >
                 <span className="text-xs mr-1">{item.linkText || 'Открыть'}</span>
-                <ExternalLink className="h-3 w-3" />
+                {isInternalLink ? (
+                  <ChevronRight className="h-3 w-3" />
+                ) : (
+                  <ExternalLink className="h-3 w-3" />
+                )}
               </Button>
             )}
           </div>

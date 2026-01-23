@@ -12,6 +12,9 @@ import {
   Sparkles,
   UserPlus,
   Users,
+  Smartphone,
+  CreditCard,
+  Target,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -25,6 +28,21 @@ const mainNavigation = [
     href: '/cabinet',
     icon: Home,
     end: true,
+  },
+  {
+    name: 'Моё устройство',
+    href: '/cabinet/device',
+    icon: Smartphone,
+  },
+  {
+    name: 'Мои лицензии',
+    href: '/cabinet/licenses',
+    icon: CreditCard,
+  },
+  {
+    name: 'Цели тренировок',
+    href: '/cabinet/goals',
+    icon: Target,
   },
   {
     name: 'Консультации',
