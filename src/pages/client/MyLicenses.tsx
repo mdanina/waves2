@@ -30,6 +30,7 @@ import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProfiles } from '@/hooks/useProfiles';
 import { useDevice } from '@/hooks/useDevice';
+import { LicenseDevicesManager } from '@/components/client/LicenseDevicesManager';
 import {
   License,
   LicenseSeat,
@@ -466,8 +467,14 @@ export default function MyLicenses() {
                   )}
                 </div>
 
-                {/* Device link */}
+                {/* Привязанные устройства (приложения) */}
                 <div className="mt-6 pt-6 border-t border-border/50">
+                  <LicenseDevicesManager licenseId={license.id} />
+                </div>
+
+                {/* Физическое устройство */}
+                <div className="mt-6 pt-6 border-t border-border/50">
+                  <h4 className="font-medium mb-4">Физическое устройство</h4>
                   <Button
                     variant="outline"
                     className="w-full sm:w-auto"
