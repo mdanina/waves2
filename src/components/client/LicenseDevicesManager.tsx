@@ -22,6 +22,7 @@ import {
   CheckCircle,
   AlertTriangle,
   Info,
+  Mail,
 } from 'lucide-react';
 
 // Иконки устройств (вынесены из компонента для оптимизации)
@@ -170,6 +171,22 @@ export function LicenseDevicesManager({ licenseId, className }: LicenseDevicesMa
           <span>{TRUST_LEVEL_LABELS[binding?.trust_level || 'new']}</span>
         </div>
       </div>
+
+      {/* Привязанный email */}
+      {binding?.email && (
+        <div className="flex items-center gap-3 p-3 bg-cloud/50 rounded-xl">
+          <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+            <Mail className="w-5 h-5 text-primary" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-sm text-muted-foreground">Лицензия привязана к</div>
+            <div className="font-medium truncate">{binding.email}</div>
+          </div>
+          {binding.email_verified && (
+            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+          )}
+        </div>
+      )}
 
       {/* Информация о лимитах */}
       <div className="grid grid-cols-2 gap-4">
