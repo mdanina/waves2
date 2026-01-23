@@ -178,7 +178,7 @@ export default function MyLicenses() {
       {/* Нет лицензий - показываем планы */}
       {!hasLicense && (
         <div className="space-y-6">
-          <Card className="glass-elegant border-2 p-6 sm:p-8">
+          <Card className="glass-elegant border-0 p-6 sm:p-8">
             <div className="text-center max-w-md mx-auto mb-8">
               <SerifHeading size="xl" className="mb-3">
                 У вас нет активных лицензий
@@ -194,7 +194,7 @@ export default function MyLicenses() {
                 <Card
                   key={plan.id}
                   className={cn(
-                    'relative p-6 transition-all cursor-pointer hover:shadow-lg bg-white',
+                    'relative p-6 transition-all cursor-pointer hover:shadow-lg bg-white border-0',
                     selectedPlan === plan.id
                       ? 'bg-coral/5'
                       : 'hover:bg-coral/5'
@@ -221,14 +221,24 @@ export default function MyLicenses() {
                   </div>
 
                   <div className="mb-4">
-                    <span className="text-3xl font-bold">{formatPrice(plan.price)}</span>
-                    <span className="text-muted-foreground"> / месяц</span>
+                    <div className="flex items-baseline gap-2 mb-1">
+                      <span className="text-3xl font-bold">{formatPrice(plan.price)}</span>
+                      {plan.id === 'individual' && (
+                        <span className="text-sm text-muted-foreground">или 3 333 ₽/мес</span>
+                      )}
+                      {plan.id === 'family' && (
+                        <span className="text-sm text-muted-foreground">или 5 000 ₽/мес</span>
+                      )}
+                    </div>
+                    {(plan.id === 'individual' || plan.id === 'family') && (
+                      <p className="text-xs text-muted-foreground">Рассрочка на 24 месяца без переплаты</p>
+                    )}
                   </div>
 
                   <ul className="space-y-2 mb-6">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-center gap-2 text-sm">
-                        <Check className="h-4 w-4 text-success flex-shrink-0" />
+                        <Check className="h-4 w-4 text-coral flex-shrink-0" />
                         <span>{feature}</span>
                       </li>
                     ))}

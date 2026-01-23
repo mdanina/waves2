@@ -31,7 +31,16 @@ export function useDevice() {
     try {
       const stored = localStorage.getItem(`${STORAGE_KEY}_${user.id}`);
       if (stored) {
-        setDevice(JSON.parse(stored));
+        const loadedDevice = JSON.parse(stored);
+        // Если устройство доставлено или настроено, но нет серийного номера - добавляем
+        if ((loadedDevice.status === 'delivered' || 
+             loadedDevice.status === 'setup_pending' || 
+             loadedDevice.status === 'setup_complete') && 
+            !loadedDevice.serial_number) {
+          loadedDevice.serial_number = 'WF-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+          localStorage.setItem(`${STORAGE_KEY}_${user.id}`, JSON.stringify(loadedDevice));
+        }
+        setDevice(loadedDevice);
       } else {
         // Mock: устройство не заказано
         setDevice(null);
@@ -94,10 +103,18 @@ export function useDevice() {
 
     if (status === 'delivered') {
       updates.delivered_at = new Date().toISOString();
+      // Добавляем моковый серийный номер при доставке
+      if (!device.serial_number) {
+        updates.serial_number = 'WF-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+      }
     }
 
     if (status === 'setup_complete') {
       updates.setup_completed_at = new Date().toISOString();
+      // Добавляем моковый серийный номер при завершении настройки, если его еще нет
+      if (!device.serial_number) {
+        updates.serial_number = 'WF-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+      }
     }
 
     saveDevice({ ...device, ...updates });

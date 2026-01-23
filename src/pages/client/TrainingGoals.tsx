@@ -9,6 +9,7 @@ import { Uicon } from '@/components/icons/Uicon';
 import {
   Check,
   User,
+  ChevronRight,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -373,16 +374,25 @@ export default function TrainingGoals() {
                       <p className="text-xs text-muted-foreground">
                         {profile.type === 'parent' ? 'Родитель' : 'Ребёнок'}
                       </p>
-                      {existingGoals && (
-                        <Badge 
-                          className="mt-1 text-xs text-coral-light border-0"
-                          style={{ 
-                            background: 'rgba(255, 182, 153, 0.2)',
-                            backgroundImage: 'none'
-                          }}
-                        >
-                          Цели выбраны
-                        </Badge>
+                      {existingGoals && existingGoals.goals && existingGoals.goals.length > 0 && (
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {existingGoals.goals.map(goalId => {
+                            const goal = getGoalById(goalId);
+                            if (!goal) return null;
+                            return (
+                              <Badge 
+                                key={goalId}
+                                className="text-xs text-coral-light border-0"
+                                style={{ 
+                                  background: 'rgba(255, 182, 153, 0.2)',
+                                  backgroundImage: 'none'
+                                }}
+                              >
+                                {goal.icon} {goal.title}
+                              </Badge>
+                            );
+                          })}
+                        </div>
                       )}
                     </div>
                   </div>
@@ -595,7 +605,7 @@ export default function TrainingGoals() {
           </div>
 
           {/* Выбранные цели */}
-          <Card className="bg-white p-6">
+          <Card className="bg-white p-6 border-0">
             <h3 className="font-medium mb-4">Выбранные цели</h3>
             <div className="flex flex-wrap gap-2">
               {selectedGoals.map(goalId => {
@@ -611,7 +621,7 @@ export default function TrainingGoals() {
           </Card>
 
           {/* Рекомендации */}
-          <Card className="bg-white p-4 sm:p-6">
+          <Card className="bg-white p-4 sm:p-6 border-0">
             <h3 className="font-medium mb-4 sm:mb-6 text-[#1a1a1a]">Рекомендуемый план</h3>
             <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
               {/* Тренировок в неделю */}
@@ -626,7 +636,7 @@ export default function TrainingGoals() {
               </div>
 
               {/* Минут за сессию */}
-              <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-br from-[#E8F5FE] via-[#D4EDFC] to-[#C0E5FA] p-4 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-300 hover:shadow-[0_6px_30px_rgba(0,0,0,0.1)] hover:scale-[1.02]">
+              <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-br from-[#FFE5F0] via-[#FFD4E8] to-[#FFC0E0] p-4 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-300 hover:shadow-[0_6px_30px_rgba(0,0,0,0.1)] hover:scale-[1.02]">
                 <div className="relative z-10">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/40 backdrop-blur-sm flex items-center justify-center mb-3 sm:mb-4" style={{ lineHeight: 0 }}>
                     <Uicon name="clock" style="rr" className="h-5 w-5 sm:h-6 sm:w-6 text-[#1a1a1a]" />
@@ -655,7 +665,7 @@ export default function TrainingGoals() {
 
           {/* Советы */}
           {recommendations.tips.length > 0 && (
-            <Card className="bg-white p-6">
+            <Card className="bg-white p-6 border-0">
               <h3 className="font-medium mb-4">Советы для эффективных тренировок</h3>
               <ul className="space-y-2">
                 {recommendations.tips.map((tip, i) => (

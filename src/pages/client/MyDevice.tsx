@@ -328,8 +328,15 @@ export default function MyDevice() {
           {/* Поздравление с доставкой */}
           <Card className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0">
-                <Uicon name="check-circle-2" style="rr" className="h-6 w-6 text-success" />
+              <div 
+                className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm"
+                style={{
+                  background: 'linear-gradient(108deg, rgba(34, 197, 94, 0.25) 0%, rgba(34, 197, 94, 0.14) 100%)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                }}
+              >
+                <Uicon name="check-circle-2" style="rr" className="h-4 w-4 text-green-600" />
               </div>
               <div>
                 <SerifHeading size="lg">Устройство доставлено!</SerifHeading>
@@ -476,12 +483,10 @@ export default function MyDevice() {
                   {device.model === 'Waves Neurofeedback v1' ? 'Flex 4' : device.model}
                 </SerifHeading>
                 <Badge 
-                  className="border-0 !from-transparent !to-transparent text-[#1a1a1a] mt-1"
-                  style={{
-                    background: 'transparent',
-                    backgroundImage: 'none',
-                    border: 'none',
-                    color: '#1a1a1a'
+                  className="mt-1 text-xs text-green-600 border-0"
+                  style={{ 
+                    background: 'rgba(34, 197, 94, 0.2)',
+                    backgroundImage: 'none'
                   }}
                 >
                   <Uicon name="check-circle-2" style="rr" className="h-3 w-3 mr-1" />
@@ -490,19 +495,20 @@ export default function MyDevice() {
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              {device.serial_number && (
-                <div className="p-3 bg-muted/50 rounded-lg">
-                  <p className="text-xs text-muted-foreground mb-1">Серийный номер</p>
-                  <p className="font-mono text-sm">{device.serial_number}</p>
-                </div>
-              )}
-              {device.delivered_at && (
-                <div className="p-3 bg-muted/50 rounded-lg">
-                  <p className="text-xs text-muted-foreground mb-1">Дата получения</p>
+            <div className="p-3 bg-muted/50 rounded-lg">
+              <p className="text-xs text-muted-foreground mb-1">Дата получения</p>
+              <div className="flex items-center justify-between gap-4">
+                {device.delivered_at ? (
                   <p className="text-sm">{new Date(device.delivered_at).toLocaleDateString('ru-RU')}</p>
-                </div>
-              )}
+                ) : (
+                  <p className="text-sm text-muted-foreground">—</p>
+                )}
+                {device.serial_number ? (
+                  <p className="font-mono text-sm text-foreground">{device.serial_number}</p>
+                ) : (
+                  <p className="font-mono text-sm text-muted-foreground">—</p>
+                )}
+              </div>
             </div>
           </Card>
 

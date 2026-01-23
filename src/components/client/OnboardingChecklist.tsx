@@ -106,7 +106,7 @@ export function OnboardingChecklist({
         className
       )}
     >
-      <Card className="bg-white overflow-hidden">
+      <Card className="bg-white overflow-hidden border-0">
         {/* Заголовок */}
         <div
           className="p-4 sm:p-6 cursor-pointer"
