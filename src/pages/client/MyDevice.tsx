@@ -254,14 +254,15 @@ export default function MyDevice() {
               <SerifHeading size="lg">Статус заказа</SerifHeading>
               <Badge 
                 className={cn(
-                  DEVICE_STATUS_COLORS[device.status],
-                  device.status === 'ordered' && 'border-0 !from-transparent !to-transparent'
+                  (device.status === 'ordered' || device.status === 'shipped' || device.status === 'in_transit')
+                    ? 'border-0 !from-transparent !to-transparent text-[#1a1a1a]'
+                    : DEVICE_STATUS_COLORS[device.status]
                 )}
-                style={device.status === 'ordered' ? {
-                  background: 'white',
+                style={(device.status === 'ordered' || device.status === 'shipped' || device.status === 'in_transit') ? {
+                  background: 'transparent',
                   backgroundImage: 'none',
-                  border: '1px solid rgba(34, 197, 94, 0.3)',
-                  color: 'rgb(22, 163, 74)' // text-green-600
+                  border: 'none',
+                  color: '#1a1a1a'
                 } : undefined}
               >
                 {DEVICE_STATUS_LABELS[device.status]}
@@ -275,7 +276,7 @@ export default function MyDevice() {
             {device.tracking_number && (
               <div className="mt-6 p-4 bg-muted/50 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <Truck className="h-4 w-4 text-muted-foreground" />
+                  <Uicon name="truck" style="rr" className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm font-medium">Отслеживание</span>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -328,7 +329,7 @@ export default function MyDevice() {
           <Card className="glass-elegant border-2 p-6 bg-gradient-to-br from-success/5 to-success/10">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0">
-                <CheckCircle2 className="h-6 w-6 text-success" />
+                <Uicon name="check-circle-2" style="rr" className="h-6 w-6 text-success" />
               </div>
               <div>
                 <SerifHeading size="lg">Устройство доставлено!</SerifHeading>
@@ -371,7 +372,7 @@ export default function MyDevice() {
                     <div className="flex-shrink-0 mt-0.5">
                       {completed ? (
                         <div className="w-6 h-6 rounded-full bg-gradient-to-br from-success to-success/80 flex items-center justify-center">
-                          <CheckCircle2 className="h-4 w-4 text-white" />
+                          <Uicon name="check-circle-2" style="rr" className="h-4 w-4 text-white" />
                         </div>
                       ) : (
                         <div className="w-6 h-6 rounded-full border-2 border-muted-foreground/30 flex items-center justify-center">
@@ -441,9 +442,19 @@ export default function MyDevice() {
                 <Wifi className="h-8 w-8 text-coral" />
               </div>
               <div>
-                <SerifHeading size="lg">{device.model}</SerifHeading>
-                <Badge className="bg-success/20 text-success mt-1">
-                  <CheckCircle2 className="h-3 w-3 mr-1" />
+                <SerifHeading size="lg">
+                  {device.model === 'Waves Neurofeedback v1' ? 'Flex 4' : device.model}
+                </SerifHeading>
+                <Badge 
+                  className="border-0 !from-transparent !to-transparent text-[#1a1a1a] mt-1"
+                  style={{
+                    background: 'transparent',
+                    backgroundImage: 'none',
+                    border: 'none',
+                    color: '#1a1a1a'
+                  }}
+                >
+                  <Uicon name="check-circle-2" style="rr" className="h-3 w-3 mr-1" />
                   Готово к работе
                 </Badge>
               </div>
@@ -462,16 +473,6 @@ export default function MyDevice() {
                   <p className="text-sm">{new Date(device.delivered_at).toLocaleDateString('ru-RU')}</p>
                 </div>
               )}
-            </div>
-
-            <div className="mt-6 pt-6 border-t border-border/50">
-              <Button
-                variant="outline"
-                onClick={() => window.open('https://waves.ai/app', '_blank')}
-              >
-                <Smartphone className="h-4 w-4 mr-2" />
-                Открыть приложение
-              </Button>
             </div>
           </Card>
 
@@ -514,7 +515,6 @@ function DeliveryProgress({ device }: { device: Device }) {
         {steps.map((step, index) => {
           const isComplete = index <= currentIndex;
           const isCurrent = index === currentIndex;
-          const Icon = step.icon;
 
           return (
             <div key={step.id} className="flex flex-col items-center">
