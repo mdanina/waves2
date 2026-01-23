@@ -1313,20 +1313,6 @@ export default function Dashboard() {
                   </div>
 
                   {/* Точки навигации */}
-                  {familyMembers.length > 1 && (
-                    <div className="flex justify-center gap-2 mt-4">
-                      {familyMembers.map((_, index) => (
-                        <button
-                          key={index}
-                          className={`h-2 w-2 rounded-full transition-colors ${
-                            index === currentFamilyIndex ? 'bg-coral-light' : 'bg-muted-foreground/30 hover:bg-muted-foreground/60'
-                          }`}
-                          onClick={() => goToFamilyCard(index)}
-                          aria-label={`Перейти к карточке ${index + 1}`}
-                        />
-                      ))}
-                    </div>
-                  )}
                 </div>
           )}
         </div>
