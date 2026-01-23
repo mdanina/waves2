@@ -220,6 +220,11 @@
     --glass-sage: rgba(174, 203, 15, 0.3);
     --glass-lilac: rgba(228, 165, 240, 0.3);
     
+    /* Elegant glass gradient (for tabs, buttons, etc.) */
+    --glass-elegant-gradient: linear-gradient(108deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.14) 100%);
+    --glass-elegant-border: rgba(255, 255, 255, 0.3);
+    --glass-elegant-active: rgba(255, 255, 255, 0.2);
+    
     /* Blur values */
     --blur-sm: 8px;
     --blur-md: 12px;
@@ -447,6 +452,7 @@
     background: var(--gradient-lilac);
     border-radius: var(--radius);
   }
+
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -488,10 +494,19 @@
     backdrop-filter: blur(var(--blur-lg));
     -webkit-backdrop-filter: blur(var(--blur-lg));
   }
+
+  /* Elegant glass utilities */
+  .glass-elegant-active {
+    background: var(--glass-elegant-active);
+    backdrop-filter: blur(var(--blur-sm));
+    -webkit-backdrop-filter: blur(var(--blur-sm));
+  }
 }
 
 /* Glass Sidebar - вне @layer для максимального приоритета */
-aside.glass-sidebar {
+aside.glass-sidebar,
+.glass-sidebar,
+[data-radix-dialog-content].glass-sidebar {
   background: linear-gradient(108deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.14) 100%) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
@@ -499,6 +514,37 @@ aside.glass-sidebar {
   border-right: 1px solid rgba(255, 255, 255, 0.3) !important;
   z-index: 10 !important;
   isolation: isolate !important;
+}
+
+/* Переопределение bg-background для glass-sidebar */
+.glass-sidebar.bg-background,
+[data-radix-dialog-content].glass-sidebar.bg-background {
+  background: linear-gradient(108deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.14) 100%) !important;
+  background-color: transparent !important;
+}
+
+/* Легкое затемнение overlay для glass-sidebar */
+[data-radix-dialog-content].glass-sidebar ~ [data-radix-dialog-overlay],
+.glass-sidebar ~ [data-radix-dialog-overlay],
+[data-radix-dialog-overlay].bg-transparent.pointer-events-none {
+  background: transparent !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+/* Elegant Glass Effect - вне @layer для максимального приоритета */
+.glass-elegant {
+  background: var(--glass-elegant-gradient) !important;
+  backdrop-filter: blur(var(--blur-md)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-md)) !important;
+  box-shadow: var(--shadow-glass) !important;
+  border: 1px solid var(--glass-elegant-border) !important;
+}
+
+.glass-elegant-active {
+  background: var(--glass-elegant-active) !important;
+  backdrop-filter: blur(var(--blur-sm)) !important;
+  -webkit-backdrop-filter: blur(var(--blur-sm)) !important;
 }
 
 /* Переопределение любых возможных фоновых классов Tailwind */

@@ -1124,15 +1124,7 @@ export default function Dashboard() {
         {/* Support Section */}
         <div className="mb-12">
           <SerifHeading size="xl" className="mb-4">Есть вопросы?</SerifHeading>
-          <Card
-            className="border-2 p-6 shadow-[0_4px_20px_rgba(0,0,0,0.06)]"
-            style={{
-              background: 'linear-gradient(108deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.25) 100%)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              borderColor: 'rgba(255, 255, 255, 0.3)',
-            }}
-          >
+          <Card className="glass-elegant border-2 p-6">
             <p className="text-muted-foreground mb-4">
               Напишите в поддержку, чтобы решить любые проблемы или записаться к специалисту напрямую без предварительной диагностики.
             </p>
@@ -1221,13 +1213,7 @@ export default function Dashboard() {
                       return (
                         <Card
                           key={member.id}
-                          className="min-w-[320px] flex-shrink-0 flex flex-col border-2 p-6 shadow-sm transition-all hover:shadow-md"
-                          style={{
-                            background: 'linear-gradient(108deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.25) 100%)',
-                            backdropFilter: 'blur(10px)',
-                            WebkitBackdropFilter: 'blur(10px)',
-                            borderColor: 'rgba(255, 255, 255, 0.3)',
-                          }}
+                          className="glass-elegant min-w-[320px] flex-shrink-0 flex flex-col border-2 p-6 transition-all hover:shadow-md"
                         >
                           <div className="flex flex-col items-center text-center flex-1">
                             <img 

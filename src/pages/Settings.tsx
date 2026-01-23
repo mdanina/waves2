@@ -294,20 +294,32 @@ export default function Settings() {
         </div>
       ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:inline-flex">
-            <TabsTrigger value="profile" className="flex items-center gap-2">
+          <TabsList className="glass-elegant grid w-full grid-cols-4 lg:w-auto lg:inline-flex">
+            <TabsTrigger 
+              value="profile" 
+              className="flex items-center gap-2 data-[state=active]:bg-white/20 data-[state=active]:backdrop-blur-[8px]"
+            >
               <User className="h-4 w-4" />
               <span className="hidden sm:inline">Профиль</span>
             </TabsTrigger>
-            <TabsTrigger value="notifications" className="flex items-center gap-2">
+            <TabsTrigger 
+              value="notifications" 
+              className="flex items-center gap-2 data-[state=active]:bg-white/20 data-[state=active]:backdrop-blur-[8px]"
+            >
               <Bell className="h-4 w-4" />
               <span className="hidden sm:inline">Уведомления</span>
             </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center gap-2">
+            <TabsTrigger 
+              value="security" 
+              className="flex items-center gap-2 data-[state=active]:bg-white/20 data-[state=active]:backdrop-blur-[8px]"
+            >
               <Shield className="h-4 w-4" />
               <span className="hidden sm:inline">Безопасность</span>
             </TabsTrigger>
-            <TabsTrigger value="region" className="flex items-center gap-2">
+            <TabsTrigger 
+              value="region" 
+              className="flex items-center gap-2 data-[state=active]:bg-white/20 data-[state=active]:backdrop-blur-[8px]"
+            >
               <MapPin className="h-4 w-4" />
               <span className="hidden sm:inline">Регион</span>
             </TabsTrigger>

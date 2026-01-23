@@ -95,38 +95,29 @@ export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
         
         const linkContent = (
           <>
-            <item.icon
-              className={cn(
-                'h-5 w-5 shrink-0',
-                isActive ? 'text-foreground' : 'text-muted-foreground'
-              )}
-            />
+            <item.icon className="h-4 w-4 shrink-0" />
             <span className="flex-1 truncate min-w-0">{item.name}</span>
           </>
         );
 
         const linkClassName = cn(
-          'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 min-w-0',
+          'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-sans font-medium transition-all duration-200 min-w-0',
           isActive
             ? 'text-foreground'
             : 'text-muted-foreground hover:text-foreground'
         );
 
         const linkStyle = isActive ? {
-          background: 'rgba(255, 255, 255, 0.5)',
+          background: 'rgba(255, 255, 255, 0.2)',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)',
-          border: '1px solid rgba(255, 255, 255, 0.5)',
-          boxShadow: '0 0 0 3px rgba(255, 255, 255, 0.25), 0 2px 12px rgba(255, 255, 255, 0.2)',
         } : undefined;
 
         const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
           if (!isActive) {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.5)';
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
             e.currentTarget.style.backdropFilter = 'blur(8px)';
             e.currentTarget.style.webkitBackdropFilter = 'blur(8px)';
-            e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.4)';
-            e.currentTarget.style.boxShadow = '0 0 0 3px rgba(255, 255, 255, 0.15), 0 2px 8px rgba(255, 255, 255, 0.1)';
           }
         };
 
@@ -135,8 +126,6 @@ export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
             e.currentTarget.style.background = '';
             e.currentTarget.style.backdropFilter = '';
             e.currentTarget.style.webkitBackdropFilter = '';
-            e.currentTarget.style.border = '';
-            e.currentTarget.style.boxShadow = '';
           }
         };
 
@@ -272,7 +261,10 @@ export function ClientSidebar() {
 
         {/* User Profile Section */}
         <div className="p-4 space-y-4">
-          <div className="flex items-center gap-3">
+          <Link
+            to="/cabinet/settings"
+            className="flex items-center gap-3 rounded-lg p-2 -m-2 transition-all duration-200 hover:bg-white/10 cursor-pointer"
+          >
             <Avatar className="h-10 w-10">
               <AvatarFallback className="bg-[#E0F0FF] text-[#007BFF]">
                 {getUserInitials()}
@@ -286,7 +278,7 @@ export function ClientSidebar() {
                 {typeof user?.email === 'string' ? user.email : ''}
               </p>
             </div>
-          </div>
+          </Link>
           <Button
             variant="ghost"
             className="w-full justify-start text-muted-foreground hover:text-foreground"
