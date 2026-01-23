@@ -19,6 +19,7 @@ import {
   AlertCircle,
   Sparkles,
   Wifi,
+  Package,
 } from 'lucide-react';
 import { Uicon } from '@/components/icons/Uicon';
 import {
@@ -29,6 +30,7 @@ import {
 } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 import { useDevice, useDeviceSetup } from '@/hooks/useDevice';
 import {
   Device,
@@ -50,6 +52,14 @@ export default function MyDevice() {
     isDelivered,
     isSetupComplete,
   } = useDevice();
+
+  // Проверяем, есть ли лицензия
+  // В useLicenses лицензии хранятся в состоянии, но можно проверить через sessionStorage
+  // или просто показывать сообщение, если пользователь пришел со страницы лицензий
+  const [hasLicense, setHasLicense] = useState(() => {
+    // Проверяем флаг в sessionStorage, который устанавливается после покупки
+    return sessionStorage.getItem('license_purchased') === 'true';
+  });
 
   const {
     toggleStep,
@@ -117,35 +127,44 @@ export default function MyDevice() {
 
       {/* Состояние: Нет устройства */}
       {!hasDevice && !showOrderForm && (
-        <Card className="glass-elegant border-2 p-6 sm:p-8">
+        <Card className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] border-0 p-6 sm:p-8">
           <div className="text-center max-w-md mx-auto">
-            <SerifHeading size="xl" className="mb-3">
-              У вас ещё нет устройства
-            </SerifHeading>
-            <p className="text-muted-foreground mb-6">
-              Устройство нейрофидбэка входит в состав лицензии.
-              Оформите заказ, и мы доставим его вам.
-            </p>
-            <Button
-              size="lg"
-              onClick={() => setShowOrderForm(true)}
-              className="bg-gradient-to-r from-coral to-coral-light hover:opacity-90"
-            >
-              <Package className="h-5 w-5 mr-2" />
-              Заказать устройство
-            </Button>
-
-            <div className="mt-8 pt-6 border-t border-border/50">
-              <p className="text-sm text-muted-foreground mb-4">
-                Или выберите подходящий план с устройством:
-              </p>
-              <Button
-                variant="outline"
-                onClick={() => navigate('/cabinet/licenses')}
-              >
-                Посмотреть лицензии
-              </Button>
-            </div>
+            {hasLicense ? (
+              <>
+                <SerifHeading size="xl" className="mb-3">
+                  Дооформите доставку устройства
+                </SerifHeading>
+                <p className="text-muted-foreground mb-6">
+                  Вы приобрели лицензию с устройством. Теперь нужно указать адрес доставки, чтобы мы могли отправить вам устройство.
+                </p>
+                <Button
+                  size="lg"
+                  onClick={() => setShowOrderForm(true)}
+                  className="bg-gradient-to-r from-coral to-coral-light hover:opacity-90"
+                >
+                  <Package className="h-5 w-5 mr-2" />
+                  Указать адрес доставки
+                </Button>
+              </>
+            ) : (
+              <>
+                <SerifHeading size="xl" className="mb-3">
+                  У вас ещё нет устройства
+                </SerifHeading>
+                <p className="text-muted-foreground mb-6">
+                  Устройство нейрофидбэка входит в состав лицензии.
+                  Оформите заказ, и мы доставим его вам.
+                </p>
+                <Button
+                  size="lg"
+                  onClick={() => navigate('/cabinet/licenses')}
+                  className="bg-gradient-to-r from-coral to-coral-light hover:opacity-90"
+                >
+                  <Package className="h-5 w-5 mr-2" />
+                  Купить лицензию с устройством
+                </Button>
+              </>
+            )}
           </div>
         </Card>
       )}
@@ -286,7 +305,7 @@ export default function MyDevice() {
                   <Button
                     variant="link"
                     size="sm"
-                    className="px-0 h-auto mt-1"
+                    className="px-0 h-auto mt-1 text-coral hover:text-coral"
                     onClick={() => window.open(`https://www.cdek.ru/track.html?order_id=${device.tracking_number}`, '_blank')}
                   >
                     Отследить на сайте СДЭК
@@ -650,6 +669,9 @@ function DevModeControls({
     <Card className="border-2 border-dashed border-amber-300 bg-amber-50/50 p-4">
       <p className="text-xs font-medium text-amber-700 mb-3">DEV MODE</p>
       <div className="flex flex-wrap gap-2">
+        <Button size="sm" variant="outline" onClick={resetDevice}>
+          → No Device
+        </Button>
         <Button size="sm" variant="outline" onClick={() => updateStatus('ordered')}>
           → Ordered
         </Button>

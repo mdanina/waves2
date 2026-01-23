@@ -29,6 +29,7 @@ import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProfiles } from '@/hooks/useProfiles';
+import { useDevice } from '@/hooks/useDevice';
 import {
   License,
   LicenseSeat,
@@ -101,6 +102,12 @@ function useLicenses() {
     setSeats(prev => prev.filter(s => s.id !== seatId));
   };
 
+  const linkDevice = async (licenseId: string, deviceId: string) => {
+    setLicenses(prev => prev.map(l => 
+      l.id === licenseId ? { ...l, device_id: deviceId, updated_at: new Date().toISOString() } : l
+    ));
+  };
+
   return {
     licenses,
     seats,
@@ -109,6 +116,7 @@ function useLicenses() {
     purchaseLicense,
     assignSeat,
     removeSeat,
+    linkDevice,
     hasLicense: licenses.length > 0,
   };
 }
@@ -123,8 +131,11 @@ export default function MyLicenses() {
     purchaseLicense,
     assignSeat,
     removeSeat,
+    linkDevice,
     hasLicense,
   } = useLicenses();
+  
+  const { device, hasDevice } = useDevice();
 
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [showPurchaseDialog, setShowPurchaseDialog] = useState(false);
@@ -134,6 +145,8 @@ export default function MyLicenses() {
     setIsPurchasing(true);
     try {
       await purchaseLicense(planType);
+      // Устанавливаем флаг, что лицензия куплена
+      sessionStorage.setItem('license_purchased', 'true');
       toast.success('Лицензия успешно приобретена!');
       setShowPurchaseDialog(false);
       setSelectedPlan(null);
@@ -281,7 +294,7 @@ export default function MyLicenses() {
             const isExpiring = isLicenseExpiringSoon(license);
 
             return (
-              <Card key={license.id} className="glass-elegant border-2 p-6">
+              <Card key={license.id} className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] border-0 p-6">
                 {/* Header */}
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex items-center gap-4">
@@ -458,7 +471,18 @@ export default function MyLicenses() {
                   <Button
                     variant="outline"
                     className="w-full sm:w-auto"
-                    onClick={() => navigate('/cabinet/device')}
+                    onClick={async () => {
+                      // Если устройство не привязано и есть устройство у пользователя
+                      if (!license.device_id && hasDevice && device) {
+                        try {
+                          await linkDevice(license.id, device.id);
+                          toast.success('Устройство успешно привязано к лицензии');
+                        } catch (error) {
+                          toast.error('Ошибка при привязке устройства');
+                        }
+                      }
+                      navigate('/cabinet/device');
+                    }}
                   >
                     <Smartphone className="h-4 w-4 mr-2" />
                     {license.device_id ? 'Управление устройством' : 'Привязать устройство'}
@@ -470,11 +494,11 @@ export default function MyLicenses() {
 
           {/* Add new license button */}
           <Card
-            className="border-2 border-dashed border-muted-foreground/30 p-6 text-center cursor-pointer hover:border-coral/50 transition-colors"
+            className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] border-0 p-6 text-center cursor-pointer hover:bg-coral/5 transition-colors"
             onClick={() => setShowPurchaseDialog(true)}
           >
-            <Plus className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-            <p className="text-muted-foreground">Приобрести ещё одну лицензию</p>
+            <Plus className="h-8 w-8 text-coral mx-auto mb-2" />
+            <p className="text-foreground">Приобрести ещё одну лицензию</p>
           </Card>
         </div>
       )}
