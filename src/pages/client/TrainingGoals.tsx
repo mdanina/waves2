@@ -653,22 +653,36 @@ export default function TrainingGoals() {
           {/* Действия */}
           <div className="flex flex-col sm:flex-row gap-3">
             <Button
-              onClick={saveResults}
-              className="flex-1"
-            >
-              Сохранить и перейти к лицензиям
-              <ChevronRight className="h-4 w-4 ml-1" />
-            </Button>
-            <Button
               variant="outline"
               onClick={() => {
-                // Возвращаемся к выбору целей, сохраняя выбранный профиль
                 setStep('select_goals');
                 setAnswers({});
                 setRecommendations(null);
               }}
             >
               Редактировать
+            </Button>
+            {profilesWithoutGoals.length > 0 && (
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setStep('select_profile');
+                  setSelectedProfileId(null);
+                  setSelectedGoals([]);
+                  setAnswers({});
+                  setRecommendations(null);
+                  setCurrentQuestionGoalIndex(0);
+                  setCurrentQuestionIndex(0);
+                }}
+              >
+                Настроить для другого пользователя
+              </Button>
+            )}
+            <Button
+              onClick={saveResults}
+              className="flex-1"
+            >
+              Сохранить
             </Button>
           </div>
         </div>
