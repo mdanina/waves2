@@ -581,9 +581,9 @@ export function useLicenseDevices({ licenseId }: UseLicenseDevicesOptions) {
     pendingUnbindDeviceId,
     hasPendingUnbindRequest: !!pendingUnbindCode,
 
-    // Для тестирования
+    // Для тестирования (только DEV)
     resetAll,
-    _mockCode: pendingUnbindCode, // Только для разработки!
+    _mockCode: import.meta.env.DEV ? pendingUnbindCode : null,
   };
 }
 

@@ -353,8 +353,8 @@ export function LicenseDevicesManager({ licenseId, className }: LicenseDevicesMa
             Мы отправили 6-значный код на вашу почту <strong>{binding?.email}</strong>
           </p>
 
-          {/* Mock код для разработки */}
-          {_mockCode && (
+          {/* Mock код для разработки (только в DEV режиме) */}
+          {import.meta.env.DEV && _mockCode && (
             <Alert
               variant="info"
               title="Тестовый режим"
