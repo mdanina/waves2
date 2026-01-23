@@ -604,6 +604,16 @@ export function useAutoBindDevice(licenseId: string | undefined) {
   // Стабильная проверка наличия текущего устройства (по ID, а не по reference)
   const currentDeviceId = currentDevice?.id;
 
+  // Сброс рефов при изменении licenseId
+  const prevLicenseIdRef = useRef(licenseId);
+  useEffect(() => {
+    if (prevLicenseIdRef.current !== licenseId) {
+      prevLicenseIdRef.current = licenseId;
+      hasAttemptedBind.current = false;
+      hasUpdatedActivity.current = false;
+    }
+  }, [licenseId]);
+
   useEffect(() => {
     if (!licenseId || !user?.id || loading) return;
 
