@@ -24,6 +24,30 @@ import {
   Info,
 } from 'lucide-react';
 
+// Иконки устройств (вынесены из компонента для оптимизации)
+function DeviceIcon({ type }: { type: LicenseDevice['device_type'] }) {
+  switch (type) {
+    case 'mobile':
+      return <Smartphone className="w-5 h-5" />;
+    case 'tablet':
+      return <Tablet className="w-5 h-5" />;
+    default:
+      return <Monitor className="w-5 h-5" />;
+  }
+}
+
+// Иконка Trust Level
+function TrustIcon({ level }: { level: string | undefined }) {
+  switch (level) {
+    case 'trusted':
+      return <ShieldCheck className="w-4 h-4 text-green-500" />;
+    case 'standard':
+      return <Shield className="w-4 h-4 text-blue-500" />;
+    default:
+      return <ShieldAlert className="w-4 h-4 text-amber-500" />;
+  }
+}
+
 interface LicenseDevicesManagerProps {
   licenseId: string;
   className?: string;
@@ -35,14 +59,11 @@ export function LicenseDevicesManager({ licenseId, className }: LicenseDevicesMa
     currentDevice,
     binding,
     trustConfig,
-    canAddDevice,
     unbindsRemaining,
     checkCanUnbind,
     requestUnbind,
     confirmUnbind,
     cancelUnbind,
-    hasPendingUnbindRequest,
-    pendingUnbindDeviceId,
     _mockCode,
   } = useLicenseDevices({ licenseId });
 
@@ -55,29 +76,8 @@ export function LicenseDevicesManager({ licenseId, className }: LicenseDevicesMa
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  // Иконки устройств
-  const DeviceIcon = ({ type }: { type: LicenseDevice['device_type'] }) => {
-    switch (type) {
-      case 'mobile':
-        return <Smartphone className="w-5 h-5" />;
-      case 'tablet':
-        return <Tablet className="w-5 h-5" />;
-      default:
-        return <Monitor className="w-5 h-5" />;
-    }
-  };
-
-  // Иконка Trust Level
-  const TrustIcon = () => {
-    switch (binding?.trust_level) {
-      case 'trusted':
-        return <ShieldCheck className="w-4 h-4 text-green-500" />;
-      case 'standard':
-        return <Shield className="w-4 h-4 text-blue-500" />;
-      default:
-        return <ShieldAlert className="w-4 h-4 text-amber-500" />;
-    }
-  };
+  // Защита от отрицательных значений
+  const safeUnbindsRemaining = Math.max(0, unbindsRemaining);
 
   // Обработчик запроса отвязки
   const handleRequestUnbind = async (device: LicenseDevice) => {
@@ -86,13 +86,13 @@ export function LicenseDevicesManager({ licenseId, className }: LicenseDevicesMa
 
     const check = checkCanUnbind(device.id);
     if (!check.canUnbind) {
-      if (check.reason === 'limit_reached') {
-        setError(`Лимит отвязок исчерпан. Следующая отвязка будет доступна ${check.unbindsResetAt ? formatTimeRemaining(check.unbindsResetAt) : 'позже'}`);
-      } else if (check.reason === 'last_device') {
-        setError('Нельзя отвязать последнее устройство');
-      } else if (check.reason === 'pending_unbind') {
-        setError('Устройство уже в процессе отвязки');
-      }
+      const errorMessages: Record<string, string> = {
+        limit_reached: `Лимит отвязок исчерпан. Следующая отвязка будет доступна ${check.unbindsResetAt ? formatTimeRemaining(check.unbindsResetAt) : 'позже'}`,
+        last_device: 'Нельзя отвязать последнее устройство',
+        pending_unbind: 'Устройство уже в процессе отвязки',
+        cooldown: `Подождите до окончания периода ожидания`,
+      };
+      setError(errorMessages[check.reason || ''] || 'Невозможно отвязать устройство');
       return;
     }
 
@@ -166,7 +166,7 @@ export function LicenseDevicesManager({ licenseId, className }: LicenseDevicesMa
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-medium">Привязанные устройства</h3>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <TrustIcon />
+          <TrustIcon level={binding?.trust_level} />
           <span>{TRUST_LEVEL_LABELS[binding?.trust_level || 'new']}</span>
         </div>
       </div>
@@ -181,7 +181,7 @@ export function LicenseDevicesManager({ licenseId, className }: LicenseDevicesMa
         </div>
         <div className="bg-cloud/50 rounded-2xl p-4">
           <div className="text-2xl font-semibold">
-            {unbindsRemaining}/{trustConfig.unbindsPerMonth}
+            {safeUnbindsRemaining}/{trustConfig.unbindsPerMonth}
           </div>
           <div className="text-sm text-muted-foreground">Отвязок в месяц</div>
         </div>

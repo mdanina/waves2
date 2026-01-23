@@ -488,18 +488,45 @@ export function useLicenseDevices({ licenseId }: UseLicenseDevicesOptions) {
     }
   }, [binding, saveBinding]);
 
-  // Автоматическое завершение pending отвязок
+  // Автоматическое завершение pending отвязок при загрузке
+  // Проверяем один раз после загрузки данных
+  const hasCheckedPendingRef = useRef(false);
+
   useEffect(() => {
-    const pendingDevices = devices.filter(d =>
+    if (loading || hasCheckedPendingRef.current || devices.length === 0) return;
+
+    hasCheckedPendingRef.current = true;
+    const now = new Date();
+
+    // Находим устройства, у которых истёк cooldown
+    const expiredPendingDevices = devices.filter(d =>
       d.status === 'pending_unbind' &&
       d.unbind_available_at &&
-      new Date(d.unbind_available_at) <= new Date()
+      new Date(d.unbind_available_at) <= now
     );
 
-    pendingDevices.forEach(device => {
-      completeUnbind(device.id);
-    });
-  }, [devices, completeUnbind]);
+    // Завершаем их отвязку напрямую (не через completeUnbind, чтобы избежать циклов)
+    if (expiredPendingDevices.length > 0) {
+      const updatedDevices = devices.map(d => {
+        if (expiredPendingDevices.some(pd => pd.id === d.id)) {
+          return { ...d, status: 'unbound' as LicenseDeviceStatus };
+        }
+        return d;
+      });
+      saveDevices(updatedDevices);
+
+      // Добавляем в историю
+      const newHistoryEntries: DeviceUnbindHistory[] = expiredPendingDevices.map(d => ({
+        id: `uh_${Date.now()}_${d.id}`,
+        license_id: licenseId,
+        device_fingerprint: d.device_fingerprint,
+        device_name: d.device_name,
+        unbound_at: new Date().toISOString(),
+        reason: 'user_request' as const,
+      }));
+      saveHistory([...unbindHistory, ...newHistoryEntries]);
+    }
+  }, [loading, devices, licenseId, unbindHistory, saveDevices, saveHistory]);
 
   // Сброс для тестирования
   const resetAll = useCallback(() => {
