@@ -571,4 +571,3 @@ function simpleDativeDeclension(
   // Если ничего не подошло, возвращаем как есть
   return trimmedName;
 }
-
