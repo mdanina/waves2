@@ -31,6 +31,7 @@ export default function EditFamilyMember() {
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [relationship, setRelationship] = useState("");
   const [sex, setSex] = useState("");
+  const [handedness, setHandedness] = useState("");
   const [referral, setReferral] = useState("");
   const [seekingCare, setSeekingCare] = useState("");
 
@@ -53,6 +54,7 @@ export default function EditFamilyMember() {
             setDateOfBirth(member.dob || "");
             setRelationship(member.type);
             setSex(member.gender || "");
+            setHandedness(member.handedness || "");
             setReferral(member.referral || "");
             setSeekingCare(member.seeking_care || "");
           } else {
@@ -89,6 +91,7 @@ export default function EditFamilyMember() {
           dateOfBirth,
           relationship: relationship as 'parent' | 'child' | 'partner' | 'sibling' | 'caregiver' | 'other',
           sex: sex as 'male' | 'female' | 'other',
+          handedness: handedness ? (handedness as 'left' | 'right' | 'ambidextrous') : undefined,
           referral,
           seekingCare: seekingCare as 'yes' | 'no',
         });
@@ -207,6 +210,32 @@ export default function EditFamilyMember() {
               </RadioGroup>
             </div>
 
+            <div className="space-y-3">
+              <Label>
+                Левша или правша?
+              </Label>
+              <RadioGroup value={handedness} onValueChange={setHandedness} className="grid grid-cols-3 gap-4">
+                <div className="flex items-center space-x-3 rounded-lg border border-input px-4 py-4">
+                  <RadioGroupItem value="right" id="handedness-right" />
+                  <Label htmlFor="handedness-right" className="flex-1 cursor-pointer font-normal">
+                    Правша
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-3 rounded-lg border border-input px-4 py-4">
+                  <RadioGroupItem value="left" id="handedness-left" />
+                  <Label htmlFor="handedness-left" className="flex-1 cursor-pointer font-normal">
+                    Левша
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-3 rounded-lg border border-input px-4 py-4">
+                  <RadioGroupItem value="ambidextrous" id="handedness-ambidextrous" />
+                  <Label htmlFor="handedness-ambidextrous" className="flex-1 cursor-pointer font-normal">
+                    Амбидекстр
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="referral">
                 Пришел по направлению от организации?
@@ -227,7 +256,7 @@ export default function EditFamilyMember() {
 
             <div className="space-y-3">
               <Label>
-                Этому члену семьи нужна помощь? <span className="text-destructive">*</span>
+                Этот член семьи будет проходить нейротренинг? <span className="text-destructive">*</span>
               </Label>
               <RadioGroup value={seekingCare} onValueChange={setSeekingCare} className="grid grid-cols-2 gap-4">
                 <div className="flex items-center space-x-3 rounded-lg border border-input px-4 py-4">

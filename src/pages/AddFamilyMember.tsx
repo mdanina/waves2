@@ -29,6 +29,7 @@ export default function AddFamilyMember() {
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [relationship, setRelationship] = useState("");
   const [sex, setSex] = useState("");
+  const [handedness, setHandedness] = useState("");
   const [referral, setReferral] = useState("");
   const [seekingCare, setSeekingCare] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,6 +51,7 @@ export default function AddFamilyMember() {
           dateOfBirth,
           relationship: relationship as 'parent' | 'child' | 'partner' | 'sibling' | 'caregiver' | 'other',
           sex: sex as 'male' | 'female' | 'other',
+          handedness: handedness ? (handedness as 'left' | 'right' | 'ambidextrous') : undefined,
           referral,
           seekingCare: seekingCare as 'yes' | 'no',
         });
@@ -161,6 +163,23 @@ export default function AddFamilyMember() {
               />
             </div>
 
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-foreground">
+                Левша или правша?
+              </label>
+              <DesignSystemRadioGroup
+                name="handedness"
+                value={handedness}
+                onChange={setHandedness}
+                options={[
+                  { value: 'right', label: 'Правша' },
+                  { value: 'left', label: 'Левша' },
+                  { value: 'ambidextrous', label: 'Амбидекстр' }
+                ]}
+                className="grid grid-cols-3 gap-4"
+              />
+            </div>
+
             <div className="space-y-2">
               <label htmlFor="referral" className="text-sm font-medium text-foreground">
                 Пришел по направлению от организации?
@@ -184,7 +203,7 @@ export default function AddFamilyMember() {
 
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground">
-                Этому члену семьи нужна помощь? <span className="text-destructive">*</span>
+                Этот член семьи будет проходить нейротренинг? <span className="text-destructive">*</span>
               </label>
               <DesignSystemRadioGroup
                 name="seekingCare"

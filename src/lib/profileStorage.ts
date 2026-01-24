@@ -15,6 +15,7 @@ export interface FamilyMemberInput {
   dateOfBirth?: string;
   relationship: 'parent' | 'child' | 'partner' | 'sibling' | 'caregiver' | 'other';
   sex?: 'male' | 'female' | 'other';
+  handedness?: 'left' | 'right' | 'ambidextrous';
   pronouns?: string;
   referral?: string;
   seekingCare?: 'yes' | 'no';
@@ -132,6 +133,7 @@ export async function createProfile(member: FamilyMemberInput): Promise<Profile>
       last_name: member.lastName || null,
       dob: member.dateOfBirth || null,
       gender: member.sex || null,
+      handedness: member.handedness || null,
       pronouns: member.pronouns || null,
       referral: member.referral || null,
       seeking_care: member.seekingCare || null,
@@ -168,6 +170,7 @@ export async function updateProfile(
     if (updates.dateOfBirth) updateData.dob = updates.dateOfBirth;
     if (updates.relationship) updateData.type = updates.relationship;
     if (updates.sex) updateData.gender = updates.sex;
+    if (updates.handedness !== undefined) updateData.handedness = updates.handedness || null;
     if (updates.pronouns !== undefined) updateData.pronouns = updates.pronouns || null;
     if (updates.referral !== undefined) updateData.referral = updates.referral || null;
     if (updates.seekingCare) updateData.seeking_care = updates.seekingCare;

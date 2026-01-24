@@ -10,7 +10,7 @@ import bgImage from '@/assets/bg.png';
 import { Avatar } from "@/components/ui/avatar";
 import { SerifHeading } from "@/components/design-system/SerifHeading";
 import { User, Plus, Pencil, Trash2 } from "lucide-react";
-import familyIllustration from "@/assets/minimalistic-and-friendly-vector-style-illustratio — копия.png";
+import familyIllustration from "@/assets/family.png";
 import { ProfileAvatar } from "@/components/avatars/ProfileAvatar";
 import { getProfiles, deleteProfile, calculateAge } from "@/lib/profileStorage";
 import { useAuth } from "@/contexts/AuthContext";

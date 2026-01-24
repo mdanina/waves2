@@ -171,6 +171,7 @@ export interface Database {
           last_name: string | null;
           dob: string | null;
           gender: 'male' | 'female' | 'other' | null;
+          handedness: 'left' | 'right' | 'ambidextrous' | null;
           pronouns: string | null;
           worry_tags: string[] | null;
           referral: string | null;
@@ -199,6 +200,7 @@ export interface Database {
           last_name?: string | null;
           dob?: string | null;
           gender?: 'male' | 'female' | 'other' | null;
+          handedness?: 'left' | 'right' | 'ambidextrous' | null;
           pronouns?: string | null;
           worry_tags?: string[] | null;
           referral?: string | null;

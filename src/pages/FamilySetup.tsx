@@ -3,7 +3,7 @@ import { StepIndicator } from "@/components/StepIndicator";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SerifHeading } from "@/components/design-system/SerifHeading";
-import familySetupImage from "@/assets/minimalistic-and-friendly-vector-style-illustratio.png";
+import familySetupImage from "@/assets/family.png";
 import bgImage from '@/assets/bg.png';
 
 export default function FamilySetup() {

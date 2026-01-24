@@ -147,49 +147,6 @@ export function ClientLayout() {
 
           {/* Fixed Bottom Section */}
           <div className="shrink-0 flex flex-col">
-            {/* DEBUG Section */}
-            {import.meta.env.DEV && (
-              <div className="px-4 py-2">
-                <p className="text-xs text-muted-foreground mb-2">DEBUG</p>
-                <nav className="space-y-1">
-                  {debugNavigation.map((item) => {
-                    const isActive = location.pathname.startsWith(item.href);
-                    return (
-                      <Link
-                        key={item.name}
-                        to={item.href}
-                        state={['/profile', '/family-setup', '/family-members'].includes(item.href) ? { debug: true } : undefined}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className={cn(
-                          'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 min-w-0',
-                          isActive
-                            ? 'bg-accent text-accent-foreground'
-                            : 'text-muted-foreground hover:text-foreground'
-                        )}
-                        onMouseEnter={(e) => {
-                          if (!isActive) {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
-                            e.currentTarget.style.backdropFilter = 'blur(8px)';
-                            e.currentTarget.style.webkitBackdropFilter = 'blur(8px)';
-                          }
-                        }}
-                        onMouseLeave={(e) => {
-                          if (!isActive) {
-                            e.currentTarget.style.background = '';
-                            e.currentTarget.style.backdropFilter = '';
-                            e.currentTarget.style.webkitBackdropFilter = '';
-                          }
-                        }}
-                      >
-                        <item.icon className="h-4 w-4 shrink-0" />
-                        <span className="truncate min-w-0">{item.name}</span>
-                      </Link>
-                    );
-                  })}
-                </nav>
-              </div>
-            )}
-
             {/* User Profile Section */}
             <div className="p-4 space-y-4">
               <Link

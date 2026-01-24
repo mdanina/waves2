@@ -1,5 +1,9 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
+import momAvatar from '@/assets/mom.png';
+import dadAvatar from '@/assets/dad.png';
+import daughterAvatar from '@/assets/daughter.png';
+import sonAvatar from '@/assets/son.png';
 
 interface ProfileAvatarProps {
   type: 'parent' | 'child';
@@ -18,8 +22,60 @@ const sizes = {
 export function ProfileAvatar({ type, gender, className, size = 'md' }: ProfileAvatarProps) {
   const isParent = type === 'parent';
   const isMale = gender === 'male';
+  
+  // Для мам используем изображение
+  if (isParent && !isMale) {
+    return (
+      <div className={cn('rounded-full overflow-hidden flex items-center justify-center', sizes[size], className)}>
+        <img 
+          src={momAvatar} 
+          alt="Мама" 
+          className="w-full h-full object-cover"
+        />
+      </div>
+    );
+  }
+  
+  // Для пап используем изображение
+  if (isParent && isMale) {
+    return (
+      <div className={cn('rounded-full overflow-hidden flex items-center justify-center', sizes[size], className)}>
+        <img 
+          src={dadAvatar} 
+          alt="Папа" 
+          className="w-full h-full object-cover"
+        />
+      </div>
+    );
+  }
+  
+  // Для дочек используем изображение
+  if (!isParent && !isMale) {
+    return (
+      <div className={cn('rounded-full overflow-hidden flex items-center justify-center', sizes[size], className)}>
+        <img 
+          src={daughterAvatar} 
+          alt="Дочка" 
+          className="w-full h-full object-cover"
+        />
+      </div>
+    );
+  }
+  
+  // Для сыновей используем изображение
+  if (!isParent && isMale) {
+    return (
+      <div className={cn('rounded-full overflow-hidden flex items-center justify-center', sizes[size], className)}>
+        <img 
+          src={sonAvatar} 
+          alt="Сын" 
+          className="w-full h-full object-cover"
+        />
+      </div>
+    );
+  }
 
-  // Цвета в стиле приложения
+  // Цвета в стиле приложения (fallback, если что-то пошло не так)
   const parentColors = {
     male: {
       bg: '#E0F0FF',
