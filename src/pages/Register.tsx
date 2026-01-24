@@ -32,9 +32,9 @@ export default function Register() {
     resolver: zodResolver(registerSchema),
   });
 
-  // Если пользователь уже авторизован и не в процессе регистрации, редиректим на dashboard
+  // Если пользователь уже авторизован и не в процессе регистрации, редиректим на cabinet
   // Проверка isRegisteringRef.current предотвращает race condition:
-  // без неё useEffect может сработать раньше navigate('/profile') в onSubmit
+  // без неё useEffect может сработать раньше navigate('/cabinet') в onSubmit
   useEffect(() => {
     if (!authLoading && user && !isRegisteringRef.current) {
       navigate('/cabinet', { replace: true });
@@ -67,13 +67,13 @@ export default function Register() {
         }
 
         // Сессия есть, значит email уже подтвержден (или confirmation выключен)
-        toast.success('Регистрация успешна! Заполните ваш профиль.');
+        toast.success('Регистрация успешна! Добро пожаловать!');
 
         // Небольшая задержка чтобы гарантировать обновление состояния в AuthContext
         // Это дополнительная защита от race condition
         await new Promise(resolve => setTimeout(resolve, 100));
 
-        navigate('/profile');
+        navigate('/cabinet');
         return;
       }
 
@@ -95,8 +95,8 @@ export default function Register() {
             if (signInResult.data?.user) {
               // Ждём обновления состояния через onAuthStateChange
               await new Promise(resolve => setTimeout(resolve, 100));
-              toast.success('Регистрация успешна! Заполните ваш профиль.');
-              navigate('/profile');
+              toast.success('Регистрация успешна! Добро пожаловать!');
+              navigate('/cabinet');
               return;
             }
           } catch (signInError) {

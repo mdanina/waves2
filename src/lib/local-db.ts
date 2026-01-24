@@ -857,3 +857,171 @@ export async function getLocalSupabase(): Promise<LocalSupabase> {
   }
   return localSupabaseInstance;
 }
+
+/**
+ * Очистить данные лицензий и чек-листа для текущего пользователя
+ */
+export async function resetOnboardingData(): Promise<{ success: boolean; error?: string }> {
+  try {
+    const db = await getDB();
+    
+    // Получаем текущего пользователя из auth
+    const authData = await db.get('auth', 'current');
+    if (!authData || !authData.user) {
+      return {
+        success: false,
+        error: 'Пользователь не авторизован',
+      };
+    }
+    
+    const userId = authData.user.id;
+    
+    // Очищаем localStorage для лицензий
+    localStorage.removeItem('waves_licenses');
+    localStorage.removeItem('waves_license_seats');
+    
+    // Очищаем все привязки email к seats
+    const keysToRemove: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('waves_seat_email_binding_')) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach(key => localStorage.removeItem(key));
+    
+    // Очищаем чек-лист в localStorage
+    localStorage.removeItem(`waves_onboarding_checklist_${userId}`);
+    localStorage.removeItem('waves_onboarding_checklist_guest');
+    
+    // Очищаем чек-лист в БД
+    const user = await db.get('users', userId);
+    if (user) {
+      await db.put('users', {
+        ...user,
+        onboarding_checklist: { items: {} },
+      });
+    }
+    
+    return { success: true };
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error?.message || 'Неизвестная ошибка',
+    };
+  }
+}
+
+/**
+ * Удалить пользователя и все связанные данные по email
+ */
+export async function deleteUserByEmail(email: string): Promise<{ success: boolean; deleted: any; error?: string }> {
+  try {
+    const db = await getDB();
+    
+    // Находим пользователя по email
+    const allUsers = await db.getAll('users');
+    const user = allUsers.find((u) => u.email === email);
+    
+    if (!user) {
+      return {
+        success: false,
+        deleted: {},
+        error: `Пользователь с email ${email} не найден`,
+      };
+    }
+    
+    const userId = user.id;
+    const deleted: any = {
+      userId,
+      email,
+      users: 0,
+      profiles: 0,
+      assessments: 0,
+      answers: 0,
+      appointments: 0,
+      payments: 0,
+      messages: 0,
+      auth: false,
+    };
+    
+    // Удаляем пользователя из таблицы users
+    await db.delete('users', userId);
+    deleted.users = 1;
+    
+    // Удаляем профили, связанные с этим пользователем
+    const allProfiles = await db.getAll('profiles');
+    const userProfiles = allProfiles.filter((p) => p.user_id === userId);
+    for (const profile of userProfiles) {
+      await db.delete('profiles', profile.id);
+      deleted.profiles++;
+    }
+    
+    // Удаляем оценки (assessments) для всех профилей пользователя
+    const allAssessments = await db.getAll('assessments');
+    const profileIds = userProfiles.map((p) => p.id);
+    const userAssessments = allAssessments.filter((a) => profileIds.includes(a.profile_id));
+    const assessmentIds: string[] = [];
+    for (const assessment of userAssessments) {
+      assessmentIds.push(assessment.id);
+      await db.delete('assessments', assessment.id);
+      deleted.assessments++;
+    }
+    
+    // Удаляем ответы (answers) для всех оценок
+    const allAnswers = await db.getAll('answers');
+    const userAnswers = allAnswers.filter((a) => assessmentIds.includes(a.assessment_id));
+    for (const answer of userAnswers) {
+      await db.delete('answers', answer.id);
+      deleted.answers++;
+    }
+    
+    // Удаляем записи на консультации (appointments)
+    const allAppointments = await db.getAll('appointments');
+    const userAppointments = allAppointments.filter((a) => a.user_id === userId);
+    for (const appointment of userAppointments) {
+      await db.delete('appointments', appointment.id);
+      deleted.appointments++;
+    }
+    
+    // Удаляем платежи (payments)
+    const allPayments = await db.getAll('payments');
+    const userPayments = allPayments.filter((p) => p.user_id === userId);
+    for (const payment of userPayments) {
+      await db.delete('payments', payment.id);
+      deleted.payments++;
+    }
+    
+    // Удаляем сообщения (messages), где пользователь является отправителем или получателем
+    const allMessages = await db.getAll('messages');
+    const userMessages = allMessages.filter(
+      (m) => m.sender_id === userId || m.recipient_id === userId || m.actual_sender_id === userId
+    );
+    for (const message of userMessages) {
+      await db.delete('messages', message.id);
+      deleted.messages++;
+    }
+    
+    // Проверяем и очищаем текущую сессию, если она принадлежит этому пользователю
+    const authData = await db.get('auth', 'current');
+    if (authData && authData.user && authData.user.id === userId) {
+      await db.put('auth', {
+        key: 'current',
+        user: null,
+        session: null,
+      });
+      deleted.auth = true;
+    }
+    
+    return {
+      success: true,
+      deleted,
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      deleted: {},
+      error: error?.message || 'Неизвестная ошибка при удалении пользователя',
+    };
+  }
+}

@@ -11,6 +11,9 @@ export interface ChecklistItem {
   autoCheck?: boolean; // Автоматически проверяется системой
   link?: string; // Ссылка для действия
   linkText?: string; // Текст ссылки
+  requiresDevice?: boolean; // Требует доставки устройства (status === 'delivered')
+  disabled?: boolean; // Пункт неактивен (например, требует доставки устройства)
+  hideWhenDeviceDelivered?: boolean; // Скрывается после получения устройства
 }
 
 export interface OnboardingChecklistState {
@@ -41,18 +44,26 @@ export const CHECKLIST_ITEMS: Omit<ChecklistItem, 'completed'>[] = [
     linkText: 'Открыть',
   },
   {
-    id: 'fill_profiles',
-    title: 'Заполнить профили участников',
-    description: 'Добавьте информацию о себе и членах семьи',
-    autoCheck: true, // Проверяется автоматически по наличию профилей
-    link: '/family-members',
-    linkText: 'Открыть',
-  },
-  {
     id: 'learn_neurofeedback',
     title: 'Познакомиться с методом нейрофидбэка',
     description: 'Узнайте, как работает технология',
     link: 'https://waves.ai/neurofeedback',
+    linkText: 'Открыть',
+  },
+  {
+    id: 'fill_profiles',
+    title: 'Заполнить профили участников',
+    description: 'Добавьте информацию о себе и членах семьи',
+    autoCheck: true, // Проверяется автоматически по наличию профилей
+    link: '/add-family-member',
+    linkText: 'Создать нового',
+  },
+  {
+    id: 'set_training_goals',
+    title: 'Настроить цели тренировок',
+    description: 'Выберите цели для каждого участника',
+    autoCheck: false, // Ручная проверка пользователем
+    link: '/cabinet/goals',
     linkText: 'Открыть',
   },
   {
@@ -61,16 +72,27 @@ export const CHECKLIST_ITEMS: Omit<ChecklistItem, 'completed'>[] = [
     description: 'Установите приложение Waves на телефон',
     link: 'https://waves.ai/app',
     linkText: 'Скачать',
+    requiresDevice: true, // Требует доставки устройства
+  },
+  {
+    id: 'bind_licenses',
+    title: 'Привязать лицензии к участнику и устройству',
+    description: 'Настройте привязку лицензий к участникам и устройству',
+    link: '/cabinet/licenses',
+    linkText: 'Открыть',
+    requiresDevice: true, // Требует доставки устройства
   },
   {
     id: 'test_device',
     title: 'Подключить и протестировать устройство',
     description: 'Убедитесь, что устройство работает корректно',
+    requiresDevice: true, // Требует доставки устройства
   },
   {
     id: 'complete_tutorial',
     title: 'Пройти инструктаж в мобильном приложении',
     description: 'Завершите обучение в приложении',
+    requiresDevice: true, // Требует доставки устройства
   },
 ];
 
@@ -84,8 +106,15 @@ interface UseOnboardingChecklistOptions {
 function checkHasLicense(): boolean {
   try {
     const stored = localStorage.getItem('waves_licenses');
-    const licenses = stored ? JSON.parse(stored) : [];
-    return licenses.length > 0;
+    if (!stored) return false;
+    
+    const licenses = JSON.parse(stored);
+    if (!Array.isArray(licenses) || licenses.length === 0) {
+      return false;
+    }
+    
+    // Проверяем, есть ли хотя бы одна активная лицензия
+    return licenses.some((license: any) => license.status === 'active');
   } catch {
     return false;
   }
@@ -102,6 +131,21 @@ function checkHasDevice(userId: string | undefined): boolean {
   }
 }
 
+// Хелпер для проверки доставки устройства (status === 'delivered')
+function checkIsDeviceDelivered(userId: string | undefined): boolean {
+  if (!userId) return false;
+  try {
+    const stored = localStorage.getItem(`waves_device_${userId}`);
+    if (!stored) return false;
+    const device = JSON.parse(stored);
+    return device?.status === 'delivered' || 
+           device?.status === 'setup_pending' || 
+           device?.status === 'setup_complete';
+  } catch {
+    return false;
+  }
+}
+
 export function useOnboardingChecklist(options: UseOnboardingChecklistOptions = {}) {
   const { user } = useAuth();
   const { profilesCount = 0 } = options;
@@ -110,6 +154,7 @@ export function useOnboardingChecklist(options: UseOnboardingChecklistOptions = 
   const [autoChecks, setAutoChecks] = useState({
     hasLicense: options.hasLicense ?? checkHasLicense(),
     hasDevice: options.hasDevice ?? checkHasDevice(user?.id),
+    isDeviceDelivered: checkIsDeviceDelivered(user?.id),
   });
 
   // Периодически проверяем наличие лицензии и устройства
@@ -118,6 +163,7 @@ export function useOnboardingChecklist(options: UseOnboardingChecklistOptions = 
       setAutoChecks({
         hasLicense: options.hasLicense ?? checkHasLicense(),
         hasDevice: options.hasDevice ?? checkHasDevice(user?.id),
+        isDeviceDelivered: checkIsDeviceDelivered(user?.id),
       });
     };
 
@@ -262,6 +308,8 @@ export function useOnboardingChecklist(options: UseOnboardingChecklistOptions = 
       return {
         ...item,
         completed,
+        // Если пункт требует доставки устройства, но устройство не доставлено - не показываем как выполненный
+        disabled: item.requiresDevice && !autoChecks.isDeviceDelivered,
       };
     });
   }, [state.items, profilesCount, autoChecks]);

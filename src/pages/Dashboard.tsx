@@ -1154,7 +1154,7 @@ export default function Dashboard() {
                 variant="ghost"
                 size="sm"
                 className="text-muted-foreground hover:text-foreground hover:bg-muted/50 font-light"
-                onClick={() => navigate("/add-family-member", { state: { from: 'cabinet' } })}
+                onClick={() => navigate("/family-members", { state: { from: 'cabinet' } })}
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Добавить члена семьи
@@ -1168,7 +1168,7 @@ export default function Dashboard() {
                 variant="ghost"
                 size="sm"
                 className="text-muted-foreground hover:text-foreground hover:bg-muted/50 font-light"
-                onClick={() => navigate("/add-family-member", { state: { from: 'cabinet' } })}
+                onClick={() => navigate("/profile")}
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Добавить члена семьи

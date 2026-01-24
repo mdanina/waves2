@@ -316,6 +316,24 @@ export default function TrainingGoals() {
     );
   }
 
+  // Если профилей нет - показываем уведомление
+  if (!profiles || profiles.length === 0) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-8">
+        <Card className="glass-elegant p-8 text-center" style={{ background: 'rgba(255, 255, 255, 0.25)' }}>
+          <div className="space-y-4">
+            <SerifHeading size="xl" className="mb-2">
+              Пока не подключены участники
+            </SerifHeading>
+            <p className="text-muted-foreground">
+              Раздел будет доступен после добавления участников.
+            </p>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">
       {/* Заголовок */}

@@ -30,9 +30,14 @@ const mainNavigation = [
     iconName: 'smartphone',
   },
   {
-    name: 'Участники',
-    href: '/family-members',
-    iconName: 'users',
+    name: 'Цели тренировок',
+    href: '/cabinet/goals',
+    iconName: 'target',
+  },
+  {
+    name: 'Прогресс',
+    href: '/checkup-history',
+    iconName: 'trending-up',
   },
   {
     name: 'Написать в поддержку',
@@ -73,7 +78,7 @@ export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
   const location = useLocation();
 
   return (
-    <nav className="flex-1 p-4 space-y-1 overflow-y-auto overflow-x-hidden">
+    <nav className="flex-1 p-4 space-y-1 overflow-y-auto overflow-x-hidden sidebar-scrollbar">
       {mainNavigation.map((item) => {
         const isActive = item.external
           ? false

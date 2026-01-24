@@ -62,13 +62,6 @@ export const DEVICE_SETUP_STEPS: Omit<DeviceSetupStep, 'completed'>[] = [
     description: 'Полностью зарядите перед первым использованием',
   },
   {
-    id: 'download_app',
-    title: 'Скачать приложение Waves',
-    description: 'Установите приложение на телефон',
-    link: 'https://waves.ai/app',
-    linkText: 'Скачать',
-  },
-  {
     id: 'pair_device',
     title: 'Подключить нейроустройство к приложению',
     description: 'Следуйте инструкциям в приложении',

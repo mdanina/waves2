@@ -177,15 +177,23 @@ export default function Profile() {
           toast.success("Профиль успешно создан!");
         }
 
-        // Определяем, откуда пришли: cabinet, family-members или первичная настройка
+        // Определяем, откуда пришли: cabinet, family-members или первичная настройка (онбординг)
         const from = location.state?.from;
         const isEditing = from === 'cabinet' || hasCompletedOnboardingRef.current;
 
         if (isEditing) {
           navigate("/cabinet");
         } else if (from === 'family-members') {
-          navigate("/family-members");
+          // Если пришли из family-members и онбординг не завершен - продолжаем онбординг
+          // Если онбординг завершен - возвращаемся на family-members
+          if (hasCompletedOnboardingRef.current) {
+            navigate("/family-members");
+          } else {
+            // Продолжаем онбординг
+            navigate("/family-setup");
+          }
         } else {
+          // Первичная настройка (онбординг после заказа доставки) → настройка семьи
           navigate("/family-setup");
         }
       } catch (error) {

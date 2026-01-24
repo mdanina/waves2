@@ -198,7 +198,15 @@ export function OnboardingChecklist({
                 index={index}
                 isCurrent={currentItem?.id === item.id}
                 onToggle={() => !item.autoCheck && toggleItem(item.id)}
-                onNavigate={(path) => navigate(path)}
+                onNavigate={(path) => {
+                  // Для пункта fill_profiles: если нет профилей - начинаем онбординг с /profile
+                  const fillProfilesItem = items.find(item => item.id === 'fill_profiles');
+                  if (fillProfilesItem && path === fillProfilesItem.link && profilesCount === 0) {
+                    navigate('/profile');
+                  } else {
+                    navigate(path);
+                  }
+                }}
                 onMarkCompleted={(itemId) => markCompleted(itemId, true)}
               />
             ))}
@@ -360,11 +368,12 @@ function ChecklistItemRow({ item, index, isCurrent, onToggle, onNavigate, onMark
     <div
       className={cn(
         'flex items-start gap-3 p-3 rounded-xl transition-all duration-200',
-        isCurrent && !item.completed && 'bg-white/50',
+        isCurrent && !item.completed && !item.disabled && 'bg-white/50',
         item.completed && 'opacity-60',
-        (isClickable || item.completed) && 'cursor-pointer hover:bg-white/50'
+        item.disabled && 'opacity-50 cursor-not-allowed',
+        (isClickable || item.completed) && !item.disabled && 'cursor-pointer hover:bg-white/50'
       )}
-      onClick={isClickable ? onToggle : item.completed ? () => onToggle() : undefined}
+      onClick={!item.disabled && (isClickable ? onToggle : item.completed ? () => onToggle() : undefined)}
     >
       {/* Чекбокс */}
       <div className="flex-shrink-0 mt-0.5">
@@ -410,20 +419,21 @@ function ChecklistItemRow({ item, index, isCurrent, onToggle, onNavigate, onMark
           <div className="flex-1 min-w-0">
             <p className={cn(
               'transition-all',
-              item.completed && 'line-through text-muted-foreground'
+              item.completed && 'line-through text-muted-foreground',
+              item.disabled && 'opacity-50'
             )}>
               {item.title}
             </p>
+              {item.disabled && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  Откроется после получения устройства
+                </p>
+              )}
           </div>
 
           {/* Бейджи и кнопки */}
           <div className="flex items-center gap-2 flex-shrink-0">
-            {item.autoCheck && !item.completed && (
-              <Badge variant="secondary" className="text-xs font-light">
-                Автоматически
-              </Badge>
-            )}
-            {item.link && !item.completed && (
+            {item.link && !item.completed && !(item as any).disabled && (
               <>
                 <Button
                   variant="ghost"

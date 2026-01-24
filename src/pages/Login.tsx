@@ -79,17 +79,9 @@ export default function Login() {
       const { getProfiles } = await import('@/lib/profileStorage');
       
       try {
-        const userData = await getCurrentUserData();
-        const profiles = await getProfiles();
-        const parentProfile = profiles.find(p => p.type === 'parent');
-        
-        // Если профиль не заполнен или нет профиля родителя, идем на страницу профиля
-        if (!userData || !userData.phone || !parentProfile) {
-          navigate('/profile');
-        } else {
-          // Профиль заполнен → идем в кабинет
-          navigate('/cabinet');
-        }
+        // После входа всегда идем в кабинет
+        // Профиль заполняется позже, на шаге 3 (при заказе устройства)
+        navigate('/cabinet');
       } catch (profileError) {
         logger.error('Error loading user profile:', profileError);
         // Продолжаем на dashboard даже если ошибка загрузки профиля

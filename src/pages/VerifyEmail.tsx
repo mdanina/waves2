@@ -57,7 +57,7 @@ export default function VerifyEmail() {
             // Очищаем URL от токенов
             window.history.replaceState({}, '', window.location.pathname);
             setTimeout(() => {
-              navigate('/profile', { replace: true });
+              navigate('/cabinet', { replace: true });
             }, 1500);
             return;
           }
@@ -72,7 +72,7 @@ export default function VerifyEmail() {
             // Очищаем URL от кода
             window.history.replaceState({}, '', window.location.pathname);
             setTimeout(() => {
-              navigate('/profile', { replace: true });
+              navigate('/cabinet', { replace: true });
             }, 1500);
             return;
           }
@@ -83,7 +83,7 @@ export default function VerifyEmail() {
             setIsSuccess(true);
             toast.success('Email подтвержден! Добро пожаловать!');
             setTimeout(() => {
-              navigate('/profile', { replace: true });
+              navigate('/cabinet', { replace: true });
             }, 1500);
             return;
           }
@@ -92,8 +92,8 @@ export default function VerifyEmail() {
         // Проверяем текущую сессию (может быть уже авторизован)
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
-          logger.log('Session found, redirecting to profile');
-          navigate('/profile', { replace: true });
+          logger.log('Session found, redirecting to cabinet');
+          navigate('/cabinet', { replace: true });
           return;
         }
       } catch (err) {
@@ -173,7 +173,7 @@ export default function VerifyEmail() {
 
         // Небольшая задержка для показа успешного состояния
         setTimeout(() => {
-          navigate('/profile', { replace: true });
+          navigate('/cabinet', { replace: true });
         }, 1500);
       } else {
         setError('Не удалось создать сессию. Попробуйте войти с паролем.');

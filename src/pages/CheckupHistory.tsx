@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card } from "@/components/ui/card";
 import { useProfiles } from "@/hooks/useProfiles";
 import type { Database } from "@/lib/supabase";
 
@@ -260,6 +261,42 @@ export default function CheckupHistory() {
 
   const totalSessions = filteredSessions.length;
   const totalMinutes = filteredSessions.reduce((sum, s) => sum + s.duration, 0);
+
+  // Если профилей нет - показываем уведомление
+  if (!profiles || profiles.length === 0) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-8">
+        <Card className="glass-elegant p-8 text-center" style={{ background: 'rgba(255, 255, 255, 0.25)' }}>
+          <div className="space-y-4">
+            <SerifHeading size="xl" className="mb-2">
+              Пока нет данных о тренировках
+            </SerifHeading>
+            <p className="text-muted-foreground">
+              Раздел будет доступен после подключения тренировок в мобильном приложении.
+            </p>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  // Если профили есть, но тренировок нет - показываем уведомление
+  if (mockSessions.length === 0) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-8">
+        <Card className="glass-elegant p-8 text-center" style={{ background: 'rgba(255, 255, 255, 0.25)' }}>
+          <div className="space-y-4">
+            <SerifHeading size="xl" className="mb-2">
+              Пока нет данных о тренировках
+            </SerifHeading>
+            <p className="text-muted-foreground">
+              Раздел будет доступен после подключения тренировок в мобильном приложении.
+            </p>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-8">

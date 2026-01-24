@@ -295,7 +295,15 @@ export default function FamilyMembers() {
             <Button
               variant="outline"
               size="lg"
-              onClick={() => navigate("/add-family-member")}
+              onClick={() => {
+                // Если список пустой и нет профиля родителя - запускаем онбординг с профиля
+                if (members.length === 0 || !parentProfile) {
+                  navigate("/profile", { state: { from: 'family-members' } });
+                } else {
+                  // Если профили уже есть - просто добавляем нового члена семьи
+                  navigate("/add-family-member", { state: { from: isFromCabinet ? 'cabinet' : undefined } });
+                }
+              }}
               className="h-14 w-full text-base font-medium hover:border-coral hover:text-coral transition-colors"
             >
               <Plus className="mr-2 h-5 w-5" />

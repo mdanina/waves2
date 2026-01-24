@@ -468,6 +468,35 @@
     display: none;
   }
 
+  /* Кастомный скроллбар для сайдбара */
+  .sidebar-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 138, 91, 0.3) transparent;
+  }
+
+  .sidebar-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .sidebar-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+
+  .sidebar-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 138, 91, 0.3);
+    border-radius: 10px;
+    transition: background 0.2s ease;
+  }
+
+  .sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 138, 91, 0.5);
+  }
+
+  .sidebar-scrollbar::-webkit-scrollbar-thumb:active {
+    background: rgba(255, 138, 91, 0.7);
+  }
+
   .bg-gradient-honey { background: var(--gradient-honey); }
   .bg-gradient-sage { background: var(--gradient-sage); }
   .bg-gradient-lavender { background: var(--gradient-lavender); }
