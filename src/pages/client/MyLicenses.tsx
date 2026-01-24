@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { SerifHeading } from '@/components/design-system/SerifHeading';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ProfileAvatar } from '@/components/avatars/ProfileAvatar';
 import {
   Plus,
   Check,
@@ -526,11 +527,11 @@ export default function MyLicenses() {
                                   }
                                 }}
                               >
-                                <Avatar className="h-10 w-10">
-                                  <AvatarFallback>
-                                    {profile.first_name[0]}
-                                  </AvatarFallback>
-                                </Avatar>
+                                <ProfileAvatar
+                                  type={(profile.type || 'parent') as 'parent' | 'child'}
+                                  gender={(profile.gender || 'female') as 'male' | 'female'}
+                                  size="sm"
+                                />
                                 <div className="flex-1">
                                   <p className="font-medium">
                                     {profile.first_name} {profile.last_name || ''}
@@ -561,11 +562,17 @@ export default function MyLicenses() {
                         >
                           {/* Информация об участнике */}
                           <div className="flex items-center gap-3">
-                            <Avatar className="h-10 w-10">
-                              <AvatarFallback>
-                                {seat.profile?.first_name?.[0] || '?'}
-                              </AvatarFallback>
-                            </Avatar>
+                            {seat.profile ? (
+                              <ProfileAvatar
+                                type={(seat.profile.type || 'parent') as 'parent' | 'child'}
+                                gender={(seat.profile.gender || 'female') as 'male' | 'female'}
+                                size="sm"
+                              />
+                            ) : (
+                              <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium">
+                                ?
+                              </div>
+                            )}
                             <div className="flex-1">
                               <p className="font-medium">
                                 {seat.profile?.first_name} {seat.profile?.last_name || ''}

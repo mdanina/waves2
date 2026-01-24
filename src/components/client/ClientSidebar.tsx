@@ -7,7 +7,8 @@ import {
   Users,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { useProfiles } from '@/hooks/useProfiles';
+import { ProfileAvatar } from '@/components/avatars/ProfileAvatar';
 import { Button } from '@/components/ui/button';
 // import { Badge } from '@/components/ui/badge'; // Temporarily disabled
 // import { getUnreadCount } from '@/lib/supabase-messages'; // Temporarily disabled
@@ -169,11 +170,15 @@ export function ClientSidebarNav({ onItemClick }: ClientSidebarNavProps) {
 export function ClientSidebar() {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const { data: profiles } = useProfiles();
 
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
   };
+
+  // Получаем профиль родителя для аватара
+  const parentProfile = profiles?.find(p => p.type === 'parent');
 
   const getUserInitials = () => {
     if (!user?.email || typeof user.email !== 'string') return '?';
@@ -186,7 +191,11 @@ export function ClientSidebar() {
   };
 
   const getUserName = () => {
-    // Можно расширить, получая имя из профиля
+    // Используем имя из профиля, если есть
+    if (parentProfile?.first_name) {
+      return parentProfile.first_name;
+    }
+    // Fallback на email
     if (user?.email && typeof user.email === 'string') {
       const name = user.email.split('@')[0];
       return name.charAt(0).toUpperCase() + name.slice(1);
@@ -262,11 +271,17 @@ export function ClientSidebar() {
             to="/cabinet/settings"
             className="flex items-center gap-3 rounded-lg p-2 -m-2 transition-all duration-200 hover:bg-white/10 cursor-pointer"
           >
-            <Avatar className="h-10 w-10">
-              <AvatarFallback className="bg-[#E0F0FF] text-[#007BFF]">
+            {parentProfile ? (
+              <ProfileAvatar
+                type="parent"
+                gender={(parentProfile.gender || 'female') as 'male' | 'female'}
+                size="sm"
+              />
+            ) : (
+              <div className="h-10 w-10 rounded-full bg-[#E0F0FF] flex items-center justify-center text-[#007BFF] text-sm font-medium">
                 {getUserInitials()}
-              </AvatarFallback>
-            </Avatar>
+              </div>
+            )}
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-foreground truncate">
                 {getUserName()}

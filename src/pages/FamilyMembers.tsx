@@ -11,10 +11,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { SerifHeading } from "@/components/design-system/SerifHeading";
 import { User, Plus, Pencil, Trash2 } from "lucide-react";
 import familyIllustration from "@/assets/minimalistic-and-friendly-vector-style-illustratio — копия.png";
-import parentFemaleAvatar from "@/assets/friendly-and-clean-face-of-an-adult-person--gender.png";
-import parentMaleAvatar from "@/assets/friendly-and-clean-face-of-an-adult-person--gender (1).png";
-import childFemaleAvatar from "@/assets/friendly-and-clean-face-of-a-white-girl-7-yo--soft.png";
-import childMaleAvatar from "@/assets/friendly-and-clean-face-of-a-white-boy-7-yo--soft- (1).png";
+import { ProfileAvatar } from "@/components/avatars/ProfileAvatar";
 import { getProfiles, deleteProfile, calculateAge } from "@/lib/profileStorage";
 import { useAuth } from "@/contexts/AuthContext";
 import type { Database } from "@/lib/supabase";
@@ -95,14 +92,11 @@ export default function FamilyMembers() {
   }, [location.pathname]); // Перезагружаем при изменении маршрута
 
   // Функция для выбора аватара на основе типа профиля и пола
-  const getAvatarImage = useCallback((member: Profile) => {
-    if (member.type === 'parent') {
-      return member.gender === 'male' ? parentMaleAvatar : parentFemaleAvatar;
-    } else if (member.type === 'child') {
-      return member.gender === 'male' ? childMaleAvatar : childFemaleAvatar;
-    }
-    // Fallback на женский аватар для других типов
-    return parentFemaleAvatar;
+  const getAvatarProps = useCallback((member: Profile) => {
+    return {
+      type: (member.type || 'parent') as 'parent' | 'child',
+      gender: (member.gender || 'female') as 'male' | 'female',
+    };
   }, []);
 
   const handleDelete = async (id: string) => {
@@ -235,11 +229,7 @@ export default function FamilyMembers() {
                     key={member.id}
                     className="flex items-center gap-4 rounded-lg border border-border bg-card p-4 transition-shadow hover:shadow-md"
                   >
-                    <img 
-                      src={getAvatarImage(member)}
-                      alt={`${member.first_name} ${member.last_name || ''}`}
-                      className="h-14 w-14 rounded-full object-cover"
-                    />
+                    <ProfileAvatar {...getAvatarProps(member)} size="md" />
                     <div className="flex-1">
                       <p className="font-semibold text-foreground">
                         {member.first_name} {member.last_name || ''}

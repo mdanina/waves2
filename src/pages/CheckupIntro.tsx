@@ -8,8 +8,7 @@ import { getProfile, isEligibleForCheckup, CHECKUP_MIN_AGE, CHECKUP_MAX_AGE } fr
 import { useAssessment } from "@/hooks/useAssessment";
 import { checkupQuestions } from "@/data/checkupQuestions";
 import type { Database } from "@/lib/supabase";
-import childFemaleAvatar from "@/assets/friendly-and-clean-face-of-a-white-girl-7-yo--soft.png";
-import childMaleAvatar from "@/assets/friendly-and-clean-face-of-a-white-boy-7-yo--soft- (1).png";
+import { ProfileAvatar } from "@/components/avatars/ProfileAvatar";
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
@@ -49,11 +48,14 @@ export default function CheckupIntro() {
   }, [currentStep]);
 
   // Функция для выбора аватара на основе пола ребенка
-  const getAvatarImage = useCallback((profile: Profile | null) => {
+  const getAvatarProps = useCallback((profile: Profile | null) => {
     if (!profile) {
-      return childFemaleAvatar; // Fallback
+      return { type: 'child' as const, gender: 'female' as const };
     }
-    return profile.gender === 'male' ? childMaleAvatar : childFemaleAvatar;
+    return {
+      type: 'child' as const,
+      gender: (profile.gender || 'female') as 'male' | 'female',
+    };
   }, []);
 
   useEffect(() => {
@@ -97,11 +99,9 @@ export default function CheckupIntro() {
 
       <div className="container mx-auto max-w-2xl px-4 py-20">
         <div className="space-y-12 text-center">
-          <img
-            src={getAvatarImage(profile)}
-            alt={profile ? `${profile.first_name}` : "Ребенок"}
-            className="mx-auto h-80 w-80 rounded-full object-cover"
-          />
+          <div className="mx-auto">
+            <ProfileAvatar {...getAvatarProps(profile)} size="xl" />
+          </div>
 
           {eligibility && !eligibility.eligible ? (
             // Ребенок не подходит по возрасту

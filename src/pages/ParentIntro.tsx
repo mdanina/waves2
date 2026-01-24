@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { getProfiles } from "@/lib/profileStorage";
 import type { Database } from "@/lib/supabase";
-import parentFemaleAvatar from "@/assets/friendly-and-clean-face-of-an-adult-person--gender.png";
-import parentMaleAvatar from "@/assets/friendly-and-clean-face-of-an-adult-person--gender (1).png";
+import { ProfileAvatar } from "@/components/avatars/ProfileAvatar";
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
@@ -16,11 +15,14 @@ export default function ParentIntro() {
   const [parentProfile, setParentProfile] = useState<Profile | null>(null);
 
   // Функция для выбора аватара на основе пола родителя
-  const getAvatarImage = useCallback((profile: Profile | null) => {
+  const getAvatarProps = useCallback((profile: Profile | null) => {
     if (!profile) {
-      return parentFemaleAvatar; // Fallback
+      return { type: 'parent' as const, gender: 'female' as const };
     }
-    return profile.gender === 'male' ? parentMaleAvatar : parentFemaleAvatar;
+    return {
+      type: 'parent' as const,
+      gender: (profile.gender || 'female') as 'male' | 'female',
+    };
   }, []);
 
   useEffect(() => {
@@ -54,11 +56,9 @@ export default function ParentIntro() {
 
       <div className="container mx-auto max-w-2xl px-4 py-20">
         <div className="space-y-12">
-          <img
-            src={getAvatarImage(parentProfile)}
-            alt={parentProfile ? parentProfile.first_name : "Родитель"}
-            className="mx-auto h-64 w-64 rounded-full object-cover"
-          />
+          <div className="mx-auto">
+            <ProfileAvatar {...getAvatarProps(parentProfile)} size="xl" />
+          </div>
           
           <div className="space-y-6">
             <h1 className="text-4xl font-bold text-foreground">

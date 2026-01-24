@@ -9,7 +9,8 @@ import {
 } from '@/components/ui/sheet';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { useProfiles } from '@/hooks/useProfiles';
+import { ProfileAvatar } from '@/components/avatars/ProfileAvatar';
 import { cn } from '@/lib/utils';
 import bgImage from '@/assets/bg.png';
 
@@ -41,6 +42,9 @@ export function ClientLayout() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { data: profiles } = useProfiles();
+  
+  const parentProfile = profiles?.find(p => p.type === 'parent');
 
   const handleSignOut = async () => {
     await signOut();
@@ -193,11 +197,17 @@ export function ClientLayout() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-3 rounded-lg p-2 -m-2 transition-all duration-200 hover:bg-white/10 cursor-pointer"
               >
-                <Avatar className="h-10 w-10">
-                  <AvatarFallback className="bg-[#E0F0FF] text-[#007BFF]">
+                {parentProfile ? (
+                  <ProfileAvatar
+                    type="parent"
+                    gender={(parentProfile.gender || 'female') as 'male' | 'female'}
+                    size="sm"
+                  />
+                ) : (
+                  <div className="h-10 w-10 rounded-full bg-[#E0F0FF] flex items-center justify-center text-[#007BFF] text-sm font-medium">
                     {getUserInitials()}
-                  </AvatarFallback>
-                </Avatar>
+                  </div>
+                )}
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-foreground truncate">
                     {getUserName()}

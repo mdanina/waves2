@@ -24,6 +24,7 @@ export interface Device {
     address: string;
     postal_code: string;
     comment?: string;
+    size?: 'S' | 'M' | 'L';
   };
 
   // Отслеживание доставки

@@ -1,10 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import consultationIllustration from "@/assets/friendly-and-clean-vector-style-illustration-of-a-.png";
 import checkupIllustration from "@/assets/minimalistic-and-friendly-vector-style-illustratio (1).png";
-import parentFemaleAvatar from "@/assets/friendly-and-clean-face-of-an-adult-person--gender.png";
-import parentMaleAvatar from "@/assets/friendly-and-clean-face-of-an-adult-person--gender (1).png";
-import childFemaleAvatar from "@/assets/friendly-and-clean-face-of-a-white-girl-7-yo--soft.png";
-import childMaleAvatar from "@/assets/friendly-and-clean-face-of-a-white-boy-7-yo--soft- (1).png";
+import { ProfileAvatar } from "@/components/avatars/ProfileAvatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -232,15 +229,12 @@ export default function Dashboard() {
     return parentProfile?.first_name || null;
   }, [profiles]);
 
-  // Функция для выбора аватара на основе типа профиля и пола
-  const getAvatarImage = useCallback((member: MemberWithAssessment) => {
-    if (member.type === 'parent') {
-      return member.gender === 'male' ? parentMaleAvatar : parentFemaleAvatar;
-    } else if (member.type === 'child') {
-      return member.gender === 'male' ? childMaleAvatar : childFemaleAvatar;
-    }
-    // Fallback на женский аватар для других типов
-    return parentFemaleAvatar;
+  // Функция для получения пропсов аватара на основе типа профиля и пола
+  const getAvatarProps = useCallback((member: MemberWithAssessment) => {
+    return {
+      type: (member.type || 'parent') as 'parent' | 'child',
+      gender: (member.gender || 'female') as 'male' | 'female',
+    };
   }, []);
 
   // Фильтруем предстоящие консультации (scheduled, in_progress, payment_pending, исключаем completed и cancelled)
@@ -956,16 +950,14 @@ export default function Dashboard() {
         ) : null}
 
         {/* Приветствие */}
-        {parentName && (
-          <div className="mb-8">
-            <SerifHeading size="xl" className="mb-2 text-2xl sm:text-3xl">
-              Привет, {parentName}!
-            </SerifHeading>
-            <p className="text-base text-muted-foreground">
-              Добро пожаловать в систему нейротренинга Waves
-            </p>
-          </div>
-        )}
+        <div className="mb-8">
+          <SerifHeading size="xl" className="mb-2 text-2xl sm:text-3xl">
+            {parentName ? `Привет, ${parentName}!` : 'Привет!'}
+          </SerifHeading>
+          <p className="text-base text-muted-foreground">
+            Добро пожаловать в систему нейротренинга Waves
+          </p>
+        </div>
 
         {/* Onboarding Checklist */}
         <OnboardingChecklist
@@ -1226,11 +1218,9 @@ export default function Dashboard() {
                           className="glass-elegant min-w-[320px] flex-shrink-0 flex flex-col border-2 p-6 transition-all hover:shadow-md"
                         >
                           <div className="flex flex-col items-center text-center flex-1">
-                            <img 
-                              src={getAvatarImage(member)}
-                              alt={`${member.first_name} ${member.last_name || ''}`}
-                              className="h-20 w-20 rounded-full object-cover mb-4"
-                            />
+                            <div className="mb-4">
+                              <ProfileAvatar {...getAvatarProps(member)} size="lg" />
+                            </div>
                             <div className="flex items-center gap-3 mb-2">
                               <SerifHeading size="lg">
                                 {member.first_name} {member.last_name || ''}

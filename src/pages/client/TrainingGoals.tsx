@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { SerifHeading } from '@/components/design-system/SerifHeading';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ProfileAvatar } from '@/components/avatars/ProfileAvatar';
 import { Uicon } from '@/components/icons/Uicon';
 import {
   Check,
@@ -380,11 +381,11 @@ export default function TrainingGoals() {
                       }
                     }}
                   >
-                    <Avatar className="h-12 w-12">
-                      <AvatarFallback className="bg-muted">
-                        {profile.first_name[0]}
-                      </AvatarFallback>
-                    </Avatar>
+                    <ProfileAvatar
+                      type={(profile.type || 'parent') as 'parent' | 'child'}
+                      gender={(profile.gender || 'female') as 'male' | 'female'}
+                      size="md"
+                    />
                     <div className="flex-1 min-w-0">
                       <p className="font-medium truncate">
                         {profile.first_name} {profile.last_name || ''}

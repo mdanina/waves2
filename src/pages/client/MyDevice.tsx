@@ -27,6 +27,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
@@ -109,12 +116,13 @@ export default function MyDevice() {
     address: '',
     postal_code: '',
     comment: '',
+    size: '' as 'S' | 'M' | 'L' | '',
   });
 
   const handleOrderSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!orderForm.full_name || !orderForm.phone || !orderForm.city || !orderForm.address) {
+    if (!orderForm.full_name || !orderForm.phone || !orderForm.city || !orderForm.address || !orderForm.size) {
       toast.error('Заполните все обязательные поля');
       return;
     }
@@ -128,6 +136,7 @@ export default function MyDevice() {
         address: orderForm.address,
         postal_code: orderForm.postal_code,
         comment: orderForm.comment || undefined,
+        size: orderForm.size,
       });
       toast.success('Заказ оформлен! Мы свяжемся с вами для подтверждения.');
       setShowOrderForm(false);
@@ -234,69 +243,6 @@ export default function MyDevice() {
         </Card>
       )}
 
-      {/* Устройство заказано - отслеживание */}
-      {hasDevice && device && !isDelivered && ( 
-                  но не найдено в системе. Возможно, устройство еще не доставлено или требуется настройка.
-                </p>
-                <div className="space-y-3">
-                  <Button
-                    size="lg"
-                    onClick={() => setShowOrderForm(true)}
-                    className="bg-gradient-to-r from-coral to-coral-light hover:opacity-90 w-full"
-                  >
-                    <Package className="h-5 w-5 mr-2" />
-                    Указать адрес доставки
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    onClick={() => navigate('/cabinet/licenses')}
-                    className="w-full"
-                  >
-                    Вернуться к лицензиям
-                  </Button>
-                </div>
-              </>
-            ) : hasLicense ? (
-              <>
-                <SerifHeading size="xl" className="mb-3">
-                  Дооформите доставку нейроустройства
-                </SerifHeading>
-                <p className="text-muted-foreground mb-6">
-                  Вы приобрели лицензию с нейроустройством. Теперь нужно указать адрес доставки, чтобы мы могли отправить вам его.
-                </p>
-                <Button
-                  size="lg"
-                  onClick={() => setShowOrderForm(true)}
-                  className="bg-gradient-to-r from-coral to-coral-light hover:opacity-90"
-                >
-                  <Package className="h-5 w-5 mr-2" />
-                  Указать адрес доставки
-                </Button>
-              </>
-            ) : (
-              <>
-                <SerifHeading size="xl" className="mb-3">
-                  У вас ещё нет устройства
-                </SerifHeading>
-                <p className="text-muted-foreground mb-6">
-                  Устройство нейрофидбэка входит в состав лицензии.
-                  Оформите заказ, и мы доставим его вам.
-                </p>
-                <Button
-                  size="lg"
-                  onClick={() => navigate('/cabinet/licenses')}
-                  className="bg-gradient-to-r from-coral to-coral-light hover:opacity-90"
-                >
-                  <Package className="h-5 w-5 mr-2" />
-                  Купить лицензию с устройством
-                </Button>
-              </>
-            )}
-          </div>
-        </Card>
-      )}
-
       {/* Форма заказа */}
       {!hasDevice && showOrderForm && (
         <Card className="glass-elegant border-2 p-6 sm:p-8">
@@ -360,6 +306,34 @@ export default function MyDevice() {
                 placeholder="Улица, дом, квартира"
                 required
               />
+            </div>
+
+            <div className="space-y-3">
+              <div className="space-y-2">
+                <Label htmlFor="device_size">Размер устройства *</Label>
+                <Select
+                  value={orderForm.size}
+                  onValueChange={(value) => setOrderForm(prev => ({ ...prev, size: value as 'S' | 'M' | 'L' }))}
+                >
+                  <SelectTrigger id="device_size">
+                    <SelectValue placeholder="Выберите размер" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="S">S (48–52 см)</SelectItem>
+                    <SelectItem value="M">M (52–57 см)</SelectItem>
+                    <SelectItem value="L">L (57–63 см)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="p-3 bg-muted/30 rounded-lg border border-border/50">
+                <div className="flex items-start gap-2">
+                  <AlertCircle className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
+                  <div className="text-sm text-muted-foreground">
+                    <p className="font-medium text-foreground mb-1">Почему важно выбрать правильный размер?</p>
+                    <p>Правильно подобранный размер устройства обеспечивает комфортное использование и точность измерений. Неправильный размер может привести к дискомфорту и снижению эффективности тренировок.</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -443,18 +417,39 @@ export default function MyDevice() {
               </div>
             )}
 
-            {/* Адрес доставки */}
+            {/* Данные заказа */}
             {device.shipping_address && (
               <div className="mt-4 p-4 bg-muted/50 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <MapPin className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm font-medium">Адрес доставки</span>
+                  <span className="text-sm font-medium">Данные заказа</span>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  {device.shipping_address.full_name}<br />
-                  {device.shipping_address.city}, {device.shipping_address.address}
-                  {device.shipping_address.postal_code && `, ${device.shipping_address.postal_code}`}
-                </p>
+                <div className="space-y-2 text-sm text-muted-foreground">
+                  <p>
+                    <span className="font-medium text-foreground">Получатель:</span> {device.shipping_address.full_name}
+                  </p>
+                  <p>
+                    <span className="font-medium text-foreground">Телефон:</span> {device.shipping_address.phone}
+                  </p>
+                  <p>
+                    <span className="font-medium text-foreground">Адрес:</span> {device.shipping_address.city}, {device.shipping_address.address}
+                    {device.shipping_address.postal_code && `, ${device.shipping_address.postal_code}`}
+                  </p>
+                  {device.shipping_address.size && (
+                    <p>
+                      <span className="font-medium text-foreground">Размер устройства:</span> {device.shipping_address.size} {
+                        device.shipping_address.size === 'S' ? '(48–52 см)' :
+                        device.shipping_address.size === 'M' ? '(52–57 см)' :
+                        '(57–63 см)'
+                      }
+                    </p>
+                  )}
+                  {device.shipping_address.comment && (
+                    <p>
+                      <span className="font-medium text-foreground">Комментарий:</span> {device.shipping_address.comment}
+                    </p>
+                  )}
+                </div>
               </div>
             )}
           </Card>
