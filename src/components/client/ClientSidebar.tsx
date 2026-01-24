@@ -20,9 +20,9 @@ const mainNavigation = [
     end: true,
   },
   {
-    name: 'Цели тренировок',
-    href: '/cabinet/goals',
-    iconName: 'target',
+    name: 'Мои лицензии',
+    href: '/cabinet/licenses',
+    iconName: 'credit-card',
   },
   {
     name: 'Мое нейроустройство',
@@ -30,14 +30,9 @@ const mainNavigation = [
     iconName: 'smartphone',
   },
   {
-    name: 'Мои лицензии',
-    href: '/cabinet/licenses',
-    iconName: 'credit-card',
-  },
-  {
-    name: 'Прогресс',
-    href: '/checkup-history',
-    iconName: 'trending-up',
+    name: 'Участники',
+    href: '/family-members',
+    iconName: 'users',
   },
   {
     name: 'Написать в поддержку',

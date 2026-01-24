@@ -5,7 +5,7 @@ import { StepIndicator } from "@/components/StepIndicator";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, CreditCard } from "lucide-react";
 import bgImage from '@/assets/bg.png';
 import { Avatar } from "@/components/ui/avatar";
 import { SerifHeading } from "@/components/design-system/SerifHeading";
@@ -21,6 +21,23 @@ import type { Database } from "@/lib/supabase";
 type Profile = Database['public']['Tables']['profiles']['Row'];
 import { toast } from "sonner";
 import { logger } from "@/lib/logger";
+
+// Проверка наличия лицензии
+function useHasLicense() {
+  const [hasLicense, setHasLicense] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('waves_licenses');
+      const licenses = stored ? JSON.parse(stored) : [];
+      setHasLicense(licenses.length > 0);
+    } catch {
+      setHasLicense(false);
+    }
+  }, []);
+
+  return hasLicense;
+}
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,6 +57,10 @@ export default function FamilyMembers() {
   const [members, setMembers] = useState<Profile[]>([]);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const hasLicense = useHasLicense();
+
+  // Проверяем, пришёл ли пользователь из cabinet (не onboarding)
+  const isFromCabinet = location.state?.from === 'cabinet';
 
   useEffect(() => {
     let cancelled = false;
@@ -116,6 +137,46 @@ export default function FamilyMembers() {
     navigate("/cabinet");
   };
 
+  // Заглушка для пользователей без лицензии (только из cabinet)
+  if (isFromCabinet && hasLicense === false) {
+    return (
+      <div
+        className="min-h-screen"
+        style={{
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className="container mx-auto max-w-2xl px-4 py-12">
+          <Card className="rounded-[20px] border-2 bg-white p-8 shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
+            <div className="text-center py-8">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-muted/50 flex items-center justify-center">
+                <CreditCard className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <SerifHeading size="xl" className="mb-4">
+                Управление участниками
+              </SerifHeading>
+              <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                Раздел станет доступен после приобретения лицензии.
+                Здесь вы сможете добавить членов семьи, которые будут использовать платформу.
+              </p>
+              <Button
+                onClick={() => navigate('/cabinet/licenses')}
+                className="bg-gradient-to-r from-coral to-coral-light hover:opacity-90"
+              >
+                <CreditCard className="h-4 w-4 mr-2" />
+                Приобрести лицензию
+              </Button>
+            </div>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className="min-h-screen"
@@ -129,7 +190,8 @@ export default function FamilyMembers() {
     >
       <div className="container mx-auto max-w-2xl px-4 py-12">
         <Card className="rounded-[20px] border-2 bg-white p-8 shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
-          <StepIndicator currentStep={3} totalSteps={3} label="ПРОФИЛЬ СЕМЬИ" />
+          {/* StepIndicator только для onboarding */}
+          {!isFromCabinet && <StepIndicator currentStep={3} totalSteps={3} label="ПРОФИЛЬ СЕМЬИ" />}
           
           <div className="space-y-8 mt-8">
           <div className="text-center">
