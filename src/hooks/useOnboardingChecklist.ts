@@ -22,18 +22,30 @@ export interface OnboardingChecklistState {
 const STORAGE_KEY = 'waves_onboarding_checklist';
 
 // Определение пунктов чек-листа
+// НОВЫЙ ПОРЯДОК: лицензия → устройство → профили → остальное
 export const CHECKLIST_ITEMS: Omit<ChecklistItem, 'completed'>[] = [
+  {
+    id: 'pay_licenses',
+    title: 'Оплатить лицензию',
+    description: 'Приобретите лицензию для начала работы',
+    autoCheck: true, // Проверяется автоматически по наличию лицензий
+    link: '/cabinet/licenses',
+    linkText: 'Открыть',
+  },
+  {
+    id: 'order_device',
+    title: 'Заказать доставку устройства',
+    description: 'Оформите заказ на устройство нейрофидбэка',
+    autoCheck: true, // Проверяется автоматически по наличию заказанного устройства
+    link: '/cabinet/device',
+    linkText: 'Открыть',
+  },
   {
     id: 'fill_profiles',
     title: 'Заполнить профили участников',
     description: 'Добавьте информацию о себе и членах семьи',
     autoCheck: true, // Проверяется автоматически по наличию профилей
-  },
-  {
-    id: 'select_goals',
-    title: 'Выбрать цели тренинга',
-    description: 'Определите, чего хотите достичь с помощью нейрофидбэка',
-    link: '/cabinet/goals',
+    link: '/family-members',
     linkText: 'Открыть',
   },
   {
@@ -51,20 +63,6 @@ export const CHECKLIST_ITEMS: Omit<ChecklistItem, 'completed'>[] = [
     linkText: 'Скачать',
   },
   {
-    id: 'pay_licenses',
-    title: 'Оплатить лицензии для участников',
-    description: 'Активируйте доступ для всех членов семьи',
-    link: '/cabinet/licenses',
-    linkText: 'Открыть',
-  },
-  {
-    id: 'order_device',
-    title: 'Заказать доставку устройства для тренировки',
-    description: 'Оформите заказ на устройство нейрофидбэка',
-    link: '/cabinet/device',
-    linkText: 'Открыть',
-  },
-  {
     id: 'test_device',
     title: 'Подключить и протестировать устройство',
     description: 'Убедитесь, что устройство работает корректно',
@@ -78,11 +76,71 @@ export const CHECKLIST_ITEMS: Omit<ChecklistItem, 'completed'>[] = [
 
 interface UseOnboardingChecklistOptions {
   profilesCount?: number; // Количество заполненных профилей для автопроверки
+  hasLicense?: boolean; // Есть ли лицензия
+  hasDevice?: boolean; // Есть ли заказанное устройство
+}
+
+// Хелпер для проверки наличия лицензии из localStorage
+function checkHasLicense(): boolean {
+  try {
+    const stored = localStorage.getItem('waves_licenses');
+    const licenses = stored ? JSON.parse(stored) : [];
+    return licenses.length > 0;
+  } catch {
+    return false;
+  }
+}
+
+// Хелпер для проверки наличия устройства из localStorage
+function checkHasDevice(userId: string | undefined): boolean {
+  if (!userId) return false;
+  try {
+    const stored = localStorage.getItem(`waves_device_${userId}`);
+    return stored !== null;
+  } catch {
+    return false;
+  }
 }
 
 export function useOnboardingChecklist(options: UseOnboardingChecklistOptions = {}) {
   const { user } = useAuth();
   const { profilesCount = 0 } = options;
+
+  // Автоопределение наличия лицензии и устройства из localStorage
+  const [autoChecks, setAutoChecks] = useState({
+    hasLicense: options.hasLicense ?? checkHasLicense(),
+    hasDevice: options.hasDevice ?? checkHasDevice(user?.id),
+  });
+
+  // Периодически проверяем наличие лицензии и устройства
+  useEffect(() => {
+    const checkStatus = () => {
+      setAutoChecks({
+        hasLicense: options.hasLicense ?? checkHasLicense(),
+        hasDevice: options.hasDevice ?? checkHasDevice(user?.id),
+      });
+    };
+
+    // Проверяем при монтировании
+    checkStatus();
+
+    // Слушаем изменения localStorage
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key?.includes('waves_licenses') || e.key?.includes('waves_device')) {
+        checkStatus();
+      }
+    };
+
+    window.addEventListener('storage', handleStorage);
+
+    // Также проверяем периодически (для изменений в том же окне)
+    const interval = setInterval(checkStatus, 2000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      clearInterval(interval);
+    };
+  }, [user?.id, options.hasLicense, options.hasDevice]);
 
   const [state, setState] = useState<OnboardingChecklistState>(() => {
     if (typeof window === 'undefined') return { items: {} };
@@ -186,6 +244,16 @@ export function useOnboardingChecklist(options: UseOnboardingChecklistOptions = 
     return CHECKLIST_ITEMS.map(item => {
       let completed = state.items[item.id] || false;
 
+      // Автопроверка: лицензия оплачена
+      if (item.id === 'pay_licenses' && item.autoCheck) {
+        completed = autoChecks.hasLicense;
+      }
+
+      // Автопроверка: устройство заказано
+      if (item.id === 'order_device' && item.autoCheck) {
+        completed = autoChecks.hasDevice;
+      }
+
       // Автопроверка: профили заполнены если есть хотя бы 1 профиль
       if (item.id === 'fill_profiles' && item.autoCheck) {
         completed = profilesCount >= 1;
@@ -196,7 +264,7 @@ export function useOnboardingChecklist(options: UseOnboardingChecklistOptions = 
         completed,
       };
     });
-  }, [state.items, profilesCount]);
+  }, [state.items, profilesCount, autoChecks]);
 
   // Подсчет прогресса
   const progress = useMemo(() => {
