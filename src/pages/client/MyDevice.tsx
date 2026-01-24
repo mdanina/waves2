@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -41,6 +41,7 @@ import {
 
 export default function MyDevice() {
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     device,
     loading,
@@ -51,7 +52,7 @@ export default function MyDevice() {
     isDelivered,
     isSetupComplete,
   } = useDevice();
-
+  
   // Проверяем, есть ли лицензия
   // В useLicenses лицензии хранятся в состоянии, но можно проверить через sessionStorage
   // или просто показывать сообщение, если пользователь пришел со страницы лицензий
@@ -59,6 +60,38 @@ export default function MyDevice() {
     // Проверяем флаг в sessionStorage, который устанавливается после покупки
     return sessionStorage.getItem('license_purchased') === 'true';
   });
+
+  // Проверяем, есть ли устройство привязанное к лицензии
+  const [licenseWithDevice, setLicenseWithDevice] = useState<{ id: string; device_id: string } | null>(null);
+  
+  useEffect(() => {
+    // Проверяем лицензии из localStorage
+    try {
+      const stored = localStorage.getItem('waves_licenses');
+      if (stored) {
+        const licenses = JSON.parse(stored);
+        const licenseWithDeviceId = licenses.find((l: any) => l.device_id && l.status === 'active');
+        if (licenseWithDeviceId) {
+          // Проверяем, соответствует ли device_id из лицензии текущему устройству
+          const deviceMatches = hasDevice && device && (
+            device.id === licenseWithDeviceId.device_id || 
+            device.serial_number === licenseWithDeviceId.device_id
+          );
+          
+          // Если устройство привязано к лицензии, но не соответствует текущему устройству
+          if (!deviceMatches) {
+            setLicenseWithDevice(licenseWithDeviceId);
+          } else {
+            setLicenseWithDevice(null);
+          }
+        } else {
+          setLicenseWithDevice(null);
+        }
+      }
+    } catch {
+      // Игнорируем ошибки
+    }
+  }, [hasDevice, device]);
 
   const {
     toggleStep,
@@ -124,11 +157,107 @@ export default function MyDevice() {
         </SerifHeading>
       </div>
 
+      {/* Состояние: Устройство привязано к лицензии, но не найдено в системе */}
+      {licenseWithDevice && !hasDevice && !showOrderForm && (
+        <Card className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] border-0 p-6 sm:p-8">
+          <div className="text-center max-w-md mx-auto">
+            <SerifHeading size="xl" className="mb-3">
+              Устройство привязано к лицензии
+            </SerifHeading>
+            <p className="text-muted-foreground mb-6">
+              Ваше нейроустройство привязано к лицензии (ID: {licenseWithDevice.device_id}), 
+              но не найдено в системе. Возможно, устройство еще не доставлено или требуется настройка.
+            </p>
+            <div className="space-y-3">
+              <Button
+                size="lg"
+                onClick={() => setShowOrderForm(true)}
+                className="bg-gradient-to-r from-coral to-coral-light hover:opacity-90 w-full"
+              >
+                <Package className="h-5 w-5 mr-2" />
+                Указать адрес доставки
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => navigate('/cabinet/licenses')}
+                className="w-full"
+              >
+                Вернуться к лицензиям
+              </Button>
+            </div>
+          </div>
+        </Card>
+      )}
+
       {/* Состояние: Нет устройства */}
-      {!hasDevice && !showOrderForm && (
+      {!hasDevice && !showOrderForm && !licenseWithDevice && (
         <Card className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] border-0 p-6 sm:p-8">
           <div className="text-center max-w-md mx-auto">
             {hasLicense ? (
+              <>
+                <SerifHeading size="xl" className="mb-3">
+                  Дооформите доставку нейроустройства
+                </SerifHeading>
+                <p className="text-muted-foreground mb-6">
+                  Вы приобрели лицензию с нейроустройством. Теперь нужно указать адрес доставки, чтобы мы могли отправить вам его.
+                </p>
+                <Button
+                  size="lg"
+                  onClick={() => setShowOrderForm(true)}
+                  className="bg-gradient-to-r from-coral to-coral-light hover:opacity-90"
+                >
+                  <Package className="h-5 w-5 mr-2" />
+                  Указать адрес доставки
+                </Button>
+              </>
+            ) : (
+              <>
+                <SerifHeading size="xl" className="mb-3">
+                  У вас ещё нет устройства
+                </SerifHeading>
+                <p className="text-muted-foreground mb-6">
+                  Устройство нейрофидбэка входит в состав лицензии.
+                  Оформите заказ, и мы доставим его вам.
+                </p>
+                <Button
+                  size="lg"
+                  onClick={() => navigate('/cabinet/licenses')}
+                  className="bg-gradient-to-r from-coral to-coral-light hover:opacity-90"
+                >
+                  <Package className="h-5 w-5 mr-2" />
+                  Купить лицензию с устройством
+                </Button>
+              </>
+            )}
+          </div>
+        </Card>
+      )}
+
+      {/* Устройство заказано - отслеживание */}
+      {hasDevice && device && !isDelivered && ( 
+                  но не найдено в системе. Возможно, устройство еще не доставлено или требуется настройка.
+                </p>
+                <div className="space-y-3">
+                  <Button
+                    size="lg"
+                    onClick={() => setShowOrderForm(true)}
+                    className="bg-gradient-to-r from-coral to-coral-light hover:opacity-90 w-full"
+                  >
+                    <Package className="h-5 w-5 mr-2" />
+                    Указать адрес доставки
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => navigate('/cabinet/licenses')}
+                    className="w-full"
+                  >
+                    Вернуться к лицензиям
+                  </Button>
+                </div>
+              </>
+            ) : hasLicense ? (
               <>
                 <SerifHeading size="xl" className="mb-3">
                   Дооформите доставку нейроустройства

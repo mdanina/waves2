@@ -28,6 +28,7 @@ import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProfiles } from '@/hooks/useProfiles';
 import { useDevice } from '@/hooks/useDevice';
+import { useLocation } from 'react-router-dom';
 import { SeatDevicesManager } from '@/components/client/SeatDevicesManager';
 import {
   License,
@@ -627,14 +628,49 @@ export default function MyLicenses() {
                     variant="outline"
                     className="w-full sm:w-auto"
                     onClick={async () => {
+                      // Если устройство привязано к лицензии
+                      if (license.device_id) {
+                        // Проверяем, соответствует ли device_id из лицензии устройству пользователя
+                        // device_id может быть либо device.id, либо device.serial_number
+                        const deviceMatches = hasDevice && device && (
+                          device.id === license.device_id || 
+                          device.serial_number === license.device_id
+                        );
+                        
+                        if (!deviceMatches) {
+                          // Устройство привязано к лицензии, но не найдено в useDevice
+                          // Это может быть, если устройство еще не доставлено или не настроено
+                          // Показываем сообщение и предлагаем настроить устройство
+                          toast.info('Устройство привязано к лицензии. Перейдите на страницу устройства для настройки.');
+                        }
+                        // В любом случае переходим на страницу устройства
+                        navigate('/cabinet/device');
+                        return;
+                      }
+                      
                       // Если устройство не привязано и есть устройство у пользователя
                       // Привязываем устройство пользователя (из useDevice) к лицензии
+                      // Но только если устройство уже отправлено (есть serial_number)
                       if (!license.device_id && hasDevice && device) {
-                        try {
-                          await linkDevice(license.id, device.id);
-                          toast.success(`Устройство ${device.model || device.id} успешно привязано к лицензии`);
-                        } catch (error) {
-                          toast.error('Ошибка при привязке устройства');
+                        // Проверяем, что устройство уже отправлено (есть serial_number или статус shipped/delivered)
+                        const canLink = device.serial_number || 
+                                       device.status === 'shipped' || 
+                                       device.status === 'in_transit' || 
+                                       device.status === 'delivered' ||
+                                       device.status === 'setup_pending' ||
+                                       device.status === 'setup_complete';
+                        
+                        if (canLink) {
+                          try {
+                            // Используем serial_number если есть, иначе device.id
+                            const deviceIdToLink = device.serial_number || device.id;
+                            await linkDevice(license.id, deviceIdToLink);
+                            toast.success(`Устройство ${device.model || device.id} успешно привязано к лицензии`);
+                          } catch (error) {
+                            toast.error('Ошибка при привязке устройства');
+                          }
+                        } else {
+                          toast.info('Устройство можно привязать только после отправки. Дождитесь получения устройства.');
                         }
                       }
                       // Переход на страницу управления устройством

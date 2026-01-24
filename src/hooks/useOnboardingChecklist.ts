@@ -86,6 +86,8 @@ export const CHECKLIST_ITEMS: Omit<ChecklistItem, 'completed'>[] = [
     id: 'test_device',
     title: 'Подключить и протестировать устройство',
     description: 'Убедитесь, что устройство работает корректно',
+    link: '/cabinet/device',
+    linkText: 'Открыть',
     requiresDevice: true, // Требует доставки устройства
   },
   {
