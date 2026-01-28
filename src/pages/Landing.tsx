@@ -468,18 +468,18 @@ export default function Landing() {
         <section id="solution" className="py-12 md:py-16">
           <SectionContainer>
               <div className="grid gap-16 md:grid-cols-1 items-center px-6 sm:px-8 md:px-10 lg:px-12">
-                <div>
+                <div className="text-center">
                   <Badge variant="outline" className="mb-4 uppercase tracking-wide bg-white text-foreground border-0 text-sm">Как это работает</Badge>
-                  <SerifHeading size="3xl" className="mb-6">
+                  <SerifHeading size="3xl" className="mb-6 text-center">
                     Мозг учится сам себя регулировать
                   </SerifHeading>
-                  <p className="text-lg text-muted-foreground mb-8">
+                  <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
                     Нейрофидбек работает так: мы считываем мозговую активность и даём ребёнку понятную обратную связь в реальном времени. Это персональный способ тренировать мозг и улучшать саморегуляцию — фокус, спокойствие, контроль эмоций.
                     <br />
                     <br />
                     Ребёнок смотрит видео, слушает музыку или проходит тренировки — и система мягко поощряет нужное состояние. При регулярных занятиях мозг закрепляет новые паттерны — поэтому со временем становится легче удерживать внимание и снижать тревожность.
                   </p>
-                  <ul className="space-y-5">
+                  <ul className="space-y-5 text-left mx-auto max-w-3xl">
                     <li className="flex gap-4 items-start">
                       <div className="w-7 h-7 min-w-[28px] rounded-full bg-foreground text-white flex items-center justify-center text-sm">
                         ✓
