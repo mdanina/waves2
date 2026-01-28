@@ -149,7 +149,7 @@ export default function Landing() {
       
       <main>
         {/* Hero Section */}
-        <section id="hero" className="py-20 md:py-32 min-h-screen flex items-center">
+        <section id="hero" className="py-12 md:py-16 min-h-screen flex items-center">
           <div className="px-4 md:grid md:grid-cols-[1fr_minmax(0,1280px)_1fr] relative z-10">
             <div className="max-w-7xl mx-auto md:col-start-2">
               <div className="grid gap-12 md:grid-cols-2 items-center">
@@ -257,7 +257,7 @@ export default function Landing() {
         </section>
 
         {/* Problems Section */}
-        <section id="problems" className="py-20 md:py-32">
+        <section id="problems" className="py-12 md:py-16">
           <div className="px-4 md:grid md:grid-cols-[1fr_minmax(0,1280px)_1fr]">
             <div className="max-w-7xl mx-auto md:col-start-2">
               <div className="text-center max-w-3xl mx-auto mb-16">
@@ -320,7 +320,7 @@ export default function Landing() {
         </section>
 
         {/* Solution Section */}
-        <section id="solution" className="py-20 md:py-32">
+        <section id="solution" className="py-12 md:py-16">
           <div className="px-4 md:grid md:grid-cols-[1fr_minmax(0,1280px)_1fr]">
             <div className="max-w-7xl mx-auto md:col-start-2">
               <div className="grid gap-16 md:grid-cols-2 items-center px-8 md:px-16 lg:px-24">
@@ -370,7 +370,7 @@ export default function Landing() {
         </section>
 
         {/* Any Content Section */}
-        <section id="any-content" className="py-20 md:py-32 bg-white text-foreground relative overflow-hidden">
+        <section id="any-content" className="py-12 md:py-16 bg-white text-foreground relative overflow-hidden">
           <div className="absolute inset-0 bg-white"></div>
           <div className="px-4 md:grid md:grid-cols-[1fr_minmax(0,1280px)_1fr] relative z-10">
             <div className="max-w-7xl mx-auto md:col-start-2">
@@ -426,7 +426,7 @@ export default function Landing() {
         </section>
 
         {/* Testimonials Section */}
-        <section id="testimonials" className="py-20 md:py-32">
+        <section id="testimonials" className="py-12 md:py-16">
           <div className="px-4 md:grid md:grid-cols-[1fr_minmax(0,1280px)_1fr]">
             <div className="max-w-7xl mx-auto md:col-start-2">
               <div className="text-center max-w-3xl mx-auto mb-16">
@@ -435,7 +435,7 @@ export default function Landing() {
                   Что говорят родители
                 </SerifHeading>
               </div>
-              <div className="grid gap-8 md:grid-cols-3 px-8 md:px-16 lg:px-24">
+              <div className="grid gap-8 md:grid-cols-2 px-8 md:px-16 lg:px-24 max-w-4xl mx-auto">
                 {testimonials.slice(0, 3).map((testimonial, index) => (
                   <Card key={index} className="glass-elegant border-2 p-8">
                     <p className="text-muted-foreground italic leading-relaxed mb-6">
@@ -463,7 +463,7 @@ export default function Landing() {
         </section>
 
         {/* Pricing Section */}
-        <section id="pricing" className="py-20 md:py-32">
+        <section id="pricing" className="py-12 md:py-16">
           <div className="px-4 md:grid md:grid-cols-[1fr_minmax(0,1280px)_1fr]">
             <div className="max-w-7xl mx-auto md:col-start-2">
               <div className="text-center max-w-3xl mx-auto mb-16">
@@ -475,7 +475,7 @@ export default function Landing() {
                   Устройство Flex4 входит в каждый тариф. Рассрочка 0% на 12 месяцев
                 </p>
               </div>
-              <div className="grid gap-8 md:grid-cols-3 px-8 md:px-16 lg:px-24">
+              <div className="grid gap-8 md:grid-cols-2 px-8 md:px-16 lg:px-24 max-w-5xl mx-auto">
                 <Card className="glass-elegant border-2 p-10 flex flex-col">
                   <h3 className="text-2xl font-serif font-semibold mb-2">Базовый</h3>
                   <p className="text-sm text-muted-foreground mb-6">Всё необходимое для начала тренировок</p>
@@ -522,7 +522,7 @@ export default function Landing() {
         </section>
 
         {/* UTP Section */}
-        <section id="why" className="py-20 md:py-32">
+        <section id="why" className="py-12 md:py-16">
           <div className="px-4 md:grid md:grid-cols-[1fr_minmax(0,1280px)_1fr]">
             <div className="max-w-7xl mx-auto md:col-start-2">
               <div className="text-center max-w-3xl mx-auto mb-16">
@@ -568,7 +568,7 @@ export default function Landing() {
         </section>
 
         {/* How It Works Section */}
-        <section id="how-it-works" className="py-20 md:py-32">
+        <section id="how-it-works" className="py-12 md:py-16">
           <div className="px-4 md:grid md:grid-cols-[1fr_minmax(0,1280px)_1fr]">
             <div className="max-w-7xl mx-auto md:col-start-2">
               <div className="text-center max-w-3xl mx-auto mb-16">
@@ -632,7 +632,7 @@ export default function Landing() {
         </section>
 
         {/* Training Programs Section */}
-        <section id="programs" className="py-20 md:py-32">
+        <section id="programs" className="py-12 md:py-16">
           <div className="px-4 md:grid md:grid-cols-[1fr_minmax(0,1280px)_1fr]">
             <div className="max-w-7xl mx-auto md:col-start-2">
               <div className="text-center max-w-3xl mx-auto mb-16">
@@ -701,7 +701,7 @@ export default function Landing() {
 
 
         {/* FAQs Section */}
-        <section id="faq" className="py-20 md:py-32">
+        <section id="faq" className="py-12 md:py-16">
           <div className="px-4 md:grid md:grid-cols-[1fr_minmax(0,1280px)_1fr]">
             <div className="max-w-7xl mx-auto md:col-start-2">
               <div className="text-center max-w-3xl mx-auto mb-16">
@@ -729,15 +729,15 @@ export default function Landing() {
         </section>
 
         {/* CTA Section */}
-        <section id="cta" className="py-20 md:py-32 bg-foreground text-white relative overflow-hidden">
+        <section id="cta" className="py-12 md:py-16 bg-white text-foreground relative overflow-hidden">
           <div className="absolute inset-0 bg-white"></div>
           <div className="px-4 md:grid md:grid-cols-[1fr_minmax(0,1280px)_1fr] relative z-10">
             <div className="max-w-7xl mx-auto md:col-start-2">
               <div className="max-w-3xl mx-auto text-center px-8 md:px-16 lg:px-24">
-                <SerifHeading size="3xl" className="mb-4 text-white">
+                <SerifHeading size="3xl" className="mb-4 text-foreground">
                   Помогите ребёнку стать внимательнее
                 </SerifHeading>
-                <p className="text-lg text-white/70 mb-10">
+                <p className="text-lg text-muted-foreground mb-10">
                   Начните 8-недельную программу тренировок. Первые результаты через 2-3 недели или вернём деньги.
                 </p>
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-center mb-6">
@@ -745,7 +745,7 @@ export default function Landing() {
                     size="lg"
                     variant="default"
                     onClick={() => navigate("/service")}
-                    className="h-14 px-8 bg-white text-foreground hover:bg-cream"
+                    className="h-14 px-8"
                   >
                     Выбрать тариф
                   </Button>
@@ -753,12 +753,12 @@ export default function Landing() {
                     size="lg"
                     variant="outline"
                     onClick={() => navigate("/service")}
-                    className="h-14 px-8 bg-transparent border-2 border-white/30 text-white hover:border-white hover:bg-white/10"
+                    className="h-14 px-8"
                   >
                     Получить консультацию
                   </Button>
                 </div>
-                <div className="flex items-center justify-center gap-2 text-sm text-white/60">
+                <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
                   <span>🛡️</span>
                   <span>Гарантия возврата 30 дней</span>
                 </div>
