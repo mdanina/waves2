@@ -1025,3 +1025,112 @@ export async function deleteUserByEmail(email: string): Promise<{ success: boole
     };
   }
 }
+
+/**
+ * Полностью очистить все данные и статусы пользователей в эмулированной базе данных
+ */
+export async function clearAllUserData(): Promise<{ success: boolean; deleted: any; error?: string }> {
+  try {
+    const db = await getDB();
+    
+    const deleted: any = {
+      users: 0,
+      profiles: 0,
+      assessments: 0,
+      answers: 0,
+      appointments: 0,
+      payments: 0,
+      messages: 0,
+      auth: false,
+    };
+    
+    // Очищаем все пользователи
+    const allUsers = await db.getAll('users');
+    for (const user of allUsers) {
+      await db.delete('users', user.id);
+      deleted.users++;
+    }
+    
+    // Очищаем все профили
+    const allProfiles = await db.getAll('profiles');
+    for (const profile of allProfiles) {
+      await db.delete('profiles', profile.id);
+      deleted.profiles++;
+    }
+    
+    // Очищаем все оценки (assessments)
+    const allAssessments = await db.getAll('assessments');
+    for (const assessment of allAssessments) {
+      await db.delete('assessments', assessment.id);
+      deleted.assessments++;
+    }
+    
+    // Очищаем все ответы (answers)
+    const allAnswers = await db.getAll('answers');
+    for (const answer of allAnswers) {
+      await db.delete('answers', answer.id);
+      deleted.answers++;
+    }
+    
+    // Очищаем все записи на консультации (appointments)
+    const allAppointments = await db.getAll('appointments');
+    for (const appointment of allAppointments) {
+      await db.delete('appointments', appointment.id);
+      deleted.appointments++;
+    }
+    
+    // Очищаем все платежи (payments)
+    const allPayments = await db.getAll('payments');
+    for (const payment of allPayments) {
+      await db.delete('payments', payment.id);
+      deleted.payments++;
+    }
+    
+    // Очищаем все сообщения (messages)
+    const allMessages = await db.getAll('messages');
+    for (const message of allMessages) {
+      await db.delete('messages', message.id);
+      deleted.messages++;
+    }
+    
+    // Очищаем текущую сессию авторизации
+    const authData = await db.get('auth', 'current');
+    if (authData) {
+      await db.put('auth', {
+        key: 'current',
+        user: null,
+        session: null,
+      });
+      deleted.auth = true;
+    }
+    
+    // Очищаем данные из localStorage, связанные с пользователями
+    localStorage.removeItem('waves_licenses');
+    localStorage.removeItem('waves_license_seats');
+    localStorage.removeItem('waves_onboarding_checklist_guest');
+    
+    // Очищаем все привязки email к seats
+    const keysToRemove: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && (
+        key.startsWith('waves_seat_email_binding_') ||
+        key.startsWith('waves_onboarding_checklist_')
+      )) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach(key => localStorage.removeItem(key));
+    
+    return {
+      success: true,
+      deleted,
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      deleted: {},
+      error: error?.message || 'Неизвестная ошибка при очистке данных',
+    };
+  }
+}

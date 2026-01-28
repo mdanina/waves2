@@ -231,8 +231,10 @@ export default function Dashboard() {
 
   // Функция для получения пропсов аватара на основе типа профиля и пола
   const getAvatarProps = useCallback((member: MemberWithAssessment) => {
+    // partner отображается как parent (взрослый)
+    const avatarType = member.type === 'partner' || member.type === 'parent' ? 'parent' : 'child';
     return {
-      type: (member.type || 'parent') as 'parent' | 'child',
+      type: avatarType as 'parent' | 'child',
       gender: (member.gender || 'female') as 'male' | 'female',
     };
   }, []);

@@ -93,8 +93,10 @@ export default function FamilyMembers() {
 
   // Функция для выбора аватара на основе типа профиля и пола
   const getAvatarProps = useCallback((member: Profile) => {
+    // partner отображается как parent (взрослый)
+    const avatarType = member.type === 'partner' || member.type === 'parent' ? 'parent' : 'child';
     return {
-      type: (member.type || 'parent') as 'parent' | 'child',
+      type: avatarType as 'parent' | 'child',
       gender: (member.gender || 'female') as 'male' | 'female',
     };
   }, []);

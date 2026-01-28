@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useProfiles } from '@/hooks/useProfiles';
 import { ProfileAvatar } from '@/components/avatars/ProfileAvatar';
 import { Button } from '@/components/ui/button';
+import momAvatar from '@/assets/mom.png';
 // import { Badge } from '@/components/ui/badge'; // Temporarily disabled
 // import { getUnreadCount } from '@/lib/supabase-messages'; // Temporarily disabled
 
@@ -237,8 +238,12 @@ export function ClientSidebar() {
                 size="sm"
               />
             ) : (
-              <div className="h-10 w-10 rounded-full bg-[#E0F0FF] flex items-center justify-center text-[#007BFF] text-sm font-medium">
-                {getUserInitials()}
+              <div className="h-10 w-10 rounded-full overflow-hidden flex items-center justify-center">
+                <img 
+                  src={momAvatar} 
+                  alt="Мама" 
+                  className="w-full h-full object-cover"
+                />
               </div>
             )}
             <div className="flex-1 min-w-0">

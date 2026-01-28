@@ -13,6 +13,7 @@ import { useProfiles } from '@/hooks/useProfiles';
 import { ProfileAvatar } from '@/components/avatars/ProfileAvatar';
 import { cn } from '@/lib/utils';
 import bgImage from '@/assets/bg.png';
+import momAvatar from '@/assets/mom.png';
 
 const debugNavigation = [
   {
@@ -161,8 +162,12 @@ export function ClientLayout() {
                     size="sm"
                   />
                 ) : (
-                  <div className="h-10 w-10 rounded-full bg-[#E0F0FF] flex items-center justify-center text-[#007BFF] text-sm font-medium">
-                    {getUserInitials()}
+                  <div className="h-10 w-10 rounded-full overflow-hidden flex items-center justify-center">
+                    <img 
+                      src={momAvatar} 
+                      alt="Мама" 
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">

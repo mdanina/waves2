@@ -3,7 +3,6 @@ import { StepIndicator } from "@/components/StepIndicator";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SerifHeading } from "@/components/design-system/SerifHeading";
-import familySetupImage from "@/assets/family.png";
 import bgImage from '@/assets/bg.png';
 
 export default function FamilySetup() {
@@ -26,7 +25,7 @@ export default function FamilySetup() {
           
           <div className="space-y-12 text-center mt-8">
           <img
-            src={familySetupImage}
+            src="/family.png"
             alt="Семья"
             className="mx-auto h-80 w-80 object-contain"
           />
