@@ -198,24 +198,27 @@ export default function Landing() {
       
       <main>
         {/* Hero Section */}
-        <section id="hero" className="py-12 md:py-16 min-h-screen flex items-center relative">
+        <section id="hero" className="py-10 md:py-12 min-h-[80vh] md:min-h-[85vh] flex items-center relative">
           <SectionContainer className="relative">
-              <div className="grid gap-8 md:gap-10 md:grid-cols-[1.15fr_0.85fr] items-start px-6 sm:px-8 md:px-10 lg:px-12">
+              <div className="grid gap-8 md:gap-10 md:grid-cols-[minmax(0,1fr)_280px] items-start px-6 sm:px-8 md:px-10 lg:px-12">
               {/* Left side - Text content */}
               <div>
                 <Badge variant="outline" className="mb-6 bg-white text-foreground border-0 uppercase tracking-wide text-sm">
                   Научно доказанный метод
                 </Badge>
                 <SerifHeading size="4xl" className="mb-6 text-4xl md:text-5xl lg:text-6xl">
-                  Тренируйте{" "}
-                  <span
-                    className={`inline-block transition-all duration-300 ${
-                      isAnimating ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
-                    } ${rotatingWords[currentWordIndex].color}`}
-                  >
-                    {rotatingWords[currentWordIndex].word}
-                  </span>{" "}
-                  ребёнка дома
+                  <span className="block">Тренируйте</span>
+                  <span className="block whitespace-nowrap">
+                    <span
+                      className={`inline-block transition-opacity duration-300 ${
+                        isAnimating ? "opacity-0" : "opacity-100"
+                      } ${rotatingWords[currentWordIndex].color}`}
+                    >
+                      {rotatingWords[currentWordIndex].word}
+                    </span>{" "}
+                    ребёнка
+                  </span>
+                  <span className="block">дома</span>
                 </SerifHeading>
                 <p className="mb-8 text-lg font-medium">
                   WavyMind — домашние нейрофидбек-тренировки для детей с проблемами концентрации, гиперактивностью и тревожностью. Результат за 8 недель без таблеток.
@@ -260,10 +263,10 @@ export default function Landing() {
               </div>
 
               {/* Right side - App Mockup */}
-              <div className="relative z-10 flex justify-center md:justify-center pt-6 md:pt-10">
+              <div className="relative z-10 flex justify-center md:justify-end pt-6 md:pt-10 md:w-[280px] md:justify-self-end">
                 {/* Phone Frame - внешняя рамка смартфона */}
                 <motion.div 
-                  className="relative mx-auto max-w-[193px] sm:max-w-[209px] md:max-w-[258px] w-full"
+                  className="relative md:ml-auto max-w-[193px] sm:max-w-[209px] md:max-w-[258px] w-full"
                   initial={{ opacity: 0, scale: 0.8, y: 20 }}
                   animate={{ 
                     opacity: 1, 
@@ -404,7 +407,7 @@ export default function Landing() {
         </section>
 
         {/* Problems Section */}
-        <section id="problems" className="py-12 md:py-16">
+        <section id="problems" className="py-10 md:py-12">
           <SectionContainer>
               <div className="text-center max-w-3xl mx-auto mb-16">
                 <Badge variant="outline" className="mb-4 uppercase tracking-wide bg-white text-foreground border-0 text-sm">Знакомые ситуации?</Badge>
@@ -465,7 +468,7 @@ export default function Landing() {
         </section>
 
         {/* Solution Section */}
-        <section id="solution" className="py-12 md:py-16">
+        <section id="solution" className="py-10 md:py-12">
           <SectionContainer>
               <div className="grid gap-16 md:grid-cols-1 items-center px-6 sm:px-8 md:px-10 lg:px-12">
                 <div className="text-center">
@@ -511,7 +514,7 @@ export default function Landing() {
         </section>
 
         {/* Any Content Section */}
-        <section id="any-content" className="py-12 md:py-16 bg-white text-foreground relative overflow-hidden">
+        <section id="any-content" className="py-10 md:py-12 bg-white text-foreground relative overflow-hidden">
           <div className="absolute inset-0 bg-white"></div>
           <SectionContainer className="relative z-10">
               <div className="text-center max-w-3xl mx-auto mb-16">
@@ -558,7 +561,7 @@ export default function Landing() {
         </section>
 
         {/* Testimonials Section */}
-        <section id="testimonials" className="py-12 md:py-16">
+        <section id="testimonials" className="py-10 md:py-12">
           <SectionContainer>
               <div className="text-center max-w-3xl mx-auto mb-16">
                 <Badge variant="outline" className="mb-4 uppercase tracking-wide bg-white text-foreground border-0 text-sm">Истории семей</Badge>
@@ -593,7 +596,7 @@ export default function Landing() {
         </section>
 
         {/* Pricing Section */}
-        <section id="pricing" className="py-12 md:py-16 bg-white text-foreground relative overflow-hidden">
+        <section id="pricing" className="py-10 md:py-12 bg-white text-foreground relative overflow-hidden">
           <div className="absolute inset-0 bg-white"></div>
           <SectionContainer className="relative z-10">
               <div className="text-center max-w-3xl mx-auto mb-16">
@@ -651,7 +654,7 @@ export default function Landing() {
         </section>
 
         {/* UTP Section */}
-        <section id="why" className="py-12 md:py-16">
+        <section id="why" className="py-10 md:py-12">
           <SectionContainer>
               <div className="text-center max-w-3xl mx-auto mb-16">
                 <Badge variant="outline" className="mb-4 uppercase tracking-wide bg-white text-foreground border-0 text-sm">Почему WavyMind</Badge>
@@ -683,7 +686,7 @@ export default function Landing() {
         </section>
 
         {/* How It Works Section */}
-        <section id="how-it-works" className="py-12 md:py-16 bg-white text-foreground relative overflow-hidden">
+        <section id="how-it-works" className="py-10 md:py-12 bg-white text-foreground relative overflow-hidden">
           <div className="absolute inset-0 bg-white"></div>
           <SectionContainer className="relative z-10">
               <div className="text-center max-w-3xl mx-auto mb-16">
@@ -728,7 +731,7 @@ export default function Landing() {
         </section>
 
         {/* Training Programs Section */}
-        <section id="programs" className="py-12 md:py-16">
+        <section id="programs" className="py-10 md:py-12">
           <SectionContainer>
               <div className="text-center max-w-3xl mx-auto mb-16">
                 <Badge variant="outline" className="mb-4 uppercase tracking-wide bg-white text-foreground border-0 text-sm">Программы тренировок</Badge>
@@ -827,7 +830,7 @@ export default function Landing() {
 
 
         {/* FAQs Section */}
-        <section id="faq" className="py-12 md:py-16">
+        <section id="faq" className="py-10 md:py-12">
           <SectionContainer>
               <div className="text-center max-w-3xl mx-auto mb-16">
                 <Badge variant="outline" className="mb-4 uppercase tracking-wide bg-white text-foreground border-0 text-sm">Вопросы и ответы</Badge>
@@ -853,7 +856,7 @@ export default function Landing() {
         </section>
 
         {/* CTA Section */}
-        <section id="cta" className="py-12 md:py-16 bg-white text-foreground relative overflow-hidden">
+        <section id="cta" className="py-10 md:py-12 bg-white text-foreground relative overflow-hidden">
           <div className="absolute inset-0 bg-white"></div>
           <SectionContainer className="relative z-10">
               <div className="max-w-3xl mx-auto text-center px-6 sm:px-8 md:px-10 lg:px-12">
