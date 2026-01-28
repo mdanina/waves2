@@ -468,7 +468,7 @@ export default function Landing() {
         </section>
 
         {/* Solution Section */}
-        <section id="solution" className="py-10 md:py-12">
+        <section id="solution" className="pt-10 pb-14 md:pt-12 md:pb-20">
           <SectionContainer>
               <div className="grid gap-16 md:grid-cols-1 items-center px-6 sm:px-8 md:px-10 lg:px-12">
                 <div className="text-center">
