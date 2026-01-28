@@ -4,318 +4,115 @@ import { Button } from "@/components/ui/button";
 // import logo from "@/assets/noroot (2).png";
 const logo = "/logo.png"; // Новый логотип из public
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
 import { Menu } from "lucide-react";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 import "@/components/landing/Landing.css";
 
-type LandingHeaderVariant = "default" | "blog";
-
-interface LandingHeaderProps {
-  variant?: LandingHeaderVariant;
-}
-
-export const LandingHeader = ({ variant = "default" }: LandingHeaderProps) => {
+export const LandingHeader = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const familiesMenu = [
-    { label: "Дети 0-2", href: "/#families" },
-    { label: "Дети 3-7", href: "/#families" },
-    { label: "Дети 8-12", href: "/#families" },
-    { label: "Подростки", href: "/#families" },
-    { label: "Родители", href: "/#families" },
-    { label: "Планирование, ожидание и послеродовой период", href: "/#families" },
-  ];
-
-  const howCareWorksMenu = [
-    { label: "Как это работает", href: "/#how-it-works" },
-    { label: "Наши услуги", href: "/#services" },
-    { label: "Что мы лечим", href: "/#conditions" },
-    { label: "Наши результаты", href: "/#results" },
+  const mainMenuItems = [
+    { label: "Для кого", href: "/#problems" },
+    { label: "Как работает", href: "/#solution" },
+    { label: "Любой контент", href: "/#any-content" },
     { label: "Почему Waves", href: "/#why" },
-    { label: "Наша экспертиза", href: "/#about" },
+    { label: "4 шага", href: "/#how-it-works" },
+    { label: "Программы", href: "/#programs" },
+    { label: "Отзывы", href: "/#testimonials" },
+    { label: "Тарифы", href: "/#pricing" },
+    { label: "FAQ", href: "/#faq" },
   ];
-
-  const blogMenuItem = { label: "Блог", href: "/blog" };
-
-  const isBlog = variant === "blog";
 
   return (
     <>
-      <header
-        className={cn(
-          "sticky top-0 z-50 w-full backdrop-blur",
-          isBlog
-            ? "border-b border-[#20212b] bg-[#111118]/95"
-            : "border-b border-border bg-background/95 supports-[backdrop-filter]:bg-background/60",
-        )}
-      >
-        <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center space-x-2">
-            <img src={logo} alt="Waves" className="h-6 sm:h-7 md:h-8 w-auto" />
-          </Link>
+      {/* Burger Menu Button - Fixed on all screen sizes */}
+      <div className="fixed top-4 right-4 z-[9999]">
+        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="glass-elegant border-2">
+              <Menu className="h-6 w-6" />
+              <span className="sr-only">Открыть меню</span>
+            </Button>
+          </SheetTrigger>
+            <SheetContent 
+              side="right" 
+              className="glass-sidebar w-[300px] sm:w-[400px] p-0 flex flex-col overflow-hidden"
+              hideOverlay={true}
+              onInteractOutside={(e) => {
+                e.preventDefault();
+                setMobileMenuOpen(false);
+              }}
+              style={{
+                background: 'linear-gradient(108deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.14) 100%)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06)',
+                borderLeft: '1px solid rgba(255, 255, 255, 0.3)',
+                zIndex: 9999,
+                position: 'fixed',
+                top: 0,
+                bottom: 0,
+                height: '100vh',
+              } as React.CSSProperties}
+            >
+              {/* Main Navigation - Scrollable */}
+              <div className="flex-1 overflow-y-auto overflow-x-hidden min-h-0">
+              <nav className="flex flex-col space-y-1 p-4 pt-8">
+                {mainMenuItems.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 -mx-2 text-sm font-medium text-foreground transition-all duration-200 hover:bg-white/10"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </nav>
+              </div>
 
-          {/* Desktop Navigation */}
-          <NavigationMenu className="hidden md:flex">
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger
-                  className={cn(
-                    "text-sm font-medium",
-                    isBlog &&
-                      "rounded-full bg-[#171821] px-4 py-2 text-xs font-semibold tracking-[0.06em] text-white hover:bg-[#232533]",
-                  )}
-                >
-                  Для семей
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[320px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                    {familiesMenu.map((item) => (
-                      <li key={item.label}>
-                        <NavigationMenuLink asChild>
-                          <a
-                            href={item.href}
-                            className={cn(
-                              "block select-none space-y-1 rounded-full px-4 py-2 leading-none no-underline outline-none transition-colors text-xs font-medium",
-                              isBlog
-                                ? "bg-[#171821] text-white hover:bg-[#232533]"
-                                : "hover:bg-honey-pale hover:text-ink focus:bg-honey-pale focus:text-ink",
-                            )}
-                          >
-                            <div className="text-sm font-medium leading-none">{item.label}</div>
-                          </a>
-                        </NavigationMenuLink>
-                      </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger
-                  className={cn(
-                    "text-sm font-medium",
-                    isBlog &&
-                      "rounded-full bg-[#171821] px-4 py-2 text-xs font-semibold tracking-[0.06em] text-white hover:bg-[#232533]",
-                  )}
-                >
-                  Как работает
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[320px] gap-3 p-4 md:w-[500px]">
-                    {howCareWorksMenu.map((item) => (
-                      <li key={item.href}>
-                        <NavigationMenuLink asChild>
-                          <a
-                            href={item.href}
-                            className={cn(
-                              "block select-none space-y-1 rounded-full px-4 py-2 leading-none no-underline outline-none transition-colors text-xs font-medium",
-                              isBlog
-                                ? "bg-[#171821] text-white hover:bg-[#232533]"
-                                : "hover:bg-honey-pale hover:text-ink focus:bg-honey-pale focus:text-ink",
-                            )}
-                          >
-                            <div className="text-sm font-medium leading-none">{item.label}</div>
-                          </a>
-                        </NavigationMenuLink>
-                      </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <a
-                  href="/#testimonials"
-                  className={cn(
-                    "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                    isBlog
-                      ? "rounded-full bg-[#171821] text-white hover:bg-[#232533]"
-                      : "hover:bg-honey-pale hover:text-ink focus:bg-honey-pale focus:text-ink",
-                  )}
-                >
-                  Отзывы
-                </a>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <a
-                  href="/#faq"
-                  className={cn(
-                    "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                    isBlog
-                      ? "rounded-full bg-[#171821] text-white hover:bg-[#232533]"
-                      : "hover:bg-honey-pale hover:text-ink focus:bg-honey-pale focus:text-ink",
-                  )}
-                >
-                  FAQ
-                </a>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <a
-                  href="/#about"
-                  className={cn(
-                    "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                    isBlog
-                      ? "rounded-full bg-[#171821] text-white hover:bg-[#232533]"
-                      : "hover:bg-honey-pale hover:text-ink focus:bg-honey-pale focus:text-ink",
-                  )}
-                >
-                  О нас
-                </a>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link
-                  to={blogMenuItem.href}
-                  className={cn(
-                    "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-semibold transition-colors focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                    isBlog
-                      ? "rounded-full bg-[#f5ff7a] text-[#15161a] hover:bg-[#f0f46a]"
-                      : "bg-background hover:bg-honey-pale hover:text-ink focus:bg-honey-pale focus:text-ink",
-                  )}
-                >
-                  {blogMenuItem.label}
-                </Link>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-
-          {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-4">
-            {user ? (
-              <Button variant="ghost" onClick={() => navigate("/cabinet")}>
-                Кабинет
-              </Button>
-            ) : (
-              <>
-                <Button variant="ghost" onClick={() => navigate("/login")}>
-                  Войти
-                </Button>
-                <Button onClick={() => navigate("/service")}>
-                  Получить поддержку
-                </Button>
-              </>
-            )}
-          </div>
-
-          {/* Mobile Menu */}
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Открыть меню</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-              <nav className="flex flex-col space-y-4 mt-8">
-                <div>
-                  <p className="text-sm font-semibold text-muted-foreground mb-2">Для семей</p>
-                  <div className="flex flex-col space-y-2 ml-4">
-                    {familiesMenu.map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="text-sm text-foreground transition-colors hover:text-primary"
-                      >
-                        {item.label}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-muted-foreground mb-2">Как работает</p>
-                  <div className="flex flex-col space-y-2 ml-4">
-                    {howCareWorksMenu.map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="text-sm text-foreground transition-colors hover:text-primary"
-                      >
-                        {item.label}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-                <a
-                  href="/#testimonials"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-medium text-foreground transition-colors hover:text-primary"
-                >
-                  Отзывы
-                </a>
-                <a
-                  href="/#faq"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-medium text-foreground transition-colors hover:text-primary"
-                >
-                  FAQ
-                </a>
-                <a
-                  href="/#about"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-medium text-foreground transition-colors hover:text-primary"
-                >
-                  О нас
-                </a>
-                <a
-                  href={blogMenuItem.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-medium text-foreground transition-colors hover:text-primary"
-                >
-                  {blogMenuItem.label}
-                </a>
-                <div className="pt-4 border-t">
-                  {user ? (
+              {/* Fixed Bottom Section */}
+              <div className="shrink-0 flex flex-col p-4 border-t border-white/10">
+                {user ? (
+                  <Button
+                    variant="default"
+                    className="w-full"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      navigate("/cabinet");
+                    }}
+                  >
+                    Кабинет
+                  </Button>
+                ) : (
+                  <>
                     <Button
-                      variant="default"
+                      variant="outline"
+                      className="w-full mb-2"
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        navigate("/login");
+                      }}
+                    >
+                      Войти
+                    </Button>
+                    <Button
                       className="w-full"
                       onClick={() => {
                         setMobileMenuOpen(false);
-                        navigate("/cabinet");
+                        navigate("/service");
                       }}
                     >
-                      Кабинет
+                      Получить поддержку
                     </Button>
-                  ) : (
-                    <>
-                      <Button
-                        variant="outline"
-                        className="w-full mb-2"
-                        onClick={() => {
-                          setMobileMenuOpen(false);
-                          navigate("/login");
-                        }}
-                      >
-                        Войти
-                      </Button>
-                      <Button
-                        className="w-full"
-                        onClick={() => {
-                          setMobileMenuOpen(false);
-                          navigate("/service");
-                        }}
-                      >
-                        Получить поддержку
-                      </Button>
-                    </>
-                  )}
-                </div>
-              </nav>
+                  </>
+                )}
+              </div>
             </SheetContent>
           </Sheet>
         </div>
-      </div>
-    </header>
     </>
   );
 };
