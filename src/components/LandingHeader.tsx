@@ -3,7 +3,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 // import logo from "@/assets/noroot (2).png";
 const logo = "/logo.png"; // Новый логотип из public
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { useState } from "react";
 import "@/components/landing/Landing.css";
@@ -17,7 +17,7 @@ export const LandingHeader = () => {
     { label: "Для кого", href: "/#problems" },
     { label: "Как работает", href: "/#solution" },
     { label: "Любой контент", href: "/#any-content" },
-    { label: "Почему Waves", href: "/#why" },
+    { label: "Почему WavyMind", href: "/#why" },
     { label: "4 шага", href: "/#how-it-works" },
     { label: "Программы", href: "/#programs" },
     { label: "Отзывы", href: "/#testimonials" },
@@ -30,13 +30,29 @@ export const LandingHeader = () => {
       {/* Burger Menu Button - Fixed on all screen sizes */}
       <div className="fixed top-4 right-4 z-[9999]">
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="glass-elegant border-2">
+          {!mobileMenuOpen ? (
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="glass-elegant border-2 relative z-[10000]"
+              >
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Открыть меню</span>
+              </Button>
+            </SheetTrigger>
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="glass-elegant border-2 relative z-[10000]"
+              onClick={() => setMobileMenuOpen(false)}
+            >
               <Menu className="h-6 w-6" />
-              <span className="sr-only">Открыть меню</span>
+              <span className="sr-only">Закрыть меню</span>
             </Button>
-          </SheetTrigger>
-            <SheetContent 
+          )}
+          <SheetContent
               side="right" 
               className="glass-sidebar w-[300px] sm:w-[400px] p-0 flex flex-col overflow-hidden"
               hideOverlay={true}
@@ -57,9 +73,24 @@ export const LandingHeader = () => {
                 height: '100vh',
               } as React.CSSProperties}
             >
+              {/* Кнопка закрытия внутри панели */}
+              <SheetClose asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-4 right-4 z-10 glass-elegant border-2"
+                  aria-label="Закрыть меню"
+                >
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetClose>
               {/* Main Navigation - Scrollable */}
               <div className="flex-1 overflow-y-auto overflow-x-hidden min-h-0">
-              <nav className="flex flex-col space-y-1 p-4 pt-8">
+              {/* Logo */}
+              <div className="flex justify-center items-center p-4 pt-6 pb-4">
+                <img src={logo} alt="WavyMind" className="h-10 w-auto" />
+              </div>
+              <nav className="flex flex-col space-y-1 p-4 pt-2">
                 {mainMenuItems.map((item) => (
                   <a
                     key={item.href}
@@ -87,31 +118,20 @@ export const LandingHeader = () => {
                     Кабинет
                   </Button>
                 ) : (
-                  <>
-                    <Button
-                      variant="outline"
-                      className="w-full mb-2"
-                      onClick={() => {
-                        setMobileMenuOpen(false);
-                        navigate("/login");
-                      }}
-                    >
-                      Войти
-                    </Button>
-                    <Button
-                      className="w-full"
-                      onClick={() => {
-                        setMobileMenuOpen(false);
-                        navigate("/service");
-                      }}
-                    >
-                      Получить поддержку
-                    </Button>
-                  </>
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      navigate("/login");
+                    }}
+                  >
+                    Войти
+                  </Button>
                 )}
               </div>
             </SheetContent>
-          </Sheet>
+        </Sheet>
         </div>
     </>
   );
