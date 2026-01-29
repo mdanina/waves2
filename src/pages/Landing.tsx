@@ -476,7 +476,7 @@ export default function Landing() {
                   <SerifHeading size="3xl" className="mb-6 text-center">
                     Мозг учится сам себя регулировать
                   </SerifHeading>
-                  <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
+                  <p className="text-lg text-muted-foreground mb-8 max-w-3xl text-justify">
                     Нейрофидбек работает так: мы считываем мозговую активность и даём ребёнку понятную обратную связь в реальном времени. Это персональный способ тренировать мозг и улучшать саморегуляцию — фокус, спокойствие, контроль эмоций.
                     <br />
                     <br />
@@ -526,27 +526,24 @@ export default function Landing() {
                   Забудьте про скучные «развивающие игры». В WavyMind ребёнок смотрит то, что любит
                 </p>
               </div>
-              <div className="grid gap-6 md:grid-cols-3 px-6 sm:px-8 md:px-10 lg:px-12 mb-12">
-                <Card className="glass-elegant border-2 p-8 text-center hover:shadow-lg transition-all">
-                  <div className="w-18 h-18 mx-auto mb-5 rounded-2xl flex items-center justify-center">
-                    <img src={ytImage} alt="YouTube" className="w-full h-full object-contain p-2" />
+              <div className="grid grid-cols-3 gap-6 px-6 sm:px-8 md:px-10 lg:px-12 mb-12 items-stretch">
+                <Card className="glass-elegant border-2 p-6 text-center hover:shadow-lg transition-all flex flex-col min-w-0 justify-center items-center">
+                  <div className="h-[120px] w-[120px] rounded-2xl flex items-center justify-center shrink-0 overflow-hidden">
+                    <img src={ytImage} alt="YouTube" className="max-h-full max-w-full w-auto h-auto object-contain object-center p-2" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2 text-foreground">YouTube</h3>
-                  <p className="text-sm text-muted-foreground">Мультфильмы и видео</p>
+                  <p className="text-sm text-muted-foreground mt-5">Мультфильмы и видео</p>
                 </Card>
-                <Card className="glass-elegant border-2 p-8 text-center hover:shadow-lg transition-all">
-                  <div className="w-18 h-18 mx-auto mb-5 rounded-2xl flex items-center justify-center">
-                    <img src={vkMusicImage} alt="VK Музыка" className="w-full h-full object-contain p-2" />
+                <Card className="glass-elegant border-2 p-6 text-center hover:shadow-lg transition-all flex flex-col min-w-0 justify-center items-center">
+                  <div className="h-[120px] w-[120px] rounded-2xl flex items-center justify-center shrink-0 overflow-hidden">
+                    <img src={vkMusicImage} alt="VK Музыка" className="max-h-full max-w-full w-auto h-auto object-contain object-center p-2" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2 text-foreground">VK Музыка</h3>
-                  <p className="text-sm text-muted-foreground">Музыка и подкасты</p>
+                  <p className="text-sm text-muted-foreground mt-5">Музыка и подкасты</p>
                 </Card>
-                <Card className="glass-elegant border-2 p-8 text-center hover:shadow-lg transition-all">
-                  <div className="w-18 h-18 mx-auto mb-5 rounded-2xl flex items-center justify-center">
-                    <img src={rutubeImage} alt="RUTUBE" className="w-full h-full object-contain p-2" />
+                <Card className="glass-elegant border-2 p-6 text-center hover:shadow-lg transition-all flex flex-col min-w-0 justify-center items-center">
+                  <div className="h-[120px] w-[120px] rounded-2xl flex items-center justify-center shrink-0 overflow-hidden">
+                    <img src={rutubeImage} alt="RUTUBE" className="max-h-full max-w-full w-auto h-auto object-contain object-center p-2" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2 text-foreground">RUTUBE</h3>
-                  <p className="text-sm text-muted-foreground">Любимый контент</p>
+                  <p className="text-sm text-muted-foreground mt-5">Любимый контент</p>
                 </Card>
               </div>
               <div className="max-w-3xl mx-auto text-center px-6 sm:px-8 md:px-10 lg:px-12">
@@ -711,7 +708,7 @@ export default function Landing() {
                 </div>
 
                 {/* Cards */}
-                <div className="grid gap-6 md:grid-cols-4">
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
                   {howItWorksSteps.map((step, i) => (
                     <Card
                       key={step.title}
