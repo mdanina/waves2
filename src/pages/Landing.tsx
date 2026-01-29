@@ -476,13 +476,14 @@ export default function Landing() {
                   <SerifHeading size="3xl" className="mb-6 text-center">
                     Мозг учится сам себя регулировать
                   </SerifHeading>
-                  <p className="text-lg text-muted-foreground mb-8 max-w-3xl text-justify">
-                    Нейрофидбек работает так: мы считываем мозговую активность и даём ребёнку понятную обратную связь в реальном времени. Это персональный способ тренировать мозг и улучшать саморегуляцию — фокус, спокойствие, контроль эмоций.
-                    <br />
-                    <br />
-                    Ребёнок смотрит видео, слушает музыку или проходит тренировки — и система мягко поощряет нужное состояние. При регулярных занятиях мозг закрепляет новые паттерны — поэтому со временем становится легче удерживать внимание и снижать тревожность.
-                  </p>
-                  <ul className="space-y-5 text-left mx-auto max-w-3xl">
+                  <div className="max-w-3xl mx-auto text-left">
+                    <p className="text-lg text-muted-foreground mb-8 text-justify">
+                      Нейрофидбек работает так: мы считываем мозговую активность и даём ребёнку понятную обратную связь в реальном времени. Это персональный способ тренировать мозг и улучшать саморегуляцию — фокус, спокойствие, контроль эмоций.
+                      <br />
+                      <br />
+                      Ребёнок смотрит видео, слушает музыку или проходит тренировки — и система мягко поощряет нужное состояние. При регулярных занятиях мозг закрепляет новые паттерны — поэтому со временем становится легче удерживать внимание и снижать тревожность.
+                    </p>
+                    <ul className="space-y-5 text-left">
                     <li className="flex gap-4 items-start">
                       <div className="w-7 h-7 min-w-[28px] rounded-full bg-foreground text-white flex items-center justify-center text-sm">
                         ✓
@@ -508,6 +509,7 @@ export default function Landing() {
                       <span className="text-lg text-muted-foreground"><strong className="text-foreground">Одобрено специалистами</strong> — метод используется более 50 лет</span>
                     </li>
                   </ul>
+                  </div>
                 </div>
               </div>
           </SectionContainer>
